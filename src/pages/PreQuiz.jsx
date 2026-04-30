@@ -4,81 +4,73 @@ import { Link } from 'react-router-dom'
 const questions = [
   {
     id: 1,
-    type: 'concept',
     label: '觀念題',
     labelColor: 'bg-sky-500/20 text-sky-300',
     q: 'Claude Code 是一個 VS Code 外掛嗎？它是怎麼執行的？',
-    hint: '想想它安裝的方式和運作的環境。',
+    answer: '不是。Claude Code 是一個跑在終端機的 CLI 工具（npm 安裝），不依附任何 IDE。它在你的本機環境直接讀取檔案、執行指令，有 VS Code / JetBrains 的整合外掛，但本體是 CLI。',
   },
   {
     id: 2,
-    type: 'concept',
     label: '觀念題',
     labelColor: 'bg-sky-500/20 text-sky-300',
     q: 'CLAUDE.md 是什麼？應該放在哪裡？它的作用是什麼？',
-    hint: '這是 Claude Code 讀取專案規範的方式。',
+    answer: '放在專案根目錄（或 home 目錄做全域設定）的 Markdown 檔案。Claude Code 啟動時會自動讀取，讓你定義專案規範、常用指令、注意事項——等於給 Claude 的工作說明書。',
   },
   {
     id: 3,
-    type: 'concept',
     label: '觀念題',
     labelColor: 'bg-sky-500/20 text-sky-300',
     q: 'Claude Code 在執行「刪除檔案」這類高風險操作前，會怎麼做？',
-    hint: '它不會默默就做掉，想想它的安全機制。',
+    answer: '它會在終端機顯示即將執行的動作並暫停，等你按 Y 確認才繼續。這是內建的 Permission 機制，你也可以在設定裡調整哪些操作需要確認、哪些可以自動執行。',
   },
   {
     id: 4,
-    type: 'hands-on',
     label: '操作題',
     labelColor: 'bg-amber-500/20 text-amber-300',
     q: '安裝 Claude Code 需要什麼前置條件？安裝指令是什麼？',
-    hint: '需要特定版本的 Node.js，試著查查看。',
+    answer: '需要 Node.js 18 以上。安裝指令：npm install -g @anthropic-ai/claude-code，然後執行 claude 啟動。首次使用需要 Anthropic API Key 或 claude.ai Max 帳號登入。',
   },
   {
     id: 5,
-    type: 'hands-on',
     label: '操作題',
     labelColor: 'bg-amber-500/20 text-amber-300',
     q: '對話中 token 越來越多會發生什麼事？你可以用哪個指令處理？',
-    hint: '有兩個 slash 指令可以解決這個問題。',
+    answer: '對話歷史過長會接近 context window 上限，導致速度變慢、費用增加，最終舊的訊息被截斷。可以用 /compact 壓縮（保留摘要）或 /clear 完全清空重來。',
   },
   {
     id: 6,
-    type: 'hands-on',
     label: '操作題',
     labelColor: 'bg-amber-500/20 text-amber-300',
     q: '/compact 和 /clear 差在哪？各自什麼時候用？',
-    hint: '一個保留記憶，一個清空記憶。',
+    answer: '/compact 讓 Claude 把對話歷史壓縮成摘要，保留關鍵脈絡繼續工作，適合長任務中途節省 token。/clear 完全清空記憶重新開始，適合切換到不相關的新任務。',
   },
   {
     id: 7,
-    type: 'scenario',
     label: '情境題',
     labelColor: 'bg-violet-500/20 text-violet-300',
-    q: '你叫 Claude Code「幫我重構這個 function」，它改完後測試掛了。你的下一步是什麼？（不是問 Claude，是問你自己該怎麼辦）',
-    hint: '想想 git 的基本工作流程。',
+    q: '你叫 Claude Code「幫我重構這個 function」，它改完後測試掛了。你的下一步是什麼？',
+    answer: '先用 git diff 看它改了什麼，再決定是 git checkout 回滾、還是繼續叫 Claude 修。重點是：讓 Claude 動手前，確保你的工作目錄是乾淨的 git 狀態——這樣任何改動都可以還原。',
   },
   {
     id: 8,
-    type: 'scenario',
     label: '情境題',
     labelColor: 'bg-violet-500/20 text-violet-300',
     q: '你的團隊想統一 Claude Code 的行為，例如：永遠用繁體中文回答、不要動 migration 檔案。你會怎麼設定？',
-    hint: '答案和第 2 題有關。',
+    answer: '寫進專案的 CLAUDE.md。這個檔案 commit 進 repo，所有人 clone 後啟動 Claude Code 就會自動套用相同規則，不需要每個人自己設定。',
   },
 ]
 
 export default function PreQuiz() {
-  const [answers, setAnswers] = useState({})
   const [revealed, setRevealed] = useState({})
-  const [submitted, setSubmitted] = useState(false)
 
-  const filled = Object.values(answers).filter(v => v.trim().length > 0).length
+  function toggle(id) {
+    setRevealed(r => ({ ...r, [id]: !r[id] }))
+  }
 
-  function handleSubmit(e) {
-    e.preventDefault()
-    setSubmitted(true)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+  function revealAll() {
+    const all = {}
+    questions.forEach(q => { all[q.id] = true })
+    setRevealed(all)
   }
 
   return (
@@ -94,78 +86,51 @@ export default function PreQuiz() {
             Claude Code<br />
             <span className="bg-gradient-to-r from-rose-400 to-orange-400 bg-clip-text text-transparent">預習題目</span>
           </h1>
-          <p className="text-slate-400 leading-relaxed">
-            課程開始前，請先試著回答以下 8 題。不確定沒關係——帶著問題進教室，答案都會在課堂中揭曉。
+          <p className="text-slate-400 leading-relaxed mb-6">
+            課程開始前，請先看題目想一想，再展開參考答案對照。帶著問題進教室，吸收效果會差很多。
           </p>
-          <div className="flex items-center gap-4 mt-6">
-            <div className="flex-1 h-2 rounded-full bg-white/10 overflow-hidden">
-              <div
-                className="h-full rounded-full bg-gradient-to-r from-rose-500 to-orange-500 transition-all duration-300"
-                style={{ width: `${(filled / questions.length) * 100}%` }}
-              />
-            </div>
-            <span className="text-slate-400 text-sm whitespace-nowrap">{filled} / {questions.length} 題</span>
-          </div>
+          <button
+            onClick={revealAll}
+            className="text-sm text-slate-500 hover:text-slate-300 transition-colors border border-white/10 hover:border-white/20 px-4 py-2 rounded-lg"
+          >
+            全部展開答案
+          </button>
         </div>
 
-        {submitted && (
-          <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-6 mb-10 text-center">
-            <div className="text-3xl mb-2">🎉</div>
-            <div className="text-emerald-300 font-semibold mb-1">已送出！帶著你的答案來上課</div>
-            <div className="text-slate-400 text-sm">課堂中我們會逐題討論，看看你的直覺對了幾題。</div>
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="space-y-4">
           {questions.map((q) => (
             <div key={q.id} className="rounded-2xl border border-white/10 bg-white/[0.02] overflow-hidden">
-              <div className="p-6">
-                <div className="flex items-start gap-3 mb-4">
-                  <span className="flex-shrink-0 w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-slate-400 text-xs font-bold">
-                    {q.id}
-                  </span>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${q.labelColor}`}>{q.label}</span>
+              <button
+                className="w-full text-left p-6 flex items-start gap-4 hover:bg-white/[0.02] transition-colors"
+                onClick={() => toggle(q.id)}
+              >
+                <span className="flex-shrink-0 w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-slate-400 text-xs font-bold mt-0.5">
+                  {q.id}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${q.labelColor}`}>{q.label}</span>
+                  </div>
+                  <p className="text-white font-medium leading-relaxed">{q.q}</p>
+                </div>
+                <span className="flex-shrink-0 text-slate-500 text-sm mt-1">
+                  {revealed[q.id] ? '▲' : '▼'}
+                </span>
+              </button>
+
+              {revealed[q.id] && (
+                <div className="px-6 pb-6">
+                  <div className="rounded-xl bg-black/30 border border-emerald-500/20 p-5">
+                    <div className="flex items-center gap-2 mb-3 text-emerald-400 text-xs font-semibold uppercase tracking-wide">
+                      <span>✓</span> 參考答案
                     </div>
-                    <p className="text-white font-medium leading-relaxed">{q.q}</p>
+                    <p className="text-slate-300 text-sm leading-relaxed">{q.answer}</p>
                   </div>
                 </div>
-
-                <textarea
-                  rows={3}
-                  placeholder="你的想法..."
-                  className="w-full rounded-xl bg-black/30 border border-white/10 focus:border-white/30 outline-none text-slate-300 placeholder-slate-600 text-sm p-4 resize-none transition-colors"
-                  value={answers[q.id] || ''}
-                  onChange={e => setAnswers(a => ({ ...a, [q.id]: e.target.value }))}
-                />
-
-                <button
-                  type="button"
-                  onClick={() => setRevealed(r => ({ ...r, [q.id]: !r[q.id] }))}
-                  className="mt-2 text-xs text-slate-600 hover:text-slate-400 transition-colors"
-                >
-                  {revealed[q.id] ? '▲ 收起提示' : '▼ 看提示'}
-                </button>
-
-                {revealed[q.id] && (
-                  <div className="mt-3 rounded-lg bg-white/5 border border-white/5 px-4 py-3 text-slate-400 text-sm">
-                    💡 {q.hint}
-                  </div>
-                )}
-              </div>
+              )}
             </div>
           ))}
-
-          <div className="pt-4">
-            <button
-              type="submit"
-              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-rose-600 to-orange-600 hover:from-rose-500 hover:to-orange-500 text-white font-semibold transition-all text-sm shadow-lg shadow-rose-500/20"
-            >
-              送出預習答案
-            </button>
-          </div>
-        </form>
+        </div>
 
         <div className="flex items-center justify-between pt-8 mt-8 border-t border-white/10">
           <Link to="/" className="text-slate-400 hover:text-white transition-colors no-underline text-sm">
