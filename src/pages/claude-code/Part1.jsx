@@ -1,80 +1,79 @@
-import { PageLayout, SectionHeader } from '../../components/cc/shared'
+import { PageLayout, SectionHeader, Callout } from '../../components/cc/shared'
 
 export default function Part1() {
   return (
     <PageLayout partIndex={0}>
       <SectionHeader partIndex={0} />
 
-      <p className="text-slate-400 leading-relaxed mb-8">
-        市場上 AI coding 工具一堆，先搞清楚 Claude Code 站在哪個位置，再談怎麼用。
-      </p>
-
-      {/* Comparison */}
-      <h3 className="text-white font-semibold mb-4 text-base">三種工具的本質差異</h3>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        {[
-          {
-            name: 'GitHub Copilot',
-            type: '補全工具',
-            desc: '在 IDE 裡自動補完程式碼，以行或函式為單位。你自己駕駛，它只是副駕座。',
-            limit: '無法執行指令或讀取整個專案',
-          },
-          {
-            name: 'Cursor',
-            type: 'AI IDE',
-            desc: 'VS Code 的 AI 強化版，在編輯器內整合 chat 和 inline edit，體驗流暢。',
-            limit: '綁定特定 IDE，跨工具整合較弱',
-          },
-          {
-            name: 'Claude Code',
-            type: 'Agentic CLI',
-            desc: '跑在終端機，能讀寫檔案、執行指令、跑測試、操作 git，主動完成整個任務。',
-            limit: '需要對 CLI 有基本熟悉度',
-            highlight: true,
-          },
-        ].map(({ name, type, desc, limit, highlight }) => (
-          <div key={name} className={`rounded-xl border p-5 ${highlight ? 'border-violet-500/40 bg-violet-500/10' : 'border-white/10 bg-white/[0.02]'}`}>
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-white font-bold text-sm">{name}</span>
-              <span className="text-xs text-slate-500 border border-white/10 px-2 py-0.5 rounded-full">{type}</span>
-            </div>
-            <p className="text-slate-400 text-sm leading-relaxed mb-3">{desc}</p>
-            <p className="text-slate-600 text-xs">限制：{limit}</p>
-          </div>
-        ))}
-      </div>
-
-      {/* One-line definition */}
-      <div className="rounded-xl border border-sky-500/20 bg-sky-500/5 p-6 mb-10">
-        <h3 className="text-white font-semibold mb-3">一句話定義</h3>
-        <p className="text-slate-300 leading-relaxed">
-          Claude Code 是一個 <span className="text-sky-300 font-medium">Agentic CLI</span>——
-          你給它一個目標，它自己去讀程式碼、規劃步驟、執行工具、觀察結果、反覆迭代，直到完成任務。
-          你是 <span className="text-white font-medium">監督者</span>，不是駕駛員。
+      {/* Hero one-liner */}
+      <div className="rounded-2xl border border-sky-500/20 bg-gradient-to-br from-sky-500/10 to-blue-500/5 p-8 mb-10">
+        <div className="text-sky-300 text-xs font-semibold uppercase tracking-widest mb-3">一句話</div>
+        <p className="text-2xl md:text-3xl font-bold text-white leading-snug mb-4">
+          Claude Code 是一個跑在你終端機裡的 <span className="bg-gradient-to-r from-sky-300 to-blue-300 bg-clip-text text-transparent">AI 工程師</span>——
+          你給它目標，它自己看檔案、寫程式、跑測試、開 PR。
+        </p>
+        <p className="text-slate-400 text-base leading-relaxed">
+          不是補全工具、不是聊天機器人，而是會「自己幹活」的 agent。你的角色從駕駛員變成監督者。
         </p>
       </div>
 
-      {/* Agentic loop */}
-      <h3 className="text-white font-semibold mb-4 text-base">它實際上在做什麼：Agentic 循環</h3>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+      {/* Relatable analogy */}
+      <h3 className="text-white font-semibold mb-4 text-base">用一個比喻就懂</h3>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
         {[
-          { icon: '👁️', step: '感知',  desc: '讀取檔案、指令輸出、對話歷史' },
-          { icon: '🧩', step: '規劃',  desc: '決定下一步要用哪個工具' },
-          { icon: '🔧', step: '行動',  desc: '執行工具：讀寫檔案、跑指令' },
-          { icon: '🔄', step: '觀察',  desc: '評估結果，決定繼續或完成' },
-        ].map(({ icon, step, desc }) => (
-          <div key={step} className="rounded-xl border border-white/10 bg-white/[0.02] p-4 text-center">
-            <div className="text-3xl mb-2">{icon}</div>
-            <div className="text-white font-semibold text-sm mb-1">{step}</div>
-            <div className="text-slate-500 text-xs leading-relaxed">{desc}</div>
+          {
+            title: 'GitHub Copilot 像「自動完成」',
+            body: '你在 IDE 寫程式，它幫你補下一行。像 Word 的拼字建議——快、無感，但你還是駕駛。',
+            tone: 'border-white/10 bg-white/[0.02]',
+            tag: '補全',
+          },
+          {
+            title: 'Cursor 像「副駕」',
+            body: '在編輯器裡聊天、選一段叫它改。它陪你寫，但決策還是你下、檔案還是你存。',
+            tone: 'border-white/10 bg-white/[0.02]',
+            tag: 'IDE 增強',
+          },
+          {
+            title: 'Claude Code 像「實習工程師」',
+            body: '你在 Slack 丟一個 ticket：「幫我加匯出 CSV 功能」。它讀 repo、寫程式、跑測試、改到綠燈，回報結果讓你 review。',
+            tone: 'border-sky-500/30 bg-sky-500/10',
+            tag: 'Agent',
+            highlight: true,
+          },
+        ].map(({ title, body, tone, tag, highlight }) => (
+          <div key={title} className={`rounded-xl border p-5 ${tone}`}>
+            <div className={`inline-block text-xs font-semibold mb-3 px-2 py-0.5 rounded-full ${highlight ? 'bg-sky-500/20 text-sky-300' : 'bg-white/5 text-slate-400'}`}>{tag}</div>
+            <div className={`font-semibold mb-2 ${highlight ? 'text-white' : 'text-slate-200'}`}>{title}</div>
+            <p className="text-slate-400 text-sm leading-relaxed">{body}</p>
           </div>
         ))}
       </div>
 
-      <p className="text-slate-400 text-sm leading-relaxed">
-        這個循環會持續執行，直到 Claude 判定任務完成，或你在中途介入調整方向。
-        與其說它在「聊天」，不如說它在「執行任務」——只是任務的描述語言是自然語言。
-      </p>
+      {/* What it is NOT */}
+      <h3 className="text-white font-semibold mb-4 text-base">這些不是 Claude Code</h3>
+      <div className="rounded-xl border border-white/10 bg-white/[0.02] p-5 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-sm">
+          {[
+            { wrong: '一個 VS Code 外掛',         right: '它是 CLI，跑在 terminal 裡' },
+            { wrong: '只會回答問題的 chatbot',     right: '它會主動執行：讀檔、改檔、跑指令' },
+            { wrong: '需要把 code 貼給它的工具',   right: '它自己會去讀你的 repo' },
+            { wrong: '會自動 push 到 production',  right: '改動仍需你 review、commit、push' },
+          ].map(({ wrong, right }, i) => (
+            <div key={i} className="flex items-start gap-3 py-1">
+              <span className="text-rose-400 font-bold mt-0.5">✗</span>
+              <div className="flex-1 min-w-0">
+                <div className="text-slate-500 line-through text-xs">{wrong}</div>
+                <div className="text-slate-300">{right}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <Callout type="info">
+        想知道它怎麼「自己幹活」？下一章 <span className="font-semibold">Part 2 — 它怎麼想</span> 會把它腦袋裡的循環拆給你看。
+        如果你是 PM，看完 Part 2 之後直接跳到 <span className="font-semibold">Part 3 PM 為什麼能寫 PRD</span> 開始實戰。
+      </Callout>
     </PageLayout>
   )
 }

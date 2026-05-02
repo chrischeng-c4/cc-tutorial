@@ -5,83 +5,78 @@ export default function Part2() {
     <PageLayout partIndex={1}>
       <SectionHeader partIndex={1} />
 
-      <h3 className="text-white font-semibold mb-4 text-base">能做 vs 不能做</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-        <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-5">
-          <div className="text-emerald-400 font-semibold text-sm mb-3 flex items-center gap-2">
-            <span>✓</span> Claude Code 可以
-          </div>
-          <div className="space-y-2 text-sm text-slate-300">
-            {[
-              '讀懂整個 repo 的結構與脈絡',
-              '修 bug、新增功能、重構程式碼',
-              '撰寫並執行測試',
-              '操作 git（diff、commit、branch）',
-              '批次修改大量檔案',
-              '解釋任何一段不熟悉的程式碼',
-              '根據現有 code 風格生成新程式碼',
-            ].map(t => <div key={t} className="flex items-start gap-2"><span className="text-emerald-500 mt-0.5 flex-shrink-0">•</span>{t}</div>)}
-          </div>
-        </div>
-        <div className="rounded-xl border border-red-500/20 bg-red-500/5 p-5">
-          <div className="text-red-400 font-semibold text-sm mb-3 flex items-center gap-2">
-            <span>✗</span> 不適合 / 要注意
-          </div>
-          <div className="space-y-2 text-sm text-slate-300">
-            {[
-              '替代 Dev 的架構設計判斷',
-              '保證輸出 100% 正確（仍需 review）',
-              '處理沒有文字描述的視覺設計',
-              '自動 push 到 production',
-              '永久記憶跨 session 的對話',
-              '取代對業務邏輯的理解',
-            ].map(t => <div key={t} className="flex items-start gap-2"><span className="text-red-500 mt-0.5 flex-shrink-0">•</span>{t}</div>)}
-          </div>
-        </div>
-      </div>
-
-      <h3 className="text-white font-semibold mb-4 text-base">Token 是什麼？費用怎麼估？</h3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-5">
-        Token 是模型計費的基本單位。1 個英文單字 ≈ 1 token，1 個中文字 ≈ 1–2 tokens。
-        費用取決於讓 Claude 讀了多少程式碼、輸出了多少內容。
+      <p className="text-slate-400 leading-relaxed mb-8">
+        Part 1 說它是「會自己幹活的 agent」。這一章把它腦袋裡的循環拆給你看——
+        看完你會知道它<span className="text-white">不是用魔法在做事</span>，
+        只是把人類做事的步驟自動化跑很多次而已。
       </p>
-      <div className="grid grid-cols-3 gap-3 mb-8">
+
+      {/* Agentic loop diagram */}
+      <h3 className="text-white font-semibold mb-4 text-base">它的 4 步循環：感知 → 規劃 → 行動 → 觀察</h3>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         {[
-          { task: '解釋一個 function', cost: '~$0.001', level: 'low' },
-          { task: '修一個中等 bug',    cost: '~$0.01–0.05', level: 'mid' },
-          { task: '新增一個完整功能',  cost: '~$0.1–0.5', level: 'high' },
-        ].map(({ task, cost, level }) => (
-          <div key={task} className="rounded-xl border border-white/10 bg-white/[0.02] p-4 text-center">
-            <div className={`text-lg font-bold mb-1 ${level === 'low' ? 'text-emerald-400' : level === 'mid' ? 'text-amber-400' : 'text-rose-400'}`}>{cost}</div>
-            <div className="text-slate-400 text-xs leading-relaxed">{task}</div>
+          { icon: '👁️', step: '感知', desc: '讀檔案、看你說的話、看上一步的結果', color: 'sky' },
+          { icon: '🧩', step: '規劃', desc: '想下一步要做什麼：再讀一個檔？還是動手改？', color: 'indigo' },
+          { icon: '🔧', step: '行動', desc: '呼叫工具：讀寫檔、跑指令、查網路', color: 'violet' },
+          { icon: '🔄', step: '觀察', desc: '看結果，判斷做完了沒，沒做完就回到感知', color: 'emerald' },
+        ].map(({ icon, step, desc }, i) => (
+          <div key={step} className="rounded-xl border border-white/10 bg-white/[0.02] p-5 text-center relative">
+            <div className="text-xs text-slate-600 font-mono absolute top-2 right-3">{i + 1}</div>
+            <div className="text-3xl mb-2">{icon}</div>
+            <div className="text-white font-semibold text-sm mb-2">{step}</div>
+            <div className="text-slate-400 text-xs leading-relaxed">{desc}</div>
           </div>
         ))}
       </div>
 
-      <Callout type="pm">
-        對 PM 來說最重要的影響：Dev 的「理解成本」大幅降低。以前要花 2 小時看懂陌生 code 才能動手，現在 5 分鐘。任務可以拆更細，sprint 估點也需要重新校準。
+      <p className="text-slate-400 text-sm leading-relaxed mb-10">
+        這個循環會持續執行，直到 Claude 判定任務完成、卡住要問你、或你主動介入。
+        與其說它在「聊天」，不如說它在<span className="text-white">「迭代執行任務」</span>——
+        只是任務的描述語言是自然語言。
+      </p>
+
+      {/* Concrete example walking through the loop */}
+      <h3 className="text-white font-semibold mb-4 text-base">舉例：你說「修一個登入 bug」實際發生什麼</h3>
+      <div className="rounded-xl border border-white/10 bg-black/30 overflow-hidden mb-10">
+        {[
+          { tag: '感知', tagColor: 'bg-sky-500/20 text-sky-300', text: '讀 README、找登入相關檔案 (auth.ts, login.tsx)' },
+          { tag: '規劃', tagColor: 'bg-indigo-500/20 text-indigo-300', text: '決定先看 auth.ts 的 token 驗證邏輯' },
+          { tag: '行動', tagColor: 'bg-violet-500/20 text-violet-300', text: '呼叫 Read 工具讀 src/auth.ts' },
+          { tag: '觀察', tagColor: 'bg-emerald-500/20 text-emerald-300', text: '看到 token 過期沒處理 → 找到 bug 了' },
+          { tag: '規劃', tagColor: 'bg-indigo-500/20 text-indigo-300', text: '想：要在 catch 裡加 refresh token 流程' },
+          { tag: '行動', tagColor: 'bg-violet-500/20 text-violet-300', text: '呼叫 Edit 工具改 auth.ts' },
+          { tag: '行動', tagColor: 'bg-violet-500/20 text-violet-300', text: '呼叫 Bash 工具跑 npm test' },
+          { tag: '觀察', tagColor: 'bg-emerald-500/20 text-emerald-300', text: '測試全綠 → 任務完成，回報給你' },
+        ].map(({ tag, tagColor, text }, i, arr) => (
+          <div key={i} className={`flex items-center gap-3 px-5 py-2.5 ${i < arr.length - 1 ? 'border-b border-white/5' : ''}`}>
+            <span className="text-slate-700 text-xs font-mono w-5 flex-shrink-0">{String(i + 1).padStart(2, '0')}</span>
+            <span className={`text-xs font-semibold px-2 py-0.5 rounded ${tagColor} flex-shrink-0 w-12 text-center`}>{tag}</span>
+            <span className="text-slate-300 text-sm font-mono">{text}</span>
+          </div>
+        ))}
+      </div>
+
+      <Callout type="tip">
+        這就是「agentic」的核心：不是回答你問題就停了，而是不斷感知 → 規劃 → 行動，直到目標達成。
+        模型本身做不到——是 Claude Code 這個外殼把它包成 agent。
       </Callout>
 
-      <h3 className="text-white font-semibold mb-4 mt-8 text-base">工作流程的改變</h3>
-      <div className="space-y-3 mb-10">
-        {[
-          { before: '需求文件寫完，等 Dev 看懂再動手', after: '需求可以直接貼給 Claude Code，它自己去看 code 再問問題' },
-          { before: 'Code review 要花半天逐行看',      after: 'Claude Code 可以先做初步 review，提出具體問題點，人再確認' },
-          { before: 'Bug 修完要等下一個 sprint',       after: '簡單 bug 可能 10 分鐘內有 PR，當天就能合併' },
-          { before: '新人熟悉 repo 要幾週',            after: '把 repo 丟給 Claude Code，讓它解釋架構，大幅縮短 onboarding' },
-        ].map(({ before, after }, i) => (
-          <div key={i} className="rounded-xl border border-white/10 bg-white/[0.02] p-4 grid grid-cols-2 gap-4 text-sm">
-            <div>
-              <div className="text-slate-500 text-xs mb-1.5">以前</div>
-              <div className="text-slate-400 leading-relaxed">{before}</div>
-            </div>
-            <div>
-              <div className="text-emerald-400 text-xs mb-1.5">現在</div>
-              <div className="text-slate-300 leading-relaxed">{after}</div>
-            </div>
-          </div>
-        ))}
+      {/* Live screenshot placeholder */}
+      <h3 className="text-white font-semibold mb-4 mt-10 text-base">在 Terminal 看到的樣子</h3>
+      <div className="rounded-xl border border-dashed border-white/15 bg-black/30 p-8 text-center mb-3">
+        <div className="text-4xl mb-3 opacity-40">📺</div>
+        <div className="text-slate-400 text-sm mb-1">實機畫面（30 秒錄影 / 截圖）</div>
+        <div className="text-slate-600 text-xs leading-relaxed max-w-md mx-auto">
+          建議錄一段：啟動 claude → 給上面那個「修登入 bug」任務 → 看它讀檔/呼叫工具/改檔/跑測試的真實過程。
+        </div>
+        <div className="text-slate-700 text-xs mt-3 font-mono">
+          {'<img src="/cc-loop-demo.gif" alt="Claude Code agentic loop" />'}
+        </div>
       </div>
+      <p className="text-slate-500 text-xs leading-relaxed">
+        圖檔放 <code className="text-slate-400">public/cc-loop-demo.gif</code>，再把上面這個 placeholder 換成
+        <code className="text-slate-400 ml-1">{'<img src="/cc-loop-demo.gif" />'}</code>。
+      </p>
     </PageLayout>
   )
 }

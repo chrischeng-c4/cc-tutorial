@@ -15,8 +15,10 @@ export default function ClaudeCodeIndex() {
             <span className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">AI 驅動的開發 CLI</span>
           </h1>
           <p className="text-lg text-slate-400 leading-relaxed max-w-2xl">
-            一小時課程，從「它到底是什麼」到「在生產環境好好用它」。
-            共分五個章節，PM 與 Dev 各有側重，可依需求選擇章節閱讀。
+            從「它到底是什麼」到「在生產環境好好用它」。共分十一章，
+            <span className="text-rose-300 font-medium">PM 重點是用 Claude Code 寫 PRD</span>（Part 3–6），
+            <span className="text-amber-300 font-medium">Dev 重點是上手 + token 經濟學 + 進階整合</span>（Part 7–10），
+            可依需求選擇章節閱讀。
           </p>
         </div>
 
