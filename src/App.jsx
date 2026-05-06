@@ -23,6 +23,10 @@ import Part12 from './pages/claude-code/Part12'
 import Part13 from './pages/claude-code/Part13'
 import Part14 from './pages/claude-code/Part14'
 import Part15 from './pages/claude-code/Part15'
+import Part16 from './pages/claude-code/Part16'
+import Part17 from './pages/claude-code/Part17'
+import Part18 from './pages/claude-code/Part18'
+import Part19 from './pages/claude-code/Part19'
 import DemoPart from './pages/claude-code/DemoPart'
 import { DEMO_PARTS, PARTS } from './data/claudeCodeParts'
 
@@ -36,7 +40,11 @@ const partComponents = [
   Part7,
   Part8,
   Part9,
+  Part16,
   Part10,
+  Part17,
+  Part18,
+  Part19,
   Part11,
   Part12,
   Part13,
@@ -75,6 +83,10 @@ export default function App() {
           const Component = partComponents[index]
           return <Route key={`claude-${part.slug}`} path={`/claude-code/${part.slug}`} element={<Component />} />
         })}
+        <Route path="/coding-agent/permissions-approval-hooks" element={<Part9 />} />
+        <Route path="/claude-code/permissions-approval-hooks" element={<Part9 />} />
+        <Route path="/coding-agent/cli-mcp-skill" element={<Part19 />} />
+        <Route path="/claude-code/cli-mcp-skill" element={<Part19 />} />
         {DEMO_PARTS.map((part) => (
           <Route key={part.slug} path={`/coding-agent/${part.slug}`} element={<DemoPart slug={part.slug} />} />
         ))}

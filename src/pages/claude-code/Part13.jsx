@@ -2,8 +2,8 @@ import { PageLayout, SectionHeader, CodeBlock, Callout, H3 } from '../../compone
 
 export default function Part13() {
   return (
-    <PageLayout partIndex={12}>
-      <SectionHeader partIndex={12} />
+    <PageLayout partIndex={16}>
+      <SectionHeader partIndex={16} />
 
       <H3>完整 Workflow Demo</H3>
       <p className="text-slate-400 text-sm leading-relaxed mb-4">
@@ -151,8 +151,12 @@ codex review --uncommitted "Review only the changed files. Ignore style-only com
             { slug: 'prd-workflow', point: '用 PRD 當文件任務範例：餵 context、規則檔搭配工具驗證格式、迭代修改、多角度 review' },
             { slug: 'tooling-basics', point: '工具上手三件事：安裝、CLAUDE.md / AGENTS.md、看懂內建工具' },
             { slug: 'token-context-economics', point: 'Context 是工作記憶，不是資料庫；重要狀態放檔案、PR、JIRA、Docs' },
-            { slug: 'permissions-approval-hooks', point: 'Permission 分層，Hooks 在工具呼叫前後加安全與流程檢查' },
-            { slug: 'cli-mcp-skill', point: 'CLI first：MCP 可先用 CLI / export / API script 替代；Skill 是受控 prompt injection / 指令注入' },
+            { slug: 'permissions-approval-hitl', point: 'Permission / approval / HITL 決定 agent 何時能做、何時要停下來問人' },
+            { slug: 'hooks-automation', point: 'Hooks 在工具呼叫前後加安全檢查、格式化、通知與稽核' },
+            { slug: 'scripts-workflow', point: 'Scripts 把資料匯出、格式產生、dry-run 與驗證變成可重跑流程' },
+            { slug: 'cli-tooling', point: 'CLI 是人、agent、CI 都能共用的穩定工具入口' },
+            { slug: 'mcp-integration', point: 'MCP 適合把穩定外部系統產品化成有 schema、有權限的工具協定' },
+            { slug: 'skills-workflows', point: 'Skill 是注入 main thread 的方法包；需要隔離 context 或權限時改用 subagent' },
             { slug: 'delegation-subagents', point: 'Subagent 把 side-quest 隔在獨立 context，只回摘要與引用' },
             { slug: 'parallel-agent-team', point: 'Agent Team 與 Codex cloud 背景任務都可用來平行協作，但協調成本與 token 成本更高' },
             { slug: 'demo-workflow', point: '動手前確保 git 乾淨，完成後 git diff review；大任務先 plan，過程中管理 context' },

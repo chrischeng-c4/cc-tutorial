@@ -361,7 +361,8 @@ codex cloud status <task-id>
         跑 command 要講清楚允許的 script；外部寫入要先 dry-run，再由人批准。
       </Callout>
       <Callout type="info">
-        想加自己的工具？看 <span className="font-mono font-semibold">cli-mcp-skill</span>。CLI 與 MCP 是工具介面；
+        想加自己的工具？先看 <span className="font-mono font-semibold">scripts-workflow</span> 和
+        <span className="font-mono font-semibold">cli-tooling</span>，再看 <span className="font-mono font-semibold">mcp-integration</span>。
         Skill / 規則檔則負責告訴 agent 什麼時候選哪個介面。
       </Callout>
     </PageLayout>

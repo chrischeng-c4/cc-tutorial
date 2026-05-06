@@ -201,7 +201,7 @@ Implement according to the acceptance criteria.`}
       </Callout>
       <Callout type="info">
         這一章先停在手動版：探索 session 產 artifact，review 後重開乾淨 session。
-        後面 <span className="font-mono font-semibold">cli-mcp-skill</span> 會把這套規則變成 Skill；
+        後面 <span className="font-mono font-semibold">skills-workflows</span> 會把這套規則變成 Skill；
         <span className="font-mono font-semibold">delegation-subagents</span> 會再把探索工作外包給 subagent。
       </Callout>
 

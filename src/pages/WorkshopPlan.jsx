@@ -98,7 +98,7 @@ export default function WorkshopPlan() {
               <p className="text-violet-300 text-sm font-semibold mb-2">工具抉擇</p>
               <h2 className="text-white text-2xl font-black">CLI vs MCP</h2>
             </div>
-            <Link to="/coding-agent/cli-mcp-skill" className="text-sm text-slate-500 hover:text-slate-300 no-underline">
+            <Link to="/coding-agent/cli-tooling" className="text-sm text-slate-500 hover:text-slate-300 no-underline">
               看詳細章節 →
             </Link>
           </div>

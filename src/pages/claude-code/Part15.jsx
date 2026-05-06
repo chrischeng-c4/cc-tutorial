@@ -72,8 +72,8 @@ Do not merge until the authorization ordering issue is fixed.
 
 export default function Part15() {
   return (
-    <PageLayout partIndex={14}>
-      <SectionHeader partIndex={14} />
+    <PageLayout partIndex={18}>
+      <SectionHeader partIndex={18} />
 
       <p className="text-slate-400 leading-relaxed mb-8">
         到這裡，你已經會在互動 session 裡跟 coding agent 協作。下一步是把它接進固定流程：

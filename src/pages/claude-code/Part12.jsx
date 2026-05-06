@@ -2,8 +2,8 @@ import { PageLayout, SectionHeader, CodeBlock, Callout, H3 } from '../../compone
 
 export default function Part12() {
   return (
-    <PageLayout partIndex={11}>
-      <SectionHeader partIndex={11} />
+    <PageLayout partIndex={15}>
+      <SectionHeader partIndex={15} />
 
       <p className="text-slate-400 leading-relaxed mb-8">
         <span className="font-mono text-slate-300">delegation-subagents</span> 的 subagent 是單向委派：跑完回報給 main thread。Agent Team 則把多個 Claude session 組成小組，

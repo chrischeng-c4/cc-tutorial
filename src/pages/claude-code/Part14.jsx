@@ -53,8 +53,8 @@ const cddSteps = [
 
 export default function Part14() {
   return (
-    <PageLayout partIndex={13}>
-      <SectionHeader partIndex={13} />
+    <PageLayout partIndex={17}>
+      <SectionHeader partIndex={17} />
 
       <p className="text-slate-400 leading-relaxed mb-8">
         如果 repo 對人難讀，對 LLM 也會難讀。你不應該期待 agent 每次都掃完整個 codebase，

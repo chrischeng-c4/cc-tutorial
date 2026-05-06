@@ -159,6 +159,9 @@ export function SectionHeader({ partIndex, partSlug }) {
           ))}
         </div>
       </div>
+      {p.visual && (
+        <VisualAid visual={p.visual} accent={p.accent} embedded compact className="mt-5" />
+      )}
     </div>
   )
 }
@@ -238,6 +241,112 @@ export function PermBadge({ level }) {
 /* ── H3 ── */
 export function H3({ children }) {
   return <h3 className="text-white font-semibold mb-3 mt-8 text-base first:mt-0">{children}</h3>
+}
+
+const VISUAL_TONES = {
+  sky:     { text: 'text-sky-300',     dot: 'bg-sky-300',     line: 'bg-sky-400/40',     node: 'border-sky-500/25 bg-sky-500/10',         soft: 'from-sky-500/15 to-blue-500/5' },
+  indigo:  { text: 'text-indigo-300',  dot: 'bg-indigo-300',  line: 'bg-indigo-400/40',  node: 'border-indigo-500/25 bg-indigo-500/10',   soft: 'from-indigo-500/15 to-blue-500/5' },
+  rose:    { text: 'text-rose-300',    dot: 'bg-rose-300',    line: 'bg-rose-400/40',    node: 'border-rose-500/25 bg-rose-500/10',       soft: 'from-rose-500/15 to-pink-500/5' },
+  pink:    { text: 'text-pink-300',    dot: 'bg-pink-300',    line: 'bg-pink-400/40',    node: 'border-pink-500/25 bg-pink-500/10',       soft: 'from-pink-500/15 to-rose-500/5' },
+  fuchsia: { text: 'text-fuchsia-300', dot: 'bg-fuchsia-300', line: 'bg-fuchsia-400/40', node: 'border-fuchsia-500/25 bg-fuchsia-500/10', soft: 'from-fuchsia-500/15 to-pink-500/5' },
+  purple:  { text: 'text-purple-300',  dot: 'bg-purple-300',  line: 'bg-purple-400/40',  node: 'border-purple-500/25 bg-purple-500/10',   soft: 'from-purple-500/15 to-fuchsia-500/5' },
+  amber:   { text: 'text-amber-300',   dot: 'bg-amber-300',   line: 'bg-amber-400/40',   node: 'border-amber-500/25 bg-amber-500/10',     soft: 'from-amber-500/15 to-orange-500/5' },
+  orange:  { text: 'text-orange-300',  dot: 'bg-orange-300',  line: 'bg-orange-400/40',  node: 'border-orange-500/25 bg-orange-500/10',   soft: 'from-orange-500/15 to-amber-500/5' },
+  emerald: { text: 'text-emerald-300', dot: 'bg-emerald-300', line: 'bg-emerald-400/40', node: 'border-emerald-500/25 bg-emerald-500/10', soft: 'from-emerald-500/15 to-teal-500/5' },
+  cyan:    { text: 'text-cyan-300',    dot: 'bg-cyan-300',    line: 'bg-cyan-400/40',    node: 'border-cyan-500/25 bg-cyan-500/10',       soft: 'from-cyan-500/15 to-sky-500/5' },
+  violet:  { text: 'text-violet-300',  dot: 'bg-violet-300',  line: 'bg-violet-400/40',  node: 'border-violet-500/25 bg-violet-500/10',   soft: 'from-violet-500/15 to-purple-500/5' },
+}
+
+function visualTone(accent) {
+  return VISUAL_TONES[accent] ?? VISUAL_TONES.violet
+}
+
+function visualNodes(visual) {
+  return Array.isArray(visual?.nodes) ? visual.nodes.filter(Boolean) : []
+}
+
+export function MiniVisualAid({ visual, accent = 'violet', className = '' }) {
+  const nodes = visualNodes(visual).slice(0, 5)
+  if (!nodes.length) return null
+
+  const tone = visualTone(accent)
+
+  return (
+    <div className={`min-w-0 ${className}`} aria-label={`${visual.title} mini diagram`}>
+      <div className="mb-2 flex items-center gap-1.5">
+        {nodes.map((node, i) => (
+          <div key={`${node}-${i}`} className="flex min-w-0 flex-1 items-center gap-1.5">
+            <span className={`h-2.5 w-2.5 flex-shrink-0 rounded-full ${tone.dot}`} />
+            {i < nodes.length - 1 && <span className={`h-px min-w-3 flex-1 ${tone.line}`} />}
+          </div>
+        ))}
+      </div>
+      <div className="grid grid-cols-2 gap-1.5">
+        {nodes.slice(0, 4).map((node) => (
+          <span key={node} className={`truncate rounded-md border px-2 py-1 text-[0.68rem] leading-none ${tone.node} ${tone.text}`}>
+            {node}
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+export function VisualAid({ visual, accent = 'violet', embedded = false, compact = false, className = '' }) {
+  const nodes = visualNodes(visual)
+  if (!nodes.length) return null
+
+  const tone = visualTone(accent)
+  const shell = embedded
+    ? `border-t border-white/10 pt-5 ${className}`
+    : `rounded-xl border border-white/10 bg-white/[0.02] p-5 mb-6 ${className}`
+  const nodeClass = compact ? 'px-3 py-2' : 'px-4 py-3'
+
+  return (
+    <aside className={shell} aria-label={`${visual.title} diagram`}>
+      <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <div className={`mb-1 text-xs font-semibold uppercase tracking-wide ${tone.text}`}>Visual map</div>
+          <div className="text-sm font-bold text-white">{visual.title}</div>
+        </div>
+        {visual.kind && (
+          <span className="rounded-md border border-white/10 px-2 py-1 text-xs text-slate-500">{visual.kind}</span>
+        )}
+      </div>
+
+      <div className={`rounded-xl bg-gradient-to-br ${tone.soft} p-3`}>
+        <div className="grid gap-2 md:grid-cols-5">
+          {nodes.map((node, i) => (
+            <div key={`${node}-${i}`} className="relative min-w-0">
+              <div className={`h-full rounded-lg border ${tone.node} ${nodeClass}`}>
+                <div className="mb-2 flex items-center gap-2">
+                  <span className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full ${tone.dot} text-[0.65rem] font-black text-slate-950`}>
+                    {i + 1}
+                  </span>
+                  <span className="truncate text-sm font-semibold text-white">{node}</span>
+                </div>
+                <div className="h-1 rounded-full bg-white/10">
+                  <div className={`h-full rounded-full ${tone.line}`} style={{ width: `${((i + 1) / nodes.length) * 100}%` }} />
+                </div>
+              </div>
+              {i < nodes.length - 1 && (
+                <div className="hidden md:block absolute -right-1.5 top-1/2 z-10 -translate-y-1/2 text-slate-500">→</div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-3 grid gap-2 md:grid-cols-[1fr_auto] md:items-center">
+        <p className="text-sm leading-relaxed text-slate-400">{visual.caption}</p>
+        {visual.takeaway && (
+          <div className={`rounded-md border px-3 py-2 text-xs leading-relaxed ${tone.node} ${tone.text}`}>
+            {visual.takeaway}
+          </div>
+        )}
+      </div>
+    </aside>
+  )
 }
 
 /* ── FullBleed: break out of main column up to 6xl ── */

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { MiniVisualAid } from '../../components/cc/shared'
 import { ACCENT, AUDIENCE_STYLES, COURSE_PARTS, COURSE_SECTIONS, PARTS, USAGE_STYLES } from '../../data/claudeCodeParts'
 
 function PartBadge({ children, className }) {
@@ -128,7 +129,7 @@ export default function ClaudeCodeIndex() {
                         <Link
                           key={p.path}
                           to={p.path}
-                          className={`group flex items-center gap-5 rounded-2xl border ${c.border} ${c.bg} p-5 no-underline transition-all hover:scale-[1.01] hover:shadow-xl`}
+                          className={`group flex flex-col gap-4 rounded-2xl border ${c.border} ${c.bg} p-5 no-underline transition-all hover:scale-[1.01] hover:shadow-xl md:flex-row md:items-center`}
                         >
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-1">
@@ -153,6 +154,7 @@ export default function ClaudeCodeIndex() {
                               <div className="mt-2 text-xs text-slate-600">對應觀念 → {p.relatedConcepts.join(' · ')}</div>
                             )}
                           </div>
+                          <MiniVisualAid visual={p.visual} accent={p.accent} className="w-full md:w-56 md:flex-shrink-0" />
                           <span className="text-slate-600 group-hover:text-slate-300 transition-colors text-lg flex-shrink-0">→</span>
                         </Link>
                       )

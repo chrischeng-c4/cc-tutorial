@@ -47,12 +47,12 @@ const lazyExplorationLevels = [
 
 export default function Part11() {
   return (
-    <PageLayout partIndex={10}>
-      <SectionHeader partIndex={10} />
+    <PageLayout partIndex={14}>
+      <SectionHeader partIndex={14} />
 
       <p className="text-slate-400 leading-relaxed mb-8">
         <span className="font-mono text-slate-300">token-context-economics</span> 講過：context 是工作記憶，不是資料庫。
-        <span className="font-mono text-slate-300">cli-mcp-skill</span> 又把工具介面拆成 CLI 與 MCP。
+        <span className="font-mono text-slate-300">skills-workflows</span> 又把 Skill 和 subagent 的分工拆清楚。
         這一章講 main thread、subagent 與 Codex 背景委派的分工：主線對話保留決策；副工作隔離出去；
         重要狀態寫到外部儲存。
       </p>
@@ -85,6 +85,11 @@ export default function Part11() {
         什麼時候該用：要做一件「跑完就丟，過程不需要留」的事，例如大範圍 grep、研究某 lib 的 API、
         跑測試只回失敗清單、review code 只回 issue 列表。Codex cloud 背景任務也適合這類邊界清楚的背景委派。
         主對話要直接實作時，用 main thread 比較直接。
+      </Callout>
+      <Callout type="info">
+        Subagent 不只是省 context，也是在縮小權限。Skill 會注入 main thread，繼承主線能用的工具；
+        subagent 可以改成 read-only、禁用 Bash、限制寫入或使用不同 model。很多任務不是「多給 agent 權限」才好做，
+        而是明確不給某些權限，讓它只產 facts、artifact、review findings，目標反而更容易達成。
       </Callout>
 
       <div className="rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-5 mb-5">
