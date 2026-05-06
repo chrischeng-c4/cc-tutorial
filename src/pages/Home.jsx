@@ -5,8 +5,8 @@ import { agenda } from '../data/workshopPlan'
 
 const summary = [
   { label: '課程長度', value: '2 hr' },
-  { label: '共通方法', value: '70 min' },
-  { label: '真實案例', value: `${demoScenarios.length} cases` },
+  { label: '上半部', value: '觀念教導' },
+  { label: '下半部', value: `${demoScenarios.length} demos` },
 ]
 
 const methodFlow = agenda.slice(0, 5)
@@ -26,8 +26,8 @@ export default function Home() {
               <span className="text-cyan-300">兩小時教學安排</span>
             </h1>
             <p className="text-lg text-slate-400 max-w-3xl leading-relaxed mb-8">
-              課程不走角色分流，改用四段式順序：基礎觀念、產品用法、進階觀念、實戰演練。
-              先把心智模型與風險邊界講清楚，再把方法套到真實 demo case。
+              課程不走角色分流，改成上下兩半：上半部先教觀念、產品用法與進階技巧；
+              下半部每一個 part 都是一個 demo，把方法套到真實工作情境。
             </p>
             <div className="flex flex-wrap gap-3">
               <Link
@@ -55,12 +55,12 @@ export default function Home() {
               <div className="text-slate-500 text-xs font-mono mb-3">course order</div>
               <div className="grid gap-2 text-sm">
                 <div className="flex justify-between gap-4">
-                  <span className="text-slate-300">00-70</span>
-                  <span className="text-slate-400">基礎觀念、產品用法、進階觀念</span>
+                  <span className="text-slate-300">上半部</span>
+                  <span className="text-slate-400">觀念教導與操作框架</span>
                 </div>
                 <div className="flex justify-between gap-4">
-                  <span className="text-slate-300">70-120</span>
-                  <span className="text-slate-400">真實案例推演與導入清單</span>
+                  <span className="text-slate-300">下半部</span>
+                  <span className="text-slate-400">每個 part 是一個 demo</span>
                 </div>
               </div>
             </div>
@@ -80,8 +80,8 @@ export default function Home() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <section className="rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-6">
-            <div className="text-cyan-300 text-sm font-semibold mb-2">由淺到深</div>
-            <h2 className="text-white text-2xl font-black mb-4">共通方法</h2>
+            <div className="text-cyan-300 text-sm font-semibold mb-2">上半部</div>
+            <h2 className="text-white text-2xl font-black mb-4">觀念教導</h2>
             <div className="space-y-3">
               {methodFlow.map((item) => (
                 <div key={item.minutes} className="grid grid-cols-[4.5rem_1fr] gap-3">
@@ -96,8 +96,8 @@ export default function Home() {
           </section>
 
           <section className="rounded-xl border border-violet-500/20 bg-violet-500/5 p-6">
-            <div className="text-violet-300 text-sm font-semibold mb-2">方法套用</div>
-            <h2 className="text-white text-2xl font-black mb-4">Demo case 推演</h2>
+            <div className="text-violet-300 text-sm font-semibold mb-2">下半部</div>
+            <h2 className="text-white text-2xl font-black mb-4">Demo part</h2>
             <div className="space-y-3">
               {caseFlow.map((item) => (
                 <div key={item.minutes} className="grid grid-cols-[4.5rem_1fr] gap-3">
@@ -119,7 +119,7 @@ export default function Home() {
             <h2 className="text-white text-xl font-bold mb-2">補充教材</h2>
             <p className="text-slate-400 text-sm leading-relaxed">
               Claude Code 與 Codex 的章節整理成同一套補充教材，閱讀順序改成：
-              基礎觀念 → 產品用法 → 進階觀念 → 實戰演練。Token / context 經濟學屬於所有人都要懂的共通能力。
+              上半部觀念教導 → 下半部 Demo 實作。Token / context 經濟學屬於所有人都要懂的共通能力。
             </p>
           </div>
           <div className="flex flex-wrap gap-2">

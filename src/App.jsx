@@ -23,7 +23,8 @@ import Part12 from './pages/claude-code/Part12'
 import Part13 from './pages/claude-code/Part13'
 import Part14 from './pages/claude-code/Part14'
 import Part15 from './pages/claude-code/Part15'
-import { PARTS } from './data/claudeCodeParts'
+import DemoPart from './pages/claude-code/DemoPart'
+import { DEMO_PARTS, PARTS } from './data/claudeCodeParts'
 
 const partComponents = [
   Part1,
@@ -74,6 +75,12 @@ export default function App() {
           const Component = partComponents[index]
           return <Route key={`claude-${part.slug}`} path={`/claude-code/${part.slug}`} element={<Component />} />
         })}
+        {DEMO_PARTS.map((part) => (
+          <Route key={part.slug} path={`/coding-agent/${part.slug}`} element={<DemoPart slug={part.slug} />} />
+        ))}
+        {DEMO_PARTS.map((part) => (
+          <Route key={`claude-${part.slug}`} path={`/claude-code/${part.slug}`} element={<DemoPart slug={part.slug} />} />
+        ))}
         {PARTS.map((_, index) => {
           const Component = partComponents[index]
           return <Route key={`legacy-coding-${index + 1}`} path={`/coding-agent/${index + 1}`} element={<Component />} />

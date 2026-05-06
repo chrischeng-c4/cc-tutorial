@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ACCENT, AUDIENCE_STYLES, CURRICULUM_ORDER, PARTS, USAGE_STYLES } from '../../data/claudeCodeParts'
+import { ACCENT, AUDIENCE_STYLES, COURSE_PARTS, CURRICULUM_ORDER, PARTS, USAGE_STYLES } from '../../data/claudeCodeParts'
 
-const partsBySlug = new Map(PARTS.map(part => [part.slug, part]))
+const partsBySlug = new Map(COURSE_PARTS.map(part => [part.slug, part]))
 const curriculumParts = CURRICULUM_ORDER.map(slug => partsBySlug.get(slug)).filter(Boolean)
 
 /* ── Page wrapper with progress bar ── */
-export function PageLayout({ partIndex, children }) {
+export function PageLayout({ partIndex, partSlug, children }) {
   const navigate = useNavigate()
-  const current = PARTS[partIndex]
+  const current = partSlug ? partsBySlug.get(partSlug) : PARTS[partIndex]
   const orderIndex = CURRICULUM_ORDER.indexOf(current.slug)
   const progressIndex = orderIndex >= 0 ? orderIndex : partIndex
-  const orderedParts = curriculumParts.length ? curriculumParts : PARTS
+  const orderedParts = curriculumParts.length ? curriculumParts : COURSE_PARTS
   const prev = orderIndex > 0 ? partsBySlug.get(CURRICULUM_ORDER[orderIndex - 1]) : null
   const next = orderIndex >= 0 && orderIndex < CURRICULUM_ORDER.length - 1
     ? partsBySlug.get(CURRICULUM_ORDER[orderIndex + 1])
@@ -121,8 +121,8 @@ export function PageLayout({ partIndex, children }) {
 }
 
 /* ── Section header ── */
-export function SectionHeader({ partIndex }) {
-  const p = PARTS[partIndex]
+export function SectionHeader({ partIndex, partSlug }) {
+  const p = partSlug ? partsBySlug.get(partSlug) : PARTS[partIndex]
   const c = ACCENT[p.accent]
   const tags = p.tags ?? []
   const badges = [

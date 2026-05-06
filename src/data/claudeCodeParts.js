@@ -1,3 +1,5 @@
+import { demoScenarios } from './demoScenarios'
+
 export const PARTS = [
   { slug: 'what-is-coding-agent',       path: '/coding-agent/what-is-coding-agent',       title: 'Claude Code + Codex 是什麼',              time: '5 min',  accent: 'sky',     usage: '核心同步', audience: '共通',             tags: ['基礎'] },
   { slug: 'agentic-loop',               path: '/coding-agent/agentic-loop',               title: '它怎麼想：agentic loop',                  time: '5 min',  accent: 'indigo',  usage: '核心同步', audience: '共通',             tags: ['基礎'] },
@@ -16,7 +18,47 @@ export const PARTS = [
   { slug: 'programmatic-review',        path: '/coding-agent/programmatic-review',        title: 'Programmatic 串接與 Review',              time: '10 min', accent: 'violet',  usage: '進階參考', audience: '偏 Engineering',   tags: ['Automation', 'Review'], demoCases: ['02', '05', '06', '10', '13'] },
 ]
 
-export const LEARNING_PATH = [
+const demoSlugById = {
+  '01': 'demo-slides-progress-review',
+  '02': 'demo-jira-subtasks-draft',
+  '03': 'demo-meeting-action-items',
+  '04': 'demo-prd-draft-review',
+  '05': 'demo-weekly-report-flow',
+  '06': 'demo-roadmap-impact-analysis',
+  '07': 'demo-figma-mockup',
+  '08': 'demo-prd-figma-training-manual',
+  '09': 'demo-confluence-research',
+  10: 'demo-meeting-scheduling',
+  11: 'demo-interview-outline',
+  12: 'demo-code-change-prd-update',
+  13: 'demo-prd-codebase-feasibility',
+}
+
+const demoAccentByLayer = {
+  1: 'cyan',
+  2: 'violet',
+  3: 'orange',
+}
+
+export const DEMO_PARTS = demoScenarios.map((scenario) => {
+  const slug = demoSlugById[scenario.id]
+  return {
+    slug,
+    path: `/coding-agent/${slug}`,
+    title: `Demo：${scenario.title}`,
+    time: scenario.layer === 2 ? '15 min' : '10 min',
+    accent: demoAccentByLayer[scenario.layer] ?? 'violet',
+    usage: 'Demo 實作',
+    audience: scenario.layer === 1 ? '共通' : '偏 PM',
+    tags: ['Demo', scenario.layerLabel.replace('Layer ', '')],
+    demoId: scenario.id,
+    relatedConcepts: scenario.relatedParts,
+  }
+})
+
+export const COURSE_PARTS = [...PARTS, ...DEMO_PARTS]
+
+const CONCEPT_PATH = [
   {
     title: '基礎觀念',
     desc: '先建立 coding agent 心智模型：它是什麼、怎麼迭代，以及 context/token 為什麼要管理。',
@@ -39,12 +81,35 @@ export const LEARNING_PATH = [
   },
 ]
 
+const DEMO_PATH = [
+  {
+    title: 'Demo 實作',
+    desc: '後半部每一個 part 都是一個 demo，把前面的觀念套到真實工作情境。',
+    parts: DEMO_PARTS.map(part => part.slug),
+  },
+]
+
+export const COURSE_SECTIONS = [
+  {
+    title: '上半部：觀念教導',
+    desc: '先建立心智模型、產品用法、進階技巧與工作流判斷。',
+    groups: CONCEPT_PATH,
+  },
+  {
+    title: '下半部：Demo 實作',
+    desc: '每個 part 對應一個 demo，重點是輸入資料、CLI first 路徑、HITL 與可 review 產出。',
+    groups: DEMO_PATH,
+  },
+]
+
+export const LEARNING_PATH = [...CONCEPT_PATH, ...DEMO_PATH]
 export const CURRICULUM_ORDER = LEARNING_PATH.flatMap(group => group.parts)
 
 export const USAGE_STYLES = {
   核心同步: 'border-cyan-500/25 bg-cyan-500/10 text-cyan-300',
   文件案例: 'border-rose-500/25 bg-rose-500/10 text-rose-300',
   進階參考: 'border-violet-500/25 bg-violet-500/10 text-violet-300',
+  'Demo 實作': 'border-amber-500/25 bg-amber-500/10 text-amber-300',
 }
 
 export const AUDIENCE_STYLES = {

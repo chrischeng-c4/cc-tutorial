@@ -169,11 +169,11 @@ export default function DemoChecklist() {
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
             <div>
               <h1 className="mb-4 text-4xl font-black leading-tight text-white sm:text-5xl">
-                Demo 準備清單
+                講師 Demo 準備清單
               </h1>
               <p className="max-w-3xl text-base leading-relaxed text-slate-400">
-                這頁保留原始 13 個 demo 情境內容，但改成課程網站一致的檢視方式。
-                重點是確認每個 case 的資料輸入、CLI / script 邊界、MCP 是否 optional，以及 HITL 檢查點。
+                學員主路徑已經把 13 個情境拆成下半部 demo part。這頁保留給講師做 backstage 準備：
+                確認每個 case 的資料輸入、CLI / script 邊界、MCP 是否 optional，以及 HITL 檢查點。
               </p>
             </div>
             <Link
