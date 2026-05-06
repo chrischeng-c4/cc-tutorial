@@ -115,6 +115,43 @@ Shift+Tab  # default -> acceptEdits -> plan
         Auto mode 是研究預覽，會降低中斷，但不能替代 git diff、測試、HITL 與可回復環境。
       </Callout>
 
+      <H3>HITL：用問題取代猜測</H3>
+      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+        HITL 是 Human in the Loop。重點不是讓人批准每一行，而是讓 agent 在高風險或不確定處停下來問人。
+        一個好的問題通常比錯誤實作後再 rollback 便宜很多。
+      </p>
+      <div className="rounded-xl border border-white/10 bg-white/[0.02] overflow-hidden mb-5">
+        {[
+          { trigger: '產品取捨', bad: '自動選「最常見」流程', good: '問 PM：A/B 哪個是 v1 scope？' },
+          { trigger: '資料不確定', bad: '把缺欄位補成看似合理的假資料', good: '問資料 owner：缺欄位要留空、推估、還是阻擋輸出？' },
+          { trigger: '外部寫入', bad: '直接建 JIRA、發 SeaTalk、改 Google Doc', good: '先產 dry-run preview，請人批准後再寫入' },
+          { trigger: 'codebase 推論', bad: '把現有實作限制寫成產品原因', good: '列 code facts、assumptions、HITL questions' },
+        ].map((item) => (
+          <div key={item.trigger} className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-3 items-start px-4 py-3 border-b border-white/5 last:border-0 text-sm">
+            <span className="md:col-span-2 text-white font-medium">{item.trigger}</span>
+            <span className="md:col-span-5 text-rose-200 leading-relaxed">{item.bad}</span>
+            <span className="md:col-span-5 text-emerald-200 leading-relaxed">{item.good}</span>
+          </div>
+        ))}
+      </div>
+      <CodeBlock title="Claude Code：AskUserQuestion 降低返工">
+{`# 不要猜，先問成可回答的選項
+> 如果你需要做產品或資料假設，請用 AskUserQuestion 問我。
+> 每次最多問 3 題，每題提供 2-3 個互斥選項。
+
+# 例：agent 應該停下來問
+Question: 匯出資料缺少 buyer_phone 時，v1 要怎麼處理？
+Options:
+- 留空並標記 warning
+- 阻擋匯出並列入錯誤報告
+- 使用 masked_phone fallback`}
+      </CodeBlock>
+      <Callout type="tip">
+        Codex 這邊不要硬背工具名；不同介面可能呈現成 structured clarification、approval prompt、plan review，
+        或其他「先問人」的互動步驟。課程重點是同一個原則：
+        <span className="font-semibold">不確定就問成選項，外部寫入先 preview，最後由人確認。</span>
+      </Callout>
+
       <H3>Hooks：在工具呼叫前後插入邏輯</H3>
       <p className="text-slate-400 text-sm leading-relaxed mb-4">
         Hooks 是 Claude Code 的流程擴充點，讓你在工具呼叫前後插入自己的 shell script，可以做安全檢查、自動 lint、發送通知。

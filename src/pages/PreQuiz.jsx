@@ -7,7 +7,7 @@ const questions = [
     label: '觀念題',
     labelColor: 'bg-sky-500/20 text-sky-300',
     q: 'Claude Code / Codex 是一般 chatbot 嗎？它們是怎麼執行的？',
-    answer: '不是。它們是 coding agent，可以在授權範圍內讀 repo、改檔、跑指令，並把結果交給你 review。Claude Code 偏本機 terminal cowork；Codex 也可用 CLI / IDE / cloud task。',
+    answer: '不是。它們是 coding agent，可以在授權範圍內讀 repo、改檔、跑指令，並把結果交給你 review。Claude Code 偏本機 terminal cowork；Codex 可用 CLI / IDE，也可把工作委派到 Codex cloud 背景任務。',
   },
   {
     id: 2,

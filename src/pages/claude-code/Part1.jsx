@@ -54,7 +54,7 @@ export default function Part1() {
       <div className="rounded-xl border border-white/10 bg-white/[0.02] overflow-hidden mb-10">
         {[
           { k: 'Claude Code', v: '本機 terminal / IDE cowork。常見設定是 CLAUDE.md、slash commands、permission、hooks、MCP。' },
-          { k: 'Codex', v: 'CLI / IDE / cloud task。常見設定是 AGENTS.md、approval modes、本機 pairing 與背景委派。' },
+          { k: 'Codex', v: 'CLI / IDE / Codex cloud 背景任務。常見設定是 AGENTS.md、approval modes、本機 pairing 與背景委派。' },
           { k: '共通能力', v: '讀 repo、改檔、跑指令、整理文件、產可 review diff。差別主要在介面、權限模型與委派方式。' },
         ].map(({ k, v }) => (
           <div key={k} className="grid grid-cols-1 md:grid-cols-[10rem_1fr] gap-2 px-5 py-3 border-b border-white/5 last:border-0">

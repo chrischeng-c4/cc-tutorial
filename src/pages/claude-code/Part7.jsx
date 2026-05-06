@@ -19,12 +19,12 @@ const commonToolRows = [
   {
     task: '背景監看 / 排程',
     claude: 'Monitor、CronCreate / CronList / CronDelete',
-    codex: '長命令 session / output polling、Codex cloud status/list；排程可接 shell / CI / 外部 scheduler',
+    codex: '長命令 session / output polling、Codex cloud 任務狀態；排程可接 shell / CI / 外部 scheduler',
   },
   {
     task: '需求釐清',
     claude: 'AskUserQuestion',
-    codex: 'structured clarification / request_user_input、approval prompt、plan review',
+    codex: 'structured clarification、approval prompt、plan review',
   },
   {
     task: '讀外部文件 / 網路',
@@ -39,12 +39,12 @@ const commonToolRows = [
   {
     task: '任務追蹤 / 委派',
     claude: 'Agent、TaskCreate / TaskList / TaskUpdate、TodoWrite',
-    codex: '內部 plan / todo、codex exec、codex review、Codex cloud task',
+    codex: '內部 plan / todo、codex exec、codex review、Codex cloud 背景任務',
   },
   {
     task: '技能 / 協作',
     claude: 'Skill、TeamCreate / TeamDelete、SendMessage',
-    codex: 'AGENTS.md、plugin、cloud task；技能類規則仍是 instruction layer',
+    codex: 'AGENTS.md、plugin、Codex cloud 背景任務；技能類規則仍是 instruction layer',
   },
 ]
 
@@ -104,13 +104,13 @@ const codexToolGroups = [
   },
   {
     cat: '互動確認 / 提問',
-    tools: ['request_user_input', 'approval prompt', 'plan review'],
-    desc: 'Codex 也可以先問人、請批准、或在 plan review 階段收斂方向；實際 UI 名稱會依 CLI / IDE / cloud 介面不同。',
+    tools: ['structured clarification', 'approval prompt', 'plan review'],
+    desc: 'Codex 也可以先問人、請批准、或在 plan review 階段收斂方向；實際 UI / tool 名稱會依 CLI、IDE、cloud 或 agent runtime 不同。',
   },
   {
     cat: '長任務 / 監看',
-    tools: ['exec session', 'output polling', 'codex cloud status/list'],
-    desc: 'Codex 可讓 shell command 維持執行並持續讀 output，也可查 Codex Cloud task 狀態。若要固定時間排程，通常接 CI、GitHub Actions、cron 或外部 scheduler。',
+    tools: ['exec session', 'output polling', 'Codex cloud status/list'],
+    desc: 'Codex 可讓 shell command 維持執行並持續讀 output，也可查 Codex cloud 背景任務狀態。若要固定時間排程，通常接 CI、GitHub Actions、cron 或外部 scheduler。',
   },
   {
     cat: '外部工具',
@@ -250,7 +250,7 @@ $ codex
       <p className="text-slate-400 text-sm leading-relaxed mb-4">
         <span className="font-mono text-slate-300">agentic-loop</span> 講過「規劃 → 行動」，這裡就是行動的底牌。
         兩套工具的能力很像，但呈現方式不同：Claude Code 會明確暴露一組 tool names；
-        Codex 比較常看到的是 shell、patch、sandbox、approval、MCP、review / cloud task 這些操作介面。
+        Codex 比較常看到的是 shell、patch、sandbox、approval、MCP、review / Codex cloud 背景任務這些操作介面。
         Claude Code 的 tool names 會直接用在 permission rules、subagent tool lists 與 hook matchers；
         不要把 Claude 的 tool name 直接套到 Codex，教學時先講能力，再講各自介面。
       </p>
@@ -347,12 +347,12 @@ codex --search "查官方文件，整理這個 migration API 的 breaking change
 # 長任務監看：保持 command session，持續觀察 output
 > 啟動 dev server，持續看 output；如果出現 ERROR、build failed 或 port conflict，先回報不要自行重試。
 
-# Cloud task 狀態
+# Codex cloud 背景任務狀態
 codex cloud list
 codex cloud status <task-id>
 
 # 固定時間排程：通常交給外部 scheduler，再讓 Codex 處理明確任務
-# 例如 GitHub Actions / cron 觸發 codex exec 或建立 Codex Cloud task。`}
+# 例如 GitHub Actions / cron 觸發 codex exec 或建立 Codex cloud 背景任務。`}
       </CodeBlock>
 
       <Callout type="tip">

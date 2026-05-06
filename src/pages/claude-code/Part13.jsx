@@ -154,7 +154,7 @@ codex review --uncommitted "Review only the changed files. Ignore style-only com
             { slug: 'permissions-approval-hooks', point: 'Permission 分層，Hooks 在工具呼叫前後加安全與流程檢查' },
             { slug: 'cli-mcp-skill', point: 'CLI first：MCP 可先用 CLI / export / API script 替代；Skill 是受控 prompt injection / 指令注入' },
             { slug: 'delegation-subagents', point: 'Subagent 把 side-quest 隔在獨立 context，只回摘要與引用' },
-            { slug: 'parallel-agent-team', point: 'Agent Team 與 Codex cloud task 都可用來平行協作，但協調成本與 token 成本更高' },
+            { slug: 'parallel-agent-team', point: 'Agent Team 與 Codex cloud 背景任務都可用來平行協作，但協調成本與 token 成本更高' },
             { slug: 'demo-workflow', point: '動手前確保 git 乾淨，完成後 git diff review；大任務先 plan，過程中管理 context' },
             { slug: 'repo-context', point: '把 repo map、llms.txt、spec 與 context packet 做成 agent 可讀、可引用、可 review 的外部 context' },
             { slug: 'programmatic-review', point: '把 review 與固定流程 programmatic 化：codex review、claude -p、CI artifact、schema validator' },

@@ -32,7 +32,7 @@ export const agenda = [
     minutes: '55-70',
     title: '工具對照：CLI vs MCP、Skill、委派',
     focus: '先分清楚 CLI / script 與 MCP 是同一層工具介面；Skill 本質上是受控 prompt injection / 指令注入；委派與 programmatic review 只適合邊界清楚的工作。',
-    outcome: '學員知道何時用 CLI 快速跑通，何時才值得把外部系統接成 MCP，如何用 Skill 注入操作規則，以及何時用 subagent / cloud task。',
+    outcome: '學員知道何時用 CLI 快速跑通，何時才值得把外部系統接成 MCP，如何用 Skill 注入操作規則，以及何時用 subagent / Codex cloud 背景任務。',
   },
   {
     block: '實戰演練',
@@ -59,9 +59,9 @@ export const tools = [
   },
   {
     name: 'Codex',
-    surface: 'CLI / IDE / Codex web cloud tasks',
+    surface: 'CLI / IDE / Codex cloud 背景任務',
     setup: ['npm i -g @openai/codex', 'codex 啟動本機 CLI', 'codex review 做本機 / PR 前 review', 'AGENTS.md 放專案規範', 'approval modes 控制讀寫與 command 執行'],
-    strengths: ['CLI 適合本機 pairing', 'codex review 適合低風險檢查 diff', 'Cloud task 適合背景委派與平行工作', '適合把明確 issue 轉成可 review diff'],
+    strengths: ['CLI 適合本機 pairing', 'codex review 適合低風險檢查 diff', 'Codex cloud 背景任務適合委派與平行工作', '適合把明確 issue 轉成可 review diff'],
   },
 ]
 

@@ -83,7 +83,7 @@ export default function Part11() {
       </p>
       <Callout type="tip">
         什麼時候該用：要做一件「跑完就丟，過程不需要留」的事，例如大範圍 grep、研究某 lib 的 API、
-        跑測試只回失敗清單、review code 只回 issue 列表。Codex cloud task 也適合這類邊界清楚的背景委派。
+        跑測試只回失敗清單、review code 只回 issue 列表。Codex cloud 背景任務也適合這類邊界清楚的背景委派。
         主對話要直接實作時，用 main thread 比較直接。
       </Callout>
 

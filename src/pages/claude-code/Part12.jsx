@@ -7,7 +7,7 @@ export default function Part12() {
 
       <p className="text-slate-400 leading-relaxed mb-8">
         <span className="font-mono text-slate-300">delegation-subagents</span> 的 subagent 是單向委派：跑完回報給 main thread。Agent Team 則把多個 Claude session 組成小組，
-        讓 lead 與 teammate 可以互相訊息、共享 task list。Codex 的對等場景是 cloud task / 背景委派：
+        讓 lead 與 teammate 可以互相訊息、共享 task list。Codex 的對等場景是 Codex cloud 背景任務：
         把明確 issue 丟出去產可 review diff。兩者都適合平行探索，也都需要更明確的邊界與 review。
       </p>
 
@@ -120,11 +120,15 @@ export default function Part12() {
         定義一次、subagent 與 team 兩種模式共用。
       </Callout>
 
-      <H3>Codex 對等場景：Cloud task / 背景委派</H3>
+      <H3>Codex 對等場景：Codex cloud 背景任務</H3>
       <p className="text-slate-400 text-sm leading-relaxed mb-4">
         Codex 不一定用 teammate mailbox 這種模型。比較常見的對等做法是把明確、可驗收、可 review 的 issue
         丟成背景 task，讓它在隔離環境產 diff，再由人 review。適合「規格清楚、可以用測試驗收」的工作。
       </p>
+      <Callout type="info">
+        這裡的 Codex cloud 背景任務是 OpenAI Codex 的雲端委派能力，不是 Google Cloud 的 Cloud Tasks 佇列服務。
+        Google Cloud Tasks 是 GCP 用來排入與派送 HTTP / App Engine 工作的 managed queue；本課沒有在講那個產品。
+      </Callout>
       <CodeBlock title="Codex task prompt 範例">
 {`Implement the order CSV export described in JIRA-142.
 
