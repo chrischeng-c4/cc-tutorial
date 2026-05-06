@@ -35,33 +35,6 @@ const storageRows = [
   },
 ]
 
-const lazyExplorationLevels = [
-  {
-    level: '基本',
-    title: '探索 session 產 artifact',
-    desc: '懶得整理資料時，先讓 agent 自己找，但只准找資料與寫 artifact；review 後 /clear，再進實作 session。',
-    risk: '需要手動切 session，流程靠人記得執行。',
-  },
-  {
-    level: '進階',
-    title: 'Skill 固定探索規則',
-    desc: '把搜尋範圍、artifact schema、引用格式、HITL 問題寫進 Skill，讓每次探索都有同一套輸出規格。',
-    risk: 'Skill 會進 main thread context；它適合放規則，不適合承接大量探索內容。',
-  },
-  {
-    level: '再進階',
-    title: 'Subagent 隔離探索',
-    desc: '大範圍搜尋交給 read-only subagent。搜尋歷史、長 log、候選檔案都留在 subagent context，只回 artifact 路徑與摘要。',
-    risk: '如果工具支援指定 model，探索型 subagent 可選較快或較便宜的模型；但仍要限制工具與輸出格式。',
-  },
-  {
-    level: '最穩',
-    title: 'Skill 只提示 main thread 派 subagent',
-    desc: 'Skill 不自己探索，只負責告訴 main thread：遇到大型未知任務時，派 subagent 產 artifact，再讓主線讀 artifact 實作。',
-    risk: 'Context 管理外包給流程：不用手動 compact，也不讓探索過程污染主線。',
-  },
-]
-
 export default function Part8() {
   return (
     <PageLayout partIndex={7}>
@@ -226,55 +199,10 @@ Implement according to the acceptance criteria.`}
         這份 artifact 不是模型記憶，而是人可 review 的 checkpoint。探索 session 可以髒一點、讀多一點；
         實作 session 要乾淨，只帶 artifact、目標、限制與驗收條件。
       </Callout>
-
-      <div className="rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-5 mb-5">
-        <div className="mb-4">
-          <div className="text-cyan-300 text-xs font-semibold uppercase tracking-wide mb-1">Progressive Disclosure</div>
-          <div className="text-white font-semibold">資料探索可以一步步自動化，但不要污染 main thread</div>
-          <p className="text-slate-400 text-sm leading-relaxed mt-2">
-            這題可以漸進揭露：先承認人會懶，讓 agent 找資料；再把規則做成 Skill；更進階時把搜尋外包給 subagent。
-            最後的形態是 Skill 只負責路由與檢查，真正的探索由 subagent 產 artifact。
-          </p>
-        </div>
-        <div className="grid gap-3 md:grid-cols-2">
-          {lazyExplorationLevels.map((item) => (
-            <div key={item.title} className="rounded-lg border border-white/10 bg-black/20 p-4">
-              <div className="mb-2 flex items-center gap-2">
-                <span className="rounded-md border border-cyan-500/25 bg-cyan-500/10 px-2 py-0.5 text-xs font-semibold text-cyan-300">
-                  {item.level}
-                </span>
-                <span className="text-white text-sm font-semibold">{item.title}</span>
-              </div>
-              <p className="text-slate-300 text-sm leading-relaxed">{item.desc}</p>
-              <p className="text-slate-500 text-xs leading-relaxed mt-2">{item.risk}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <CodeBlock title="最終型：Skill 提示 main thread 派 subagent 產 artifact">
-{`# Skill / AGENTS rule: context-scout
-When the task requires broad repo exploration or unknown domain discovery:
-1. Do not perform broad exploration in the main thread.
-2. Ask the main thread to spawn a read-only subagent.
-3. The subagent may search broadly, but must write a context artifact.
-4. The artifact must include:
-   - task_goal
-   - facts_with_file_refs
-   - relevant_files
-   - risky_assumptions
-   - open_questions_for_human
-   - recommended_next_prompt
-5. The subagent returns only:
-   - artifact path
-   - 5-bullet summary
-   - blockers or HITL questions
-6. Main thread reads the reviewed artifact before implementation.
-7. Do not keep raw exploration logs in main thread context.`}
-      </CodeBlock>
-      <Callout type="warn">
-        Skill 的角色是「提醒與路由」，不是把整份資料塞進 prompt。Subagent 的角色是隔離高噪音探索。
-        Artifact 的角色是把探索結果變成可 review、可重用、可丟給下一輪乾淨 session 的 source of truth。
+      <Callout type="info">
+        這一章先停在手動版：探索 session 產 artifact，review 後重開乾淨 session。
+        後面 <span className="font-mono font-semibold">cli-mcp-skill</span> 會把這套規則變成 Skill；
+        <span className="font-mono font-semibold">delegation-subagents</span> 會再把探索工作外包給 subagent。
       </Callout>
 
       {/* 4. Token billing */}
@@ -417,7 +345,7 @@ num <= 10 => risk = normal`}
             'Context 是工作記憶；檔案、PR、issue、JIRA、Docs 才是重要狀態的 source of truth',
             '監控成本與 context：Claude Code 用 /usage；Codex 用 /status 看 token / context 狀態',
             '把任務結果（git diff、測試報告、review 結論）存到外部位置，不要只留在對話裡',
-            '大範圍探查（搜整個 repo）派 subagent，不要污染主 session — 詳見 delegation-subagents',
+            '大範圍探查先產 context artifact，不要和真正實作混在同一個長 session',
           ].map((t, i) => (
             <div key={i} className="flex items-start gap-2">
               <span className="text-emerald-500 flex-shrink-0 mt-0.5">→</span>
