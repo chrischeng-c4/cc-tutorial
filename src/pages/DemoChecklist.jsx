@@ -1,13 +1,13 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { PARTS } from '../data/claudeCodeParts'
-import { demoScenarios, mcpChecklist } from '../data/demoScenarios'
+import { demoScenarios, integrationChecklist } from '../data/demoScenarios'
 
 const tabs = [
   { id: 'all', label: '全部情境' },
   { id: 'script', label: 'Script 準備' },
   { id: 'data', label: '資料準備' },
-  { id: 'mcp', label: 'MCP 清單' },
+  { id: 'integrations', label: 'CLI / MCP' },
 ]
 
 const layerStyles = {
@@ -28,7 +28,7 @@ const layerStyles = {
   },
 }
 
-const partsByNumber = new Map(PARTS.map(part => [part.number, part]))
+const partsBySlug = new Map(PARTS.map(part => [part.slug, part]))
 
 function LayerBadge({ scenario }) {
   return (
@@ -54,21 +54,22 @@ function Chip({ children }) {
   return <span className={`rounded-md border px-2 py-1 text-xs ${classes}`}>{children}</span>
 }
 
-function RelatedParts({ numbers = [] }) {
-  if (!numbers.length) return null
+function RelatedParts({ slugs = [] }) {
+  if (!slugs.length) return null
 
   return (
     <div className="mt-3 flex flex-wrap items-center gap-1.5 text-xs">
       <span className="text-slate-600">對應補充教材</span>
-      {numbers.map((number) => {
-        const part = partsByNumber.get(number)
+      {slugs.map((slug) => {
+        const part = partsBySlug.get(slug)
+        if (!part) return null
         return (
           <Link
-            key={number}
+            key={slug}
             to={part.path}
-            className="rounded-md border border-white/10 px-2 py-1 text-slate-500 no-underline transition-colors hover:border-white/20 hover:text-slate-200"
+            className="rounded-md border border-white/10 px-2 py-1 font-mono text-slate-500 no-underline transition-colors hover:border-white/20 hover:text-slate-200"
           >
-            {part.part}
+            {part.slug}
           </Link>
         )
       })}
@@ -100,12 +101,12 @@ function ScenarioCard({ scenario, compact = false }) {
           <h3 className="min-w-0 flex-1 text-base font-semibold leading-relaxed text-white">{scenario.title}</h3>
           <LayerBadge scenario={scenario} />
         </div>
-        <RelatedParts numbers={scenario.relatedParts} />
+        <RelatedParts slugs={scenario.relatedParts} />
       </div>
 
       <div className={`grid gap-5 p-5 ${compact ? 'grid-cols-1' : 'lg:grid-cols-[1fr_1fr]'}`}>
         <div>
-          <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">工具 / MCP</div>
+          <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">工具路徑</div>
           <div className="flex flex-wrap gap-1.5">
             {scenario.tools.map((tool) => <Chip key={tool}>{tool}</Chip>)}
           </div>
@@ -172,7 +173,7 @@ export default function DemoChecklist() {
               </h1>
               <p className="max-w-3xl text-base leading-relaxed text-slate-400">
                 這頁保留原始 13 個 demo 情境內容，但改成課程網站一致的檢視方式。
-                重點是確認每個 case 的資料輸入、script 邊界、MCP 權限與 HITL 檢查點。
+                重點是確認每個 case 的資料輸入、CLI / script 邊界、MCP 是否 optional，以及 HITL 檢查點。
               </p>
             </div>
             <Link
@@ -201,7 +202,7 @@ export default function DemoChecklist() {
               Layer 2 · Script · {scriptScenarios.length}
             </span>
             <span className="rounded-full border border-violet-500/25 bg-violet-500/10 px-3 py-1 text-xs text-violet-300">
-              MCP · {mcpChecklist.length}
+              CLI / MCP · {integrationChecklist.length}
             </span>
           </div>
 
@@ -269,25 +270,27 @@ export default function DemoChecklist() {
           </section>
         )}
 
-        {activeTab === 'mcp' && (
+        {activeTab === 'integrations' && (
           <section>
             <div className="mb-4 rounded-xl border border-violet-500/20 bg-violet-500/5 px-5 py-4 text-sm leading-relaxed text-slate-300">
-              Demo 前需逐一確認 MCP 是否可用，或是否需要 API 權限與替代方案。
+              Demo 準備採 CLI first：先確認 export、API script、CSV / Markdown 檔案能不能跑通；MCP 有時間再接成進階版本。
             </div>
             <div className="overflow-x-auto rounded-xl border border-white/10 bg-white/[0.02]">
-              <table className="w-full min-w-[620px] border-collapse text-sm">
+              <table className="w-full min-w-[760px] border-collapse text-sm">
                 <thead>
                   <tr className="border-b border-white/10 bg-white/[0.03]">
-                    <th className="px-5 py-3 text-left font-semibold text-slate-400">MCP / 系統</th>
+                    <th className="px-5 py-3 text-left font-semibold text-slate-400">系統</th>
                     <th className="px-5 py-3 text-left font-semibold text-slate-400">使用情境</th>
+                    <th className="px-5 py-3 text-left font-semibold text-slate-400">CLI / Export 優先路徑</th>
                     <th className="px-5 py-3 text-left font-semibold text-slate-400">狀態</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {mcpChecklist.map((item) => (
+                  {integrationChecklist.map((item) => (
                     <tr key={item.name} className="border-b border-white/5 last:border-0">
                       <td className="px-5 py-4 align-top text-slate-200">{item.name}</td>
                       <td className="px-5 py-4 align-top font-mono text-xs text-slate-500">{item.scenarios}</td>
+                      <td className="px-5 py-4 align-top text-slate-400">{item.fallback}</td>
                       <td className="px-5 py-4 align-top">
                         <span className={`rounded-md border px-2 py-1 text-xs ${item.ok ? 'border-emerald-500/25 bg-emerald-500/10 text-emerald-300' : 'border-amber-500/25 bg-amber-500/10 text-amber-300'}`}>
                           {item.status}
@@ -299,7 +302,7 @@ export default function DemoChecklist() {
               </table>
             </div>
             <div className="mt-4 rounded-xl border border-amber-500/20 bg-amber-500/5 px-5 py-4 text-sm leading-relaxed text-amber-100">
-              SeaTalk、會議室系統、Google Workspace 權限建議最優先確認；若無 MCP，需評估 API 替代方案或調整情境 scope。
+              SeaTalk、會議室系統、Google Workspace 權限仍要確認；但 demo 可先改成 dry-run 檔案、CSV 匯出、webhook script 或人工確認清單。
             </div>
           </section>
         )}

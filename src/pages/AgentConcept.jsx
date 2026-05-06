@@ -120,11 +120,11 @@ export default function AgentConcept() {
           <div className="space-y-3 mb-6">
             {[
               {
-                name: 'Chain-of-Thought（CoT）',
+                name: '推理摘要 / 步驟化',
                 badge: '推理',
                 badgeColor: 'bg-amber-500/20 text-amber-300',
-                desc: '要求模型「先逐步思考，再給答案」。對數學、邏輯、程式除錯類任務效果顯著。',
-                example: '"請一步步分析這個 bug 的可能原因，再給出修復方案。"',
+                desc: '要求模型先列可檢查的分析步驟、假設與證據，再給答案；不要要求它輸出完整內部思考。',
+                example: '"請先列 bug 的可能原因、支持證據與排除方式，再給修復方案。"',
               },
               {
                 name: 'Few-shot 示範',

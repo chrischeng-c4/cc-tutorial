@@ -197,7 +197,7 @@ scripts/weekly-report validate tmp/weekly.md
 
       <Callout type="pm">
         到這裡，你已經能完整跑「產草稿 → 寫格式規則 → 用工具驗證嚴格格式 → 補欄位 → 調語氣 → 多角度 review」的迭代循環。
-        下一章 Part 6 會講限制——它做不到的事 + 一份 PRD 大概要花你多少錢。
+        下一段 <span className="font-mono font-semibold">limits-cost-hitl</span> 會講限制——它做不到的事 + 一份 PRD 大概要花你多少錢。
       </Callout>
     </PageLayout>
   )

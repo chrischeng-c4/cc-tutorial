@@ -1,38 +1,45 @@
 export const PARTS = [
-  { number: 1,  path: '/coding-agent/1',  part: 'Part 1',  title: 'Claude Code + Codex 是什麼',       time: '5 min',  accent: 'sky',     usage: '核心同步', audience: '共通',             tags: ['基礎'] },
-  { number: 2,  path: '/coding-agent/2',  part: 'Part 2',  title: '它怎麼想：agentic loop',           time: '5 min',  accent: 'indigo',  usage: '核心同步', audience: '共通',             tags: ['基礎'] },
-  { number: 3,  path: '/coding-agent/3',  part: 'Part 3',  title: '文件工作：PRD 可以怎麼輔助',       time: '5 min',  accent: 'rose',    usage: '文件案例', audience: '偏 PM',            tags: ['文件', '中階'], demoCases: ['04', '13'] },
-  { number: 4,  path: '/coding-agent/4',  part: 'Part 4',  title: '第一次產 PRD 骨架',                time: '10 min', accent: 'pink',    usage: '文件案例', audience: '偏 PM',            tags: ['文件', '操作'], demoCases: ['04', '13'] },
-  { number: 5,  path: '/coding-agent/5',  part: 'Part 5',  title: '規則檔、格式工具與迭代',            time: '8 min',  accent: 'fuchsia', usage: '文件案例', audience: '偏 PM',            tags: ['模板', '操作'], demoCases: ['04', '13'] },
-  { number: 6,  path: '/coding-agent/6',  part: 'Part 6',  title: '限制、成本與 HITL',                time: '5 min',  accent: 'purple',  usage: '文件案例', audience: '共通',             tags: ['限制', '成本'] },
-  { number: 7,  path: '/coding-agent/7',  part: 'Part 7',  title: '兩套工具上手',                     time: '10 min', accent: 'amber',   usage: '核心同步', audience: '共通',             tags: ['工具', '操作'] },
-  { number: 8,  path: '/coding-agent/8',  part: 'Part 8',  title: 'Token 與 context 經濟學',           time: '12 min', accent: 'orange',  usage: '核心同步', audience: '共通',             tags: ['成本'] },
-  { number: 9,  path: '/coding-agent/9',  part: 'Part 9',  title: 'Permission · Approval · Hooks',    time: '8 min',  accent: 'emerald', usage: '核心同步', audience: '共通',             tags: ['權限', '安全'] },
-  { number: 10, path: '/coding-agent/10', part: 'Part 10', title: 'CLI vs MCP · Skill',               time: '10 min', accent: 'emerald', usage: '進階參考', audience: '偏 Engineering',   tags: ['工具', '進階'], demoCases: ['02', '05', '06', '10'] },
-  { number: 11, path: '/coding-agent/11', part: 'Part 11', title: '委派：Subagent / Cloud Task',      time: '8 min',  accent: 'cyan',    usage: '進階參考', audience: '偏 Engineering',   tags: ['進階', '分工'] },
-  { number: 12, path: '/coding-agent/12', part: 'Part 12', title: '平行協作：Agent Team / Codex',     time: '8 min',  accent: 'cyan',    usage: '進階參考', audience: '偏 Engineering',   tags: ['進階', '平行'], experimental: true },
-  { number: 13, path: '/coding-agent/13', part: 'Part 13', title: 'Demo 流程 + 常見坑',               time: '8 min',  accent: 'violet',  usage: '進階參考', audience: '共通',             tags: ['案例', '收斂'] },
-  { number: 14, path: '/coding-agent/14', part: 'Part 14', title: 'Repo 給 LLM 讀：llms.txt · SDD · CDD', time: '10 min', accent: 'orange', usage: '進階參考', audience: '偏 Engineering', tags: ['Repo', 'Context'], demoCases: ['12', '13'] },
-  { number: 15, path: '/coding-agent/15', part: 'Part 15', title: 'Programmatic 串接與 Review',       time: '10 min', accent: 'violet',  usage: '進階參考', audience: '偏 Engineering',   tags: ['Automation', 'Review'], demoCases: ['02', '05', '06', '10', '13'] },
+  { slug: 'what-is-coding-agent',       path: '/coding-agent/what-is-coding-agent',       title: 'Claude Code + Codex 是什麼',              time: '5 min',  accent: 'sky',     usage: '核心同步', audience: '共通',             tags: ['基礎'] },
+  { slug: 'agentic-loop',               path: '/coding-agent/agentic-loop',               title: '它怎麼想：agentic loop',                  time: '5 min',  accent: 'indigo',  usage: '核心同步', audience: '共通',             tags: ['基礎'] },
+  { slug: 'prd-assist',                 path: '/coding-agent/prd-assist',                 title: '文件工作：PRD 可以怎麼輔助',              time: '5 min',  accent: 'rose',    usage: '文件案例', audience: '偏 PM',            tags: ['文件', '中階'], demoCases: ['04', '13'] },
+  { slug: 'prd-draft',                  path: '/coding-agent/prd-draft',                  title: '第一次產 PRD 骨架',                       time: '10 min', accent: 'pink',    usage: '文件案例', audience: '偏 PM',            tags: ['文件', '操作'], demoCases: ['04', '13'] },
+  { slug: 'rules-and-iteration',        path: '/coding-agent/rules-and-iteration',        title: '規則檔、格式工具與迭代',                  time: '8 min',  accent: 'fuchsia', usage: '文件案例', audience: '偏 PM',            tags: ['模板', '操作'], demoCases: ['04', '13'] },
+  { slug: 'limits-cost-hitl',           path: '/coding-agent/limits-cost-hitl',           title: '限制、成本與 HITL',                       time: '5 min',  accent: 'purple',  usage: '文件案例', audience: '共通',             tags: ['限制', '成本'] },
+  { slug: 'tooling-basics',             path: '/coding-agent/tooling-basics',             title: '兩套工具上手',                            time: '10 min', accent: 'amber',   usage: '核心同步', audience: '共通',             tags: ['工具', '操作'] },
+  { slug: 'token-context-economics',    path: '/coding-agent/token-context-economics',    title: 'Token 與 context 經濟學',                  time: '12 min', accent: 'orange',  usage: '核心同步', audience: '共通',             tags: ['成本'] },
+  { slug: 'permissions-approval-hooks', path: '/coding-agent/permissions-approval-hooks', title: 'Permission · Approval · Hooks',           time: '8 min',  accent: 'emerald', usage: '核心同步', audience: '共通',             tags: ['權限', '安全'] },
+  { slug: 'cli-mcp-skill',              path: '/coding-agent/cli-mcp-skill',              title: 'CLI first · MCP · Skill',                 time: '10 min', accent: 'emerald', usage: '進階參考', audience: '偏 Engineering',   tags: ['工具', '進階'], demoCases: ['02', '05', '06', '10'] },
+  { slug: 'delegation-subagents',       path: '/coding-agent/delegation-subagents',       title: '委派：Subagent / Cloud Task',             time: '8 min',  accent: 'cyan',    usage: '進階參考', audience: '偏 Engineering',   tags: ['進階', '分工'] },
+  { slug: 'parallel-agent-team',        path: '/coding-agent/parallel-agent-team',        title: '平行協作：Agent Team / Codex',            time: '8 min',  accent: 'cyan',    usage: '進階參考', audience: '偏 Engineering',   tags: ['進階', '平行'], experimental: true },
+  { slug: 'demo-workflow',              path: '/coding-agent/demo-workflow',              title: 'Demo 流程 + 常見坑',                      time: '8 min',  accent: 'violet',  usage: '進階參考', audience: '共通',             tags: ['案例', '收斂'] },
+  { slug: 'repo-context',               path: '/coding-agent/repo-context',               title: 'Repo 給 LLM 讀：llms.txt · SDD · CDD',    time: '10 min', accent: 'orange',  usage: '進階參考', audience: '偏 Engineering',   tags: ['Repo', 'Context'], demoCases: ['12', '13'] },
+  { slug: 'programmatic-review',        path: '/coding-agent/programmatic-review',        title: 'Programmatic 串接與 Review',              time: '10 min', accent: 'violet',  usage: '進階參考', audience: '偏 Engineering',   tags: ['Automation', 'Review'], demoCases: ['02', '05', '06', '10', '13'] },
 ]
 
 export const LEARNING_PATH = [
   {
-    title: '先建立操作底盤',
-    desc: 'Workshop 前或同步閱讀；先理解 agent loop、工具、token/context 與權限邊界。',
-    parts: [1, 2, 7, 8, 9],
+    title: '基礎觀念',
+    desc: '先建立 coding agent 心智模型：它是什麼、怎麼迭代，以及 context/token 為什麼要管理。',
+    parts: ['what-is-coding-agent', 'agentic-loop', 'token-context-economics'],
   },
   {
-    title: '再看文件工作案例',
-    desc: '用 PRD 當範例練 scope、context、HITL 與 review，不代表課程只給 PM。',
-    parts: [3, 4, 5, 6],
+    title: '產品用法',
+    desc: '再學實際怎麼裝、怎麼啟動、常見指令、規則檔、工具清單與 permission / approval。',
+    parts: ['tooling-basics', 'permissions-approval-hooks'],
   },
   {
-    title: '最後依情境選讀',
-    desc: '進階工具、委派、repo context、programmatic review 與 demo 收斂。',
-    parts: [10, 11, 12, 13, 14, 15],
+    title: '進階觀念',
+    desc: '理解 CLI/MCP/Skill、委派、平行協作、repo context 與 programmatic review。',
+    parts: ['cli-mcp-skill', 'delegation-subagents', 'parallel-agent-team', 'repo-context', 'programmatic-review'],
+  },
+  {
+    title: '實戰演練',
+    desc: '最後用 PRD 文件流程與完整 demo，把前面的觀念串成可操作工作流。',
+    parts: ['prd-assist', 'prd-draft', 'rules-and-iteration', 'limits-cost-hitl', 'demo-workflow'],
   },
 ]
+
+export const CURRICULUM_ORDER = LEARNING_PATH.flatMap(group => group.parts)
 
 export const USAGE_STYLES = {
   核心同步: 'border-cyan-500/25 bg-cyan-500/10 text-cyan-300',

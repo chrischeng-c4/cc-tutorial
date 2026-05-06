@@ -24,7 +24,8 @@ export default function Part11() {
       <SectionHeader partIndex={10} />
 
       <p className="text-slate-400 leading-relaxed mb-8">
-        Part 8 講過：context 是工作記憶，不是資料庫。Part 10 又把工具介面拆成 CLI 與 MCP。
+        <span className="font-mono text-slate-300">token-context-economics</span> 講過：context 是工作記憶，不是資料庫。
+        <span className="font-mono text-slate-300">cli-mcp-skill</span> 又把工具介面拆成 CLI 與 MCP。
         這一章講 main thread、subagent 與 Codex 背景委派的分工：主線對話保留決策；副工作隔離出去；
         重要狀態寫到外部儲存。
       </p>

@@ -86,8 +86,8 @@ export default function Part1() {
       </div>
 
       <Callout type="info">
-        想知道它怎麼執行多步驟任務？下一章 <span className="font-semibold">Part 2 — 它怎麼想</span> 會把循環拆給你看。
-        接著會用 PRD 當文件工作範例，再逐步進到工具操作、token/context 與 demo 流程。
+        想知道它怎麼執行多步驟任務？下一段 <span className="font-mono font-semibold">agentic-loop</span> 會把循環拆給你看。
+        接著會先補 context/token，再進工具操作、permission、進階觀念與實戰演練。
       </Callout>
     </PageLayout>
   )

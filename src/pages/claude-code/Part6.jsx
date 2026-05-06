@@ -90,7 +90,7 @@ export default function Part6() {
 
       <Callout type="info">
         這是相對級距，實際以工具內建狀態為準：
-        Claude Code 可用 <code className="text-emerald-300 bg-emerald-500/10 px-1 rounded">/cost</code>，
+        Claude Code 可用 <code className="text-emerald-300 bg-emerald-500/10 px-1 rounded">/usage</code>，
         Codex 可用 <code className="text-emerald-300 bg-emerald-500/10 px-1 rounded">/status</code>
         看目前模型、context 與 token 狀態。
       </Callout>
@@ -128,7 +128,7 @@ export default function Part6() {
       <PromptResponse
         promptLabel="實際對話範例"
         responseLabel="Claude 回（含成本提示）"
-        prompt={`/cost`}
+        prompt={`/usage`}
         response={`對話成本（截至此刻）：
 
 Tokens used:
@@ -144,7 +144,7 @@ Estimated cost: $0.21 USD（約 NT$ 6.7）
 
       <Callout type="pm">
         到這裡你已經看過一個文件型任務怎麼拆：指定 repo 範圍、產 PRD 骨架、
-        用 CLAUDE.md / AGENTS.md 提供格式規則、迭代修改、估 token 成本。下一段會進到更通用的工具操作。
+        用 CLAUDE.md / AGENTS.md 提供格式規則、迭代修改、估 token 成本。下一章會把完整 demo workflow 收斂起來。
       </Callout>
     </PageLayout>
   )

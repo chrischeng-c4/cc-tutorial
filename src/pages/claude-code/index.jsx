@@ -6,7 +6,7 @@ function PartBadge({ children, className }) {
 }
 
 export default function ClaudeCodeIndex() {
-  const partsByNumber = new Map(PARTS.map(part => [part.number, part]))
+  const partsBySlug = new Map(PARTS.map(part => [part.slug, part]))
 
   return (
     <main className="pt-16 min-h-screen">
@@ -21,16 +21,16 @@ export default function ClaudeCodeIndex() {
             <span className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">概念與操作章節</span>
           </h1>
           <p className="text-lg text-slate-400 leading-relaxed max-w-2xl">
-            這裡把 Claude Code 與 Codex 放在對等位置。導覽會標出建議閱讀路徑與選讀章節；
-            PRD、permission / approval、token/context 都是共通工作法，只是不同情境會偏 PM 或偏 Engineering。
+            這裡把 Claude Code 與 Codex 放在對等位置。閱讀順序改用四段課綱：
+            先基礎觀念，再產品用法，再進階觀念，最後實戰演練。
           </p>
         </div>
 
         <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 mb-4">
           <div className="text-white font-semibold mb-2">這份補充教材怎麼用</div>
           <p className="text-slate-400 text-sm leading-relaxed">
-            Part 1-9 是 Workshop 前或同步閱讀的核心材料；Part 10-15 是進階參考，依工作情境選讀。
-            編號保留原始章節，但建議先讀工具、token/context、permission，再回頭看 PRD 文件案例。
+            每個章節都用穩定 slug 當識別與網址；實際閱讀請照下面四段課綱。
+            這樣會先建立觀念，再學產品操作，最後才進入高成本的進階能力與實戰案例。
           </p>
         </div>
 
@@ -40,15 +40,15 @@ export default function ClaudeCodeIndex() {
               <div className="text-white text-sm font-semibold mb-2">{group.title}</div>
               <p className="text-slate-500 text-xs leading-relaxed mb-3">{group.desc}</p>
               <div className="flex flex-wrap gap-1.5">
-                {group.parts.map(number => {
-                  const part = partsByNumber.get(number)
+                {group.parts.map(slug => {
+                  const part = partsBySlug.get(slug)
                   return (
                     <Link
-                      key={number}
+                      key={slug}
                       to={part.path}
-                      className="rounded-md border border-white/10 px-2 py-1 text-xs text-slate-400 no-underline transition-colors hover:border-white/20 hover:text-white"
+                      className="rounded-md border border-white/10 px-2 py-1 text-xs text-slate-400 no-underline transition-colors hover:border-white/20 hover:text-white font-mono"
                     >
-                      {part.part}
+                      {part.slug}
                     </Link>
                   )
                 })}
@@ -85,7 +85,7 @@ export default function ClaudeCodeIndex() {
               <h2 className="text-white font-bold text-lg mb-2">13 個 Demo 情境與準備清單</h2>
               <p className="text-slate-400 text-sm leading-relaxed max-w-2xl">
                 這些情境涵蓋 Google Docs、JIRA、Figma、SeaTalk、Calendar 等內部流程。
-                這份清單會把資料準備、script、MCP 權限與 HITL 確認拆清楚。
+                這份清單會把資料準備、CLI / export 優先路徑、MCP optional 項與 HITL 確認拆清楚。
               </p>
             </div>
             <span className="px-4 py-2 rounded-lg bg-violet-600 text-white text-sm font-semibold flex-shrink-0">
@@ -95,51 +95,59 @@ export default function ClaudeCodeIndex() {
         </Link>
 
         {/* Part cards */}
-        <div className="space-y-3 mb-16">
-          {PARTS.map((p) => {
-            const c = ACCENT[p.accent]
-            return (
-              <Link
-                key={p.path}
-                to={p.path}
-                className={`group flex items-center gap-5 rounded-2xl border ${c.border} ${c.bg} p-5 no-underline transition-all hover:scale-[1.01] hover:shadow-xl`}
-              >
-                <div className={`flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br ${c.bar} flex items-center justify-center text-white font-black text-sm`}>
-                  {p.number}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className={`text-xs font-semibold ${c.badge.split(' ')[1]}`}>{p.part}</span>
-                    <span className="text-slate-600 text-xs">{p.time}</span>
-                    <div className="flex gap-1 ml-1 flex-wrap">
-                      <PartBadge className={USAGE_STYLES[p.usage]}>{p.usage}</PartBadge>
-                      <PartBadge className={AUDIENCE_STYLES[p.audience]}>{p.audience}</PartBadge>
-                      {p.experimental && (
-                        <PartBadge className="border-amber-500/25 bg-amber-500/10 text-amber-300">實驗性</PartBadge>
-                      )}
-                      {p.tags.map(a => (
-                        <span key={a} className="px-1.5 py-0.5 rounded text-xs border border-white/10 text-slate-500">{a}</span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="text-white font-semibold">{p.title}</div>
-                  {p.demoCases?.length > 0 && (
-                    <div className="mt-2 text-xs text-slate-600">Demo Case → {p.demoCases.join(' · ')}</div>
-                  )}
-                </div>
-                <span className="text-slate-600 group-hover:text-slate-300 transition-colors text-lg flex-shrink-0">→</span>
-              </Link>
-            )
-          })}
+        <div className="space-y-8 mb-16">
+          {LEARNING_PATH.map((group) => (
+            <section key={group.title}>
+              <div className="mb-3">
+                <h2 className="text-white text-lg font-bold">{group.title}</h2>
+                <p className="text-slate-500 text-sm leading-relaxed mt-1">{group.desc}</p>
+              </div>
+              <div className="space-y-3">
+                {group.parts.map((slug) => {
+                  const p = partsBySlug.get(slug)
+                  const c = ACCENT[p.accent]
+                  return (
+                    <Link
+                      key={p.path}
+                      to={p.path}
+                      className={`group flex items-center gap-5 rounded-2xl border ${c.border} ${c.bg} p-5 no-underline transition-all hover:scale-[1.01] hover:shadow-xl`}
+                    >
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className={`text-xs font-semibold font-mono ${c.badge.split(' ')[1]}`}>{p.slug}</span>
+                          <span className="text-slate-600 text-xs">{p.time}</span>
+                          <div className="flex gap-1 ml-1 flex-wrap">
+                            <PartBadge className={USAGE_STYLES[p.usage]}>{p.usage}</PartBadge>
+                            <PartBadge className={AUDIENCE_STYLES[p.audience]}>{p.audience}</PartBadge>
+                            {p.experimental && (
+                              <PartBadge className="border-amber-500/25 bg-amber-500/10 text-amber-300">實驗性</PartBadge>
+                            )}
+                            {p.tags.map(a => (
+                              <span key={a} className="px-1.5 py-0.5 rounded text-xs border border-white/10 text-slate-500">{a}</span>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="text-white font-semibold">{p.title}</div>
+                        {p.demoCases?.length > 0 && (
+                          <div className="mt-2 text-xs text-slate-600">Demo Case → {p.demoCases.join(' · ')}</div>
+                        )}
+                      </div>
+                      <span className="text-slate-600 group-hover:text-slate-300 transition-colors text-lg flex-shrink-0">→</span>
+                    </Link>
+                  )
+                })}
+              </div>
+            </section>
+          ))}
         </div>
 
         {/* Start button */}
         <div className="text-center">
           <Link
-            to="/coding-agent/1"
+            to={PARTS[0].path}
             className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-violet-600 hover:bg-violet-500 text-white font-bold text-lg transition-all no-underline shadow-2xl shadow-violet-500/25"
           >
-            從第一章開始
+            從基礎觀念開始
             <span>→</span>
           </Link>
         </div>

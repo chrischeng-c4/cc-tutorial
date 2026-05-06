@@ -6,7 +6,7 @@ export default function Part12() {
       <SectionHeader partIndex={11} />
 
       <p className="text-slate-400 leading-relaxed mb-8">
-        Part 11 的 subagent 是單向委派：跑完回報給 main thread。Agent Team 則把多個 Claude session 組成小組，
+        <span className="font-mono text-slate-300">delegation-subagents</span> 的 subagent 是單向委派：跑完回報給 main thread。Agent Team 則把多個 Claude session 組成小組，
         讓 lead 與 teammate 可以互相訊息、共享 task list。Codex 的對等場景是 cloud task / 背景委派：
         把明確 issue 丟出去產可 review diff。兩者都適合平行探索，也都需要更明確的邊界與 review。
       </p>

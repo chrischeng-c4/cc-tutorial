@@ -15,7 +15,7 @@ export default function WorkshopPlan() {
           </h1>
           <p className="text-lg text-slate-400 leading-relaxed max-w-3xl">
             不用把課切成兩條角色路線。這堂課用同一條路徑由淺到深：
-            先理解 coding agent 的工作方式，再學 prompt、permission、token/context，最後套到真實 demo case。
+            基礎觀念 → 產品用法 → 進階觀念 → 實戰演練，最後套到真實 demo case。
           </p>
         </div>
       </section>
@@ -24,9 +24,9 @@ export default function WorkshopPlan() {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-5 mb-12">
           <div className="rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-6">
             <div className="text-cyan-300 text-sm font-bold mb-2">00-70 min</div>
-            <h2 className="text-white text-2xl font-black mb-3">共通方法：由淺到深</h2>
+            <h2 className="text-white text-2xl font-black mb-3">共通方法：先觀念再操作</h2>
             <p className="text-slate-400 text-sm leading-relaxed">
-              重點是「如何使用這類工具」：任務拆解、prompt 結構、permission、context 管理、token 成本。
+              重點是「如何使用這類工具」：先講 agent loop、context、permission，再進 prompt、工具指令與進階介面。
               這些不是工程師專屬知識，PM 在寫 PRD、整理訪談或跑 demo 時一樣會用到。
             </p>
           </div>
@@ -34,8 +34,8 @@ export default function WorkshopPlan() {
             <div className="text-violet-300 text-sm font-bold mb-2">70-120 min</div>
             <h2 className="text-white text-2xl font-black mb-3">Demo Case：方法套用</h2>
             <p className="text-slate-400 text-sm leading-relaxed">
-              從 13 個真實情境挑 2-3 個推演。每個 demo 都需要說清楚需求、資料、MCP、
-              script 邊界、風險與驗收方式。
+              從 13 個真實情境挑 2-3 個推演。每個 demo 都先用 CLI / script 或 export 檔跑通；
+              MCP 只當 optional 進階路徑，避免現場被權限與 server 開發卡住。
             </p>
           </div>
         </div>
@@ -98,7 +98,7 @@ export default function WorkshopPlan() {
               <p className="text-violet-300 text-sm font-semibold mb-2">工具抉擇</p>
               <h2 className="text-white text-2xl font-black">CLI vs MCP</h2>
             </div>
-            <Link to="/coding-agent/10" className="text-sm text-slate-500 hover:text-slate-300 no-underline">
+            <Link to="/coding-agent/cli-mcp-skill" className="text-sm text-slate-500 hover:text-slate-300 no-underline">
               看詳細章節 →
             </Link>
           </div>

@@ -41,7 +41,7 @@ codex review --uncommitted "Focus on correctness, missing tests, and regressions
 
       <Callout type="info">
         這個流程適合單一任務、改動範圍可控的情境。要做架構調整、跨多檔重構、或讓 agent 平行探索多個假設，
-        請看 <span className="font-semibold">Part 11：Subagent</span> 與 <span className="font-semibold">Part 12：Agent Team</span>。
+        請看 <span className="font-mono font-semibold">delegation-subagents</span> 與 <span className="font-mono font-semibold">parallel-agent-team</span>。
       </Callout>
 
       <H3>跨檔重構範例：Context 管理真正派上用場的場景</H3>
@@ -89,7 +89,7 @@ codex review --uncommitted "Review only the changed files. Ignore style-only com
           {
             icon: 'Cost',
             problem: 'Token 用量爆炸',
-            signal: 'Claude /cost 每輪 +5K 以上，或 Codex /status 顯示 input token 超過 50K 還在跑。',
+            signal: 'Claude /usage 每輪 +5K 以上，或 Codex /status 顯示 input token 超過 50K 還在跑。',
             solution: '長任務中途用 /compact 壓縮。不要把整個 repo 或整份訪談都丟給它，用外部檔案承接長資料。',
           },
           {
@@ -119,7 +119,7 @@ codex review --uncommitted "Review only the changed files. Ignore style-only com
           {
             icon: 'Slow',
             problem: '越用越慢，回應延遲明顯增加',
-            signal: '單輪要等 10 秒以上，或 /cost、/status 顯示 input 已經超過 100K token。',
+            signal: '單輪要等 10 秒以上，或 /usage、/status 顯示 input 已經超過 100K token。',
             solution: 'Context 太長時注意力與延遲都會變差。用 /compact 或 /clear 重置，下一輪通常會比較可控。',
           },
         ].map(({ icon, problem, signal, solution }) => (
@@ -144,21 +144,21 @@ codex review --uncommitted "Review only the changed files. Ignore style-only com
         <h3 className="text-white font-semibold mb-4">課程重點回顧</h3>
         <div className="space-y-2 text-sm">
           {[
-            { part: 'Part 1', point: 'Claude Code 與 Codex 都是 coding agent，不是只回答問題的 chatbot' },
-            { part: 'Part 2', point: 'agentic loop = 感知 → 規劃 → 行動 → 觀察，不斷迭代直到目標達成' },
-            { part: 'Part 3-6', point: '用 PRD 當文件任務範例：餵 context、規則檔搭配工具驗證格式、迭代修改、多角度 review' },
-            { part: 'Part 7', point: '工具上手三件事：安裝、CLAUDE.md / AGENTS.md、看懂內建工具' },
-            { part: 'Part 8', point: 'Context 是工作記憶，不是資料庫；重要狀態放檔案、PR、JIRA、Docs' },
-            { part: 'Part 9', point: 'Permission 分層，Hooks 在工具呼叫前後加安全與流程檢查' },
-            { part: 'Part 10', point: 'CLI 與 MCP 是工具介面取捨；Skill 是受控 prompt injection / 指令注入' },
-            { part: 'Part 11', point: 'Subagent 把 side-quest 隔在獨立 context，只回摘要與引用' },
-            { part: 'Part 12', point: 'Agent Team 與 Codex cloud task 都可用來平行協作，但協調成本與 token 成本更高' },
-            { part: 'Part 13', point: '動手前確保 git 乾淨，完成後 git diff review；大任務先 plan，過程中管理 context' },
-            { part: 'Part 14', point: '把 repo map、llms.txt、spec 與 context packet 做成 agent 可讀、可引用、可 review 的外部 context' },
-            { part: 'Part 15', point: '把 review 與固定流程 programmatic 化：codex review、claude -p、CI artifact、schema validator' },
-          ].map(({ part, point }, i) => (
+            { slug: 'what-is-coding-agent', point: 'Claude Code 與 Codex 都是 coding agent，不是只回答問題的 chatbot' },
+            { slug: 'agentic-loop', point: 'agentic loop = 感知 → 規劃 → 行動 → 觀察，不斷迭代直到目標達成' },
+            { slug: 'prd-workflow', point: '用 PRD 當文件任務範例：餵 context、規則檔搭配工具驗證格式、迭代修改、多角度 review' },
+            { slug: 'tooling-basics', point: '工具上手三件事：安裝、CLAUDE.md / AGENTS.md、看懂內建工具' },
+            { slug: 'token-context-economics', point: 'Context 是工作記憶，不是資料庫；重要狀態放檔案、PR、JIRA、Docs' },
+            { slug: 'permissions-approval-hooks', point: 'Permission 分層，Hooks 在工具呼叫前後加安全與流程檢查' },
+            { slug: 'cli-mcp-skill', point: 'CLI first：MCP 可先用 CLI / export / API script 替代；Skill 是受控 prompt injection / 指令注入' },
+            { slug: 'delegation-subagents', point: 'Subagent 把 side-quest 隔在獨立 context，只回摘要與引用' },
+            { slug: 'parallel-agent-team', point: 'Agent Team 與 Codex cloud task 都可用來平行協作，但協調成本與 token 成本更高' },
+            { slug: 'demo-workflow', point: '動手前確保 git 乾淨，完成後 git diff review；大任務先 plan，過程中管理 context' },
+            { slug: 'repo-context', point: '把 repo map、llms.txt、spec 與 context packet 做成 agent 可讀、可引用、可 review 的外部 context' },
+            { slug: 'programmatic-review', point: '把 review 與固定流程 programmatic 化：codex review、claude -p、CI artifact、schema validator' },
+          ].map(({ slug, point }, i) => (
             <div key={i} className="flex items-start gap-3">
-              <span className="text-violet-400 text-xs font-mono mt-0.5 w-12 flex-shrink-0">{part}</span>
+              <span className="text-violet-400 text-xs font-mono mt-0.5 w-44 flex-shrink-0">{slug}</span>
               <span className="text-slate-300">{point}</span>
             </div>
           ))}

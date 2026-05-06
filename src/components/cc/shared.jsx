@@ -1,13 +1,21 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ACCENT, AUDIENCE_STYLES, PARTS, USAGE_STYLES } from '../../data/claudeCodeParts'
+import { ACCENT, AUDIENCE_STYLES, CURRICULUM_ORDER, PARTS, USAGE_STYLES } from '../../data/claudeCodeParts'
+
+const partsBySlug = new Map(PARTS.map(part => [part.slug, part]))
+const curriculumParts = CURRICULUM_ORDER.map(slug => partsBySlug.get(slug)).filter(Boolean)
 
 /* ── Page wrapper with progress bar ── */
 export function PageLayout({ partIndex, children }) {
   const navigate = useNavigate()
   const current = PARTS[partIndex]
-  const prev    = PARTS[partIndex - 1]
-  const next    = PARTS[partIndex + 1]
+  const orderIndex = CURRICULUM_ORDER.indexOf(current.slug)
+  const progressIndex = orderIndex >= 0 ? orderIndex : partIndex
+  const orderedParts = curriculumParts.length ? curriculumParts : PARTS
+  const prev = orderIndex > 0 ? partsBySlug.get(CURRICULUM_ORDER[orderIndex - 1]) : null
+  const next = orderIndex >= 0 && orderIndex < CURRICULUM_ORDER.length - 1
+    ? partsBySlug.get(CURRICULUM_ORDER[orderIndex + 1])
+    : null
   const c       = ACCENT[current.accent]
 
   useEffect(() => {
@@ -46,7 +54,7 @@ export function PageLayout({ partIndex, children }) {
       <div className="fixed top-16 left-0 right-0 z-40 h-0.5 bg-white/5">
         <div
           className={`h-full bg-gradient-to-r ${c.bar} transition-all`}
-          style={{ width: `${((partIndex + 1) / PARTS.length) * 100}%` }}
+          style={{ width: `${((progressIndex + 1) / orderedParts.length) * 100}%` }}
         />
       </div>
 
@@ -57,7 +65,7 @@ export function PageLayout({ partIndex, children }) {
           <span>/</span>
           <Link to="/coding-agent" className="hover:text-slate-300 no-underline transition-colors">Coding Agent</Link>
           <span>/</span>
-          <span className="text-slate-400">{current.part}</span>
+          <span className="text-slate-400 font-mono">{current.slug}</span>
         </div>
 
         {children}
@@ -68,7 +76,7 @@ export function PageLayout({ partIndex, children }) {
             <Link to={prev.path} className="group flex items-center gap-3 no-underline min-w-0">
               <span className="text-slate-500 group-hover:text-white transition-colors text-lg">←</span>
               <div className="min-w-0">
-                <div className="text-xs text-slate-600 group-hover:text-slate-400 transition-colors">{prev.part}</div>
+                <div className="text-xs text-slate-600 group-hover:text-slate-400 transition-colors font-mono">{prev.slug}</div>
                 <div className="text-sm text-slate-400 group-hover:text-white transition-colors truncate">{prev.title}</div>
               </div>
             </Link>
@@ -81,10 +89,10 @@ export function PageLayout({ partIndex, children }) {
 
           {/* Dots */}
           <div className="flex items-center gap-1.5 flex-shrink-0">
-            {PARTS.map((p, i) => (
+            {orderedParts.map((p) => (
               <Link key={p.path} to={p.path} title={p.title}>
                 <span className={`block rounded-full transition-all ${
-                  i === partIndex
+                  p.slug === current.slug
                     ? `w-6 h-2 bg-gradient-to-r ${c.bar}`
                     : 'w-2 h-2 bg-white/20 hover:bg-white/40'
                 }`} />
@@ -95,7 +103,7 @@ export function PageLayout({ partIndex, children }) {
           {next ? (
             <Link to={next.path} className="group flex items-center gap-3 no-underline text-right min-w-0">
               <div className="min-w-0">
-                <div className="text-xs text-slate-600 group-hover:text-slate-400 transition-colors">{next.part}</div>
+                <div className="text-xs text-slate-600 group-hover:text-slate-400 transition-colors font-mono">{next.slug}</div>
                 <div className="text-sm text-slate-400 group-hover:text-white transition-colors truncate">{next.title}</div>
               </div>
               <span className="text-slate-500 group-hover:text-white transition-colors text-lg">→</span>
@@ -131,7 +139,7 @@ export function SectionHeader({ partIndex }) {
           <span className={`w-1.5 h-12 rounded-full bg-gradient-to-b ${c.bar} inline-block flex-shrink-0`} />
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold ${c.badge}`}>{p.part}</span>
+              <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold font-mono ${c.badge}`}>{p.slug}</span>
               <span className="text-slate-500 text-xs">{p.time}</span>
             </div>
             <h1 className="text-3xl font-black text-white leading-tight">{p.title}</h1>

@@ -8,17 +8,17 @@ const toolInterfaceRows = [
   },
   {
     question: '會重複使用的外部系統',
-    cli: '可先用 CLI 做 MVP，驗證輸入輸出、權限邊界與 review 流程。',
-    mcp: '適合。JIRA、Figma、Docs、Calendar、DB 這類常用資料源，接成 MCP 比反覆 copy-paste 穩定。',
+    cli: '先用 CLI / export / API script 做 MVP，驗證輸入輸出、權限邊界與 review 流程。',
+    mcp: '等流程穩定再產品化。JIRA、Figma、Docs、Calendar、DB 這類常用資料源，接成 MCP 會比長期 copy-paste 穩定。',
   },
   {
     question: '需要團隊共用',
-    cli: '把 CLI 放 repo，讓人、CI、Claude Code、Codex 都能跑。',
+    cli: '把 CLI 放 repo，讓人、CI、Claude Code、Codex 都能跑；demo 時最可靠。',
     mcp: '用 project scope 的 `.mcp.json` 或插件化配置，但 credentials 不要 commit。',
   },
   {
     question: '會寫入或改狀態',
-    cli: '先做 dry-run、preview、人工確認，再逐步開寫入。',
+    cli: '先做 dry-run、preview、人工確認，再逐步開寫入；現場 demo 可停在 reviewable 檔案。',
     mcp: '先做 read-only。寫入工具要設明確 permission、audit log 與 HITL checkpoint。',
   },
   {
@@ -44,7 +44,7 @@ const interfaceModes = [
   },
   {
     name: 'MCP',
-    tag: '穩定的工具協定',
+    tag: '穩定後再產品化',
     tone: 'border-violet-500/20 bg-violet-500/5',
     tagTone: 'bg-violet-500/10 text-violet-300 border-violet-500/25',
     points: [
@@ -53,6 +53,7 @@ const interfaceModes = [
       '需要工具 schema、server-side validation、dry-run preview 保證格式',
       '需要 OAuth、team scope、工具 discoverability 或跨 client 共用',
       '想減少貼資料進對話，改成按需讀取外部資料',
+      '流程已經穩定，值得投資 server 設定、權限與維護成本',
     ],
   },
 ]
@@ -109,11 +110,17 @@ export default function Part10() {
       <SectionHeader partIndex={9} />
 
       <p className="text-slate-400 leading-relaxed mb-8">
-        Part 8 說 context 不是資料庫。要做到「外部儲存優先」，就要分清楚兩個層次：
+        <span className="font-mono text-slate-300">token-context-economics</span> 說 context 不是資料庫。
+        要做到「外部儲存優先」，就要分清楚兩個層次：
         <span className="text-white font-medium"> CLI 與 MCP 是對標的工具介面</span>；
         <span className="text-white font-medium"> Skill 是受控 prompt injection / 指令注入</span>，
         負責告訴 agent 什麼時候用哪個介面、輸出要放哪裡、哪些步驟要人確認。
       </p>
+
+      <Callout type="tip">
+        時間不夠時，MCP 可以先用 CLI / export / API script 替代。只要能拿資料、產 dry-run payload、
+        驗證格式、留下 reviewable 檔案，就足以完成教學 demo。MCP 留給穩定、重複、需要共用工具協定的流程。
+      </Callout>
 
       <H3>1. CLI vs MCP：同一層的工具介面</H3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
@@ -260,6 +267,7 @@ description: Produce an internal weekly report from Jira and Sheets exports. Use
       <p className="text-slate-400 text-sm leading-relaxed mb-4">
         MCP（Model Context Protocol）讓支援的 agent client 連接外部服務：資料庫、Jira、Slack、內部 API。
         重點不在「Claude 會 SQL」，而是把外部資料接成有權限、有 schema、有生命週期管理的工具。
+        課程準備時不用先追求 MCP 完整度；先用 CLI 替代跑通資料流，確認值得重複使用後再接成 MCP。
       </p>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
         {[

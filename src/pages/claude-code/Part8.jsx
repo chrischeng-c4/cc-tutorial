@@ -41,7 +41,7 @@ export default function Part8() {
       <SectionHeader partIndex={7} />
 
       <p className="text-slate-400 leading-relaxed mb-8">
-        Part 7 你學會操作。這一章講<span className="text-white">為什麼某些操作貴、某些便宜</span>——
+        前兩章先建立 coding agent 的心智模型。這一章講<span className="text-white">為什麼某些操作貴、某些便宜</span>——
         為什麼 <code className="text-emerald-300 bg-emerald-500/10 px-1 rounded">/compact</code> 跟
         <code className="text-emerald-300 bg-emerald-500/10 px-1 rounded ml-1">/clear</code> 存在、什麼時候該用、什麼時候是反模式。
         讀完你會知道怎麼避免讓每一輪對話越來越貴。
@@ -338,9 +338,9 @@ num <= 10 => risk = normal`}
             '日常 agent session → 選合理 context；不要因為有大 context 就把所有資料都塞進同一輪',
             '條件、schema、欄位與狀態機 → 用 pseudo-code / JSON / YAML / type，比長句更省 token、更少歧義',
             'Context 是工作記憶；檔案、PR、issue、JIRA、Docs 才是重要狀態的 source of truth',
-            '監控成本與 context：Claude Code 用 /cost；Codex 用 /status 看 token / context 狀態',
+            '監控成本與 context：Claude Code 用 /usage；Codex 用 /status 看 token / context 狀態',
             '把任務結果（git diff、測試報告、review 結論）存到外部位置，不要只留在對話裡',
-            '大範圍探查（搜整個 repo）派 subagent，不要污染主 session — 詳見 Part 11',
+            '大範圍探查（搜整個 repo）派 subagent，不要污染主 session — 詳見 delegation-subagents',
           ].map((t, i) => (
             <div key={i} className="flex items-start gap-2">
               <span className="text-emerald-500 flex-shrink-0 mt-0.5">→</span>

@@ -6,7 +6,7 @@ export default function Part2() {
       <SectionHeader partIndex={1} />
 
       <p className="text-slate-400 leading-relaxed mb-8">
-        Part 1 說它是能執行多步驟任務的 agent。這一章把背後的循環拆給你看——
+        <span className="font-mono text-slate-300">what-is-coding-agent</span> 說它是能執行多步驟任務的 agent。這一章把背後的循環拆給你看——
         看完你會知道它<span className="text-white">不是用魔法在做事</span>，
         只是把人類做事的步驟重複執行很多次而已。
       </p>

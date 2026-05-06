@@ -23,7 +23,7 @@ curl -fsSL https://claude.ai/install.sh | bash
 # macOS 也可以用 Homebrew
 brew install --cask claude-code
 
-# 若公司標準流程走 npm，需 Node.js 18+
+# 舊 npm 安裝仍可能在公司環境看到；新安裝優先用 native / Homebrew
 npm install -g @anthropic-ai/claude-code
 
 # Codex CLI
@@ -265,7 +265,7 @@ constraints:
 
       <Callout type="info">
         到這裡你有一份初版骨架。但這只是<span className="font-semibold">第一版</span>——
-        下一章 Part 5 教你怎麼用 CLAUDE.md / AGENTS.md 鎖公司格式、怎麼迭代修改補欄位。
+        下一段 <span className="font-mono font-semibold">rules-and-iteration</span> 教你怎麼用 CLAUDE.md / AGENTS.md 鎖公司格式、怎麼迭代修改補欄位。
       </Callout>
     </PageLayout>
   )

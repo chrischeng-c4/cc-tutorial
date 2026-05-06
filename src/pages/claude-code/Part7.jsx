@@ -130,10 +130,10 @@ export default function Part7() {
       <SectionHeader partIndex={6} />
 
       <p className="text-slate-400 leading-relaxed mb-8">
-        接著進到工具操作。先把基本三件事學會：
+        前面已經講完 agent loop 與 token/context。接著進到產品操作，先把基本三件事學會：
         <span className="text-white">怎麼裝怎麼啟動</span>、
         <span className="text-white">規則檔怎麼寫</span>、
-        <span className="text-white">內建有哪些工具</span>。後面 Part 8 再進到 token 與 context 的經濟學。
+        <span className="text-white">內建有哪些工具</span>。
       </p>
 
       <H3>1. 安裝與啟動</H3>
@@ -144,7 +144,7 @@ curl -fsSL https://claude.ai/install.sh | bash
 # macOS 也可以用 Homebrew
 brew install --cask claude-code
 
-# npm 仍可用，但需要 Node.js 18+
+# 舊 npm 安裝仍可能在公司環境看到；新安裝優先用 native / Homebrew
 npm install -g @anthropic-ai/claude-code
 
 # Codex CLI
@@ -195,7 +195,7 @@ $ codex
         { cmd: '/help',    desc: '列出所有可用指令' },
         { cmd: '/clear',   desc: '清空對話記憶，從零開始。切換不相關任務時用' },
         { cmd: '/compact', desc: '壓縮對話成摘要，保留脈絡但節省 token。長任務中途用' },
-        { cmd: '/cost',    desc: '顯示這次對話累積的 token 用量與估算費用' },
+        { cmd: '/usage',   desc: '顯示目前 token 使用量與成本資訊；部分舊版本會看到 /cost' },
         { cmd: '/config',  desc: '開啟設定，調整 permission、預設行為' },
         { cmd: '/init',    desc: '根據當前專案產生 CLAUDE.md 草稿' },
         { cmd: '/doctor',  desc: '診斷環境問題（Node 版本、API 連線等）' },
@@ -248,7 +248,7 @@ $ codex
 
       <H3>3. Tool list：Claude Code 跟 Codex</H3>
       <p className="text-slate-400 text-sm leading-relaxed mb-4">
-        Part 2 的 agentic loop 講過「規劃 → 行動」，這裡就是行動的底牌。
+        <span className="font-mono text-slate-300">agentic-loop</span> 講過「規劃 → 行動」，這裡就是行動的底牌。
         兩套工具的能力很像，但呈現方式不同：Claude Code 會明確暴露一組 tool names；
         Codex 比較常看到的是 shell、patch、sandbox、approval、MCP、review / cloud task 這些操作介面。
         Claude Code 的 tool names 會直接用在 permission rules、subagent tool lists 與 hook matchers；
@@ -361,7 +361,7 @@ codex cloud status <task-id>
         跑 command 要講清楚允許的 script；外部寫入要先 dry-run，再由人批准。
       </Callout>
       <Callout type="info">
-        想加自己的工具？看 Part 10 的 <span className="font-semibold">CLI vs MCP</span>。CLI 與 MCP 是工具介面；
+        想加自己的工具？看 <span className="font-mono font-semibold">cli-mcp-skill</span>。CLI 與 MCP 是工具介面；
         Skill / 規則檔則負責告訴 agent 什麼時候選哪個介面。
       </Callout>
     </PageLayout>

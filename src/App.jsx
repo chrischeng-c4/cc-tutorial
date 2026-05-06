@@ -23,6 +23,25 @@ import Part12 from './pages/claude-code/Part12'
 import Part13 from './pages/claude-code/Part13'
 import Part14 from './pages/claude-code/Part14'
 import Part15 from './pages/claude-code/Part15'
+import { PARTS } from './data/claudeCodeParts'
+
+const partComponents = [
+  Part1,
+  Part2,
+  Part3,
+  Part4,
+  Part5,
+  Part6,
+  Part7,
+  Part8,
+  Part9,
+  Part10,
+  Part11,
+  Part12,
+  Part13,
+  Part14,
+  Part15,
+]
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -47,36 +66,22 @@ export default function App() {
         <Route path="/demo-checklist" element={<DemoChecklist />} />
         <Route path="/coding-agent"  element={<ClaudeCodeIndex />} />
         <Route path="/claude-code"   element={<ClaudeCodeIndex />} />
-        <Route path="/coding-agent/1"  element={<Part1 />} />
-        <Route path="/coding-agent/2"  element={<Part2 />} />
-        <Route path="/coding-agent/3"  element={<Part3 />} />
-        <Route path="/coding-agent/4"  element={<Part4 />} />
-        <Route path="/coding-agent/5"  element={<Part5 />} />
-        <Route path="/coding-agent/6"  element={<Part6 />} />
-        <Route path="/coding-agent/7"  element={<Part7 />} />
-        <Route path="/coding-agent/8"  element={<Part8 />} />
-        <Route path="/coding-agent/9"  element={<Part9 />} />
-        <Route path="/coding-agent/10" element={<Part10 />} />
-        <Route path="/coding-agent/11" element={<Part11 />} />
-        <Route path="/coding-agent/12" element={<Part12 />} />
-        <Route path="/coding-agent/13" element={<Part13 />} />
-        <Route path="/coding-agent/14" element={<Part14 />} />
-        <Route path="/coding-agent/15" element={<Part15 />} />
-        <Route path="/claude-code/1"  element={<Part1 />} />
-        <Route path="/claude-code/2"  element={<Part2 />} />
-        <Route path="/claude-code/3"  element={<Part3 />} />
-        <Route path="/claude-code/4"  element={<Part4 />} />
-        <Route path="/claude-code/5"  element={<Part5 />} />
-        <Route path="/claude-code/6"  element={<Part6 />} />
-        <Route path="/claude-code/7"  element={<Part7 />} />
-        <Route path="/claude-code/8"  element={<Part8 />} />
-        <Route path="/claude-code/9"  element={<Part9 />} />
-        <Route path="/claude-code/10" element={<Part10 />} />
-        <Route path="/claude-code/11" element={<Part11 />} />
-        <Route path="/claude-code/12" element={<Part12 />} />
-        <Route path="/claude-code/13" element={<Part13 />} />
-        <Route path="/claude-code/14" element={<Part14 />} />
-        <Route path="/claude-code/15" element={<Part15 />} />
+        {PARTS.map((part, index) => {
+          const Component = partComponents[index]
+          return <Route key={part.slug} path={`/coding-agent/${part.slug}`} element={<Component />} />
+        })}
+        {PARTS.map((part, index) => {
+          const Component = partComponents[index]
+          return <Route key={`claude-${part.slug}`} path={`/claude-code/${part.slug}`} element={<Component />} />
+        })}
+        {PARTS.map((_, index) => {
+          const Component = partComponents[index]
+          return <Route key={`legacy-coding-${index + 1}`} path={`/coding-agent/${index + 1}`} element={<Component />} />
+        })}
+        {PARTS.map((_, index) => {
+          const Component = partComponents[index]
+          return <Route key={`legacy-claude-${index + 1}`} path={`/claude-code/${index + 1}`} element={<Component />} />
+        })}
         <Route path="/pre-quiz"       element={<PreQuiz />} />
       </Routes>
     </HashRouter>
