@@ -162,6 +162,9 @@ export function SectionHeader({ partIndex, partSlug }) {
       {p.visual && (
         <VisualAid visual={p.visual} accent={p.accent} embedded compact className="mt-5" />
       )}
+      {p.guide && (
+        <ChapterGuide guide={p.guide} accent={p.accent} className="mt-5" />
+      )}
     </div>
   )
 }
@@ -241,6 +244,31 @@ export function PermBadge({ level }) {
 /* ── H3 ── */
 export function H3({ children }) {
   return <h3 className="text-white font-semibold mb-3 mt-8 text-base first:mt-0">{children}</h3>
+}
+
+export function ChapterGuide({ guide, accent = 'violet', className = '' }) {
+  if (!guide) return null
+  const tone = visualTone(accent)
+  const cards = [
+    { label: '一句話', text: guide.oneLine },
+    { label: '非 dev 帶走', text: guide.nonDev },
+    { label: 'dev 善用', text: guide.dev },
+    { label: '回頭看時機', text: guide.revisitWhen },
+  ].filter(item => item.text)
+
+  return (
+    <section className={`border-t border-white/10 pt-5 ${className}`} aria-label="chapter guide">
+      <div className={`mb-3 text-xs font-semibold uppercase tracking-wide ${tone.text}`}>Chapter guide</div>
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
+        {cards.map((item) => (
+          <div key={item.label} className={`rounded-lg border p-3 ${tone.node}`}>
+            <div className={`mb-1.5 text-xs font-semibold ${tone.text}`}>{item.label}</div>
+            <p className="text-sm leading-relaxed text-slate-300">{item.text}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
 }
 
 const VISUAL_TONES = {

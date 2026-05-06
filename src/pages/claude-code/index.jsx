@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { MiniVisualAid } from '../../components/cc/shared'
 import { ACCENT, AUDIENCE_STYLES, COURSE_PARTS, COURSE_SECTIONS, PARTS, USAGE_STYLES } from '../../data/claudeCodeParts'
+import { questionIndex, teachingTracks } from '../../data/learningGuides'
 
 function PartBadge({ children, className }) {
   return <span className={`rounded-full border px-2.5 py-1 text-xs ${className}`}>{children}</span>
@@ -30,8 +31,9 @@ export default function ClaudeCodeIndex() {
         <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 mb-4">
           <div className="text-white font-semibold mb-2">這份補充教材怎麼用</div>
           <p className="text-slate-400 text-sm leading-relaxed">
-            每個章節都用穩定 slug 當識別與網址。先看上半部，建立共通語言與風險邊界；
+            每個章節都可以單獨回看。先看上半部建立共通語言與風險邊界；
             再進下半部，逐個 demo 練輸入資料、CLI first、HITL 與可 review 產出。
+            非 dev 可以從「什麼時候用、怎麼安全用」切入；dev 可以從「怎麼把流程工程化」切入。
           </p>
         </div>
 
@@ -70,6 +72,67 @@ export default function ClaudeCodeIndex() {
           ))}
         </div>
 
+        <section className="mb-8 rounded-2xl border border-cyan-500/20 bg-cyan-500/[0.04] p-5">
+          <div className="mb-4">
+            <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-cyan-300">Multi-session path</div>
+            <h2 className="text-white text-lg font-bold">可以拆成多場教學，不必一次講完</h2>
+          </div>
+          <div className="grid grid-cols-1 gap-3">
+            {teachingTracks.map((track) => (
+              <div key={track.title} className="rounded-xl border border-white/10 bg-black/15 p-4">
+                <div className="mb-2 flex flex-wrap items-center gap-2">
+                  <div className="text-white text-sm font-semibold">{track.title}</div>
+                  <span className="rounded-md border border-cyan-500/20 bg-cyan-500/10 px-2 py-0.5 text-xs text-cyan-300">{track.audience}</span>
+                </div>
+                <p className="mb-3 text-sm leading-relaxed text-slate-400">{track.goal}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {track.parts.map((slug) => {
+                    const part = partsBySlug.get(slug)
+                    return part ? (
+                      <Link
+                        key={slug}
+                        to={part.path}
+                        className="rounded-md border border-white/10 px-2 py-1 font-mono text-xs text-slate-400 no-underline transition-colors hover:border-white/20 hover:text-white"
+                      >
+                        {slug}
+                      </Link>
+                    ) : null
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mb-8 rounded-2xl border border-amber-500/20 bg-amber-500/[0.04] p-5">
+          <div className="mb-4">
+            <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-amber-300">Review index</div>
+            <h2 className="text-white text-lg font-bold">用問題回查教材</h2>
+          </div>
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+            {questionIndex.map((item) => (
+              <div key={item.question} className="rounded-xl border border-white/10 bg-black/15 p-4">
+                <div className="text-white text-sm font-semibold mb-2">{item.question}</div>
+                <p className="text-slate-400 text-sm leading-relaxed mb-3">{item.answer}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {item.parts.map((slug) => {
+                    const part = partsBySlug.get(slug)
+                    return part ? (
+                      <Link
+                        key={slug}
+                        to={part.path}
+                        className="rounded-md border border-white/10 px-2 py-1 font-mono text-xs text-slate-500 no-underline transition-colors hover:border-white/20 hover:text-white"
+                      >
+                        {slug}
+                      </Link>
+                    ) : null
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <Link
           to="/workshop"
           className="block rounded-2xl border border-cyan-500/25 bg-cyan-500/[0.06] p-5 mb-4 no-underline hover:border-cyan-400/40 transition-colors"
@@ -77,9 +140,9 @@ export default function ClaudeCodeIndex() {
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
               <div className="text-cyan-300 text-xs font-semibold uppercase tracking-wide mb-2">Course Order</div>
-              <h2 className="text-white font-bold text-lg mb-2">先看兩小時課程安排</h2>
+              <h2 className="text-white font-bold text-lg mb-2">先看多場教學安排</h2>
               <p className="text-slate-400 text-sm leading-relaxed max-w-2xl">
-                先講 coding agent 使用方法與 token/context 管理，再逐個進 demo part。
+                第一輪只挑主線，後續場次再深入工具、自動化、agentic coding 與 demo lab。
               </p>
             </div>
             <span className="px-4 py-2 rounded-lg bg-cyan-700 text-white text-sm font-semibold flex-shrink-0">

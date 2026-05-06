@@ -1,4 +1,5 @@
 import { demoScenarios } from './demoScenarios'
+import { buildDemoGuide, chapterGuides } from './learningGuides'
 import { buildDemoVisual, conceptVisuals } from './partVisuals'
 
 const RAW_PARTS = [
@@ -26,6 +27,7 @@ const RAW_PARTS = [
 export const PARTS = RAW_PARTS.map(part => ({
   ...part,
   visual: conceptVisuals[part.slug],
+  guide: chapterGuides[part.slug],
 }))
 
 const demoSlugById = {
@@ -64,6 +66,7 @@ export const DEMO_PARTS = demoScenarios.map((scenario) => {
     demoId: scenario.id,
     relatedConcepts: scenario.relatedParts,
     visual: buildDemoVisual(scenario),
+    guide: buildDemoGuide(scenario),
   }
 })
 

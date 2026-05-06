@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom'
+import { COURSE_PARTS } from '../data/claudeCodeParts'
+import { teachingTracks } from '../data/learningGuides'
 import { agenda, mcpCliRules, tokenRules, tools } from '../data/workshopPlan'
 
 export default function WorkshopPlan() {
@@ -7,7 +9,7 @@ export default function WorkshopPlan() {
       <section className="border-b border-white/5 bg-white/[0.02]">
         <div className="max-w-6xl mx-auto px-6 py-14">
           <div className="inline-flex px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-200 text-sm font-medium mb-6">
-            2 小時內部教學 · Claude Code + Codex
+            可拆多場教學 · Claude Code + Codex
           </div>
           <h1 className="text-4xl sm:text-5xl font-black text-white leading-tight mb-5">
             Coding Agent<br />
@@ -15,12 +17,34 @@ export default function WorkshopPlan() {
           </h1>
           <p className="text-lg text-slate-400 leading-relaxed max-w-3xl">
             不用把課切成兩條角色路線。這堂課分成上下兩半：
-            上半部教觀念、產品用法與進階技巧；下半部每一個 part 都是一個 demo。
+            上半部把觀念、產品用法與進階技巧拆成可單獨回看的章節；下半部每一個 part 都是一個 demo。
+            第一輪可以挑重點講，後續場次再深入 hooks、MCP、Skill、Subagent 與 agentic coding。
           </p>
         </div>
       </section>
 
       <section className="max-w-6xl mx-auto px-6 py-12">
+        <div className="mb-12 rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-6">
+          <div className="mb-5 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="text-cyan-300 text-sm font-semibold mb-2">多場路線</p>
+              <h2 className="text-white text-2xl font-black">完整教材庫，第一輪只挑主線</h2>
+            </div>
+            <span className="text-sm text-slate-500">{COURSE_PARTS.length} 個可回看 part</span>
+          </div>
+          <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+            {teachingTracks.map((track) => (
+              <div key={track.title} className="rounded-lg border border-white/10 bg-black/15 p-4">
+                <div className="mb-2 flex flex-wrap items-center gap-2">
+                  <div className="text-white text-sm font-semibold">{track.title}</div>
+                  <span className="rounded-md border border-cyan-500/20 bg-cyan-500/10 px-2 py-0.5 text-xs text-cyan-300">{track.audience}</span>
+                </div>
+                <p className="text-slate-400 text-sm leading-relaxed">{track.goal}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-5 mb-12">
           <div className="rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-6">
             <div className="text-cyan-300 text-sm font-bold mb-2">上半部</div>

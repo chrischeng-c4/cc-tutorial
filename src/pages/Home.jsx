@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom'
 import heroImage from '../assets/hero.png'
+import { PARTS } from '../data/claudeCodeParts'
 import { demoScenarios } from '../data/demoScenarios'
 import { agenda } from '../data/workshopPlan'
 
 const summary = [
-  { label: '課程長度', value: '2 hr' },
-  { label: '上半部', value: '觀念教導' },
+  { label: '課程型態', value: '多場可複習' },
+  { label: '上半部', value: `${PARTS.length} 觀念章` },
   { label: '下半部', value: `${demoScenarios.length} demos` },
 ]
 
@@ -23,11 +24,11 @@ export default function Home() {
             </div>
             <h1 className="text-4xl sm:text-5xl font-black text-white leading-tight mb-5">
               Coding Agent<br />
-              <span className="text-cyan-300">兩小時教學安排</span>
+              <span className="text-cyan-300">可複習教學路線</span>
             </h1>
             <p className="text-lg text-slate-400 max-w-3xl leading-relaxed mb-8">
-              課程不走角色分流，改成上下兩半：上半部先教觀念、產品用法與進階技巧；
-              下半部每一個 part 都是一個 demo，把方法套到真實工作情境。
+              課程不走角色分流，改成上下兩半：上半部把觀念、產品用法與進階技巧拆成可單獨回看的章節；
+              下半部每一個 part 都是一個 demo。非 dev 能理解怎麼安全使用，dev 能學會怎麼善用 agentic coding。
             </p>
             <div className="flex flex-wrap gap-3">
               <Link
@@ -56,7 +57,7 @@ export default function Home() {
               <div className="grid gap-2 text-sm">
                 <div className="flex justify-between gap-4">
                   <span className="text-slate-300">上半部</span>
-                  <span className="text-slate-400">觀念教導與操作框架</span>
+                  <span className="text-slate-400">單章觀念與操作框架</span>
                 </div>
                 <div className="flex justify-between gap-4">
                   <span className="text-slate-300">下半部</span>
@@ -119,7 +120,7 @@ export default function Home() {
             <h2 className="text-white text-xl font-bold mb-2">補充教材</h2>
             <p className="text-slate-400 text-sm leading-relaxed">
               Claude Code 與 Codex 的章節整理成同一套補充教材，閱讀順序改成：
-              上半部觀念教導 → 下半部 Demo 實作。Token / context 經濟學屬於所有人都要懂的共通能力。
+              上半部觀念教導 → 下半部 Demo 實作。每章都可獨立回看，也可拆成多場教學。
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
