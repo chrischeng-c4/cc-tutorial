@@ -1,0 +1,143 @@
+import { Link } from 'react-router-dom'
+import { agenda, mcpCliRules, tokenRules, tools } from '../data/workshopPlan'
+
+export default function WorkshopPlan() {
+  return (
+    <main className="pt-16 min-h-screen">
+      <section className="border-b border-white/5 bg-white/[0.02]">
+        <div className="max-w-6xl mx-auto px-6 py-14">
+          <div className="inline-flex px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-200 text-sm font-medium mb-6">
+            2 小時內部教學 · Claude Code + Codex
+          </div>
+          <h1 className="text-4xl sm:text-5xl font-black text-white leading-tight mb-5">
+            Coding Agent<br />
+            <span className="text-cyan-300">課程設計</span>
+          </h1>
+          <p className="text-lg text-slate-400 leading-relaxed max-w-3xl">
+            不用把課切成兩條角色路線。這堂課用同一條路徑由淺到深：
+            先理解 coding agent 的工作方式，再學 prompt、permission、token/context，最後套到真實 demo case。
+          </p>
+        </div>
+      </section>
+
+      <section className="max-w-6xl mx-auto px-6 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-5 mb-12">
+          <div className="rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-6">
+            <div className="text-cyan-300 text-sm font-bold mb-2">00-70 min</div>
+            <h2 className="text-white text-2xl font-black mb-3">共通方法：由淺到深</h2>
+            <p className="text-slate-400 text-sm leading-relaxed">
+              重點是「如何使用這類工具」：任務拆解、prompt 結構、permission、context 管理、token 成本。
+              這些不是工程師專屬知識，PM 在寫 PRD、整理訪談或跑 demo 時一樣會用到。
+            </p>
+          </div>
+          <div className="rounded-xl border border-violet-500/20 bg-violet-500/5 p-6">
+            <div className="text-violet-300 text-sm font-bold mb-2">70-120 min</div>
+            <h2 className="text-white text-2xl font-black mb-3">Demo Case：方法套用</h2>
+            <p className="text-slate-400 text-sm leading-relaxed">
+              從 13 個真實情境挑 2-3 個推演。每個 demo 都需要說清楚需求、資料、MCP、
+              script 邊界、風險與驗收方式。
+            </p>
+          </div>
+        </div>
+
+        <div className="space-y-3 mb-12">
+          {agenda.map((item) => (
+            <div key={`${item.minutes}-${item.title}`} className="rounded-xl border border-white/10 bg-white/[0.02] p-5 grid grid-cols-1 md:grid-cols-[7rem_1fr_1fr] gap-4">
+              <div>
+                <div className="text-slate-600 text-xs">{item.block}</div>
+                <div className="text-white font-mono text-sm mt-1">{item.minutes}</div>
+              </div>
+              <div>
+                <h3 className="text-white font-semibold mb-2">{item.title}</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">{item.focus}</p>
+              </div>
+              <div className="text-sm leading-relaxed text-slate-300 border-t md:border-t-0 md:border-l border-white/10 pt-4 md:pt-0 md:pl-4">
+                {item.outcome}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mb-12">
+          <div className="flex items-end justify-between gap-4 mb-5">
+            <div>
+              <p className="text-cyan-300 text-sm font-semibold mb-2">工具準備</p>
+              <h2 className="text-white text-2xl font-black">兩套工具都要準備</h2>
+            </div>
+            <Link to="/demo-checklist" className="text-sm text-slate-500 hover:text-slate-300 no-underline">
+              看 Demo 清單 →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            {tools.map((tool) => (
+              <div key={tool.name} className="rounded-xl border border-white/10 bg-white/[0.02] p-6">
+                <h3 className="text-white text-xl font-bold mb-1">{tool.name}</h3>
+                <div className="text-slate-500 text-sm mb-5">{tool.surface}</div>
+                <div className="grid gap-4">
+                  <div>
+                    <div className="text-slate-500 text-xs font-semibold uppercase tracking-wide mb-2">課前準備</div>
+                    <ul className="space-y-2">
+                      {tool.setup.map((item) => <li key={item} className="text-slate-300 text-sm">□ {item}</li>)}
+                    </ul>
+                  </div>
+                  <div>
+                    <div className="text-slate-500 text-xs font-semibold uppercase tracking-wide mb-2">適合練習</div>
+                    <ul className="space-y-2">
+                      {tool.strengths.map((item) => <li key={item} className="text-slate-400 text-sm">→ {item}</li>)}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mb-12 rounded-xl border border-violet-500/20 bg-violet-500/5 p-6">
+          <div className="mb-5 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="text-violet-300 text-sm font-semibold mb-2">工具抉擇</p>
+              <h2 className="text-white text-2xl font-black">CLI vs MCP</h2>
+            </div>
+            <Link to="/coding-agent/10" className="text-sm text-slate-500 hover:text-slate-300 no-underline">
+              看詳細章節 →
+            </Link>
+          </div>
+          <div className="grid gap-3">
+            {mcpCliRules.map((item) => (
+              <div key={item.rule} className="rounded-lg border border-white/10 bg-black/15 p-4">
+                <div className="text-violet-300 font-semibold text-sm mb-3">{item.rule}</div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div className="text-sm text-slate-300">
+                    <span className="text-emerald-300 font-semibold">適合：</span>{item.use}
+                  </div>
+                  <div className="text-sm text-slate-500">
+                    <span className="text-rose-300 font-semibold">避免：</span>{item.avoid}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-6">
+          <h2 className="text-white text-2xl font-black mb-5">Token 不浪費原則</h2>
+          <div className="grid gap-3">
+            {tokenRules.map((item) => (
+              <div key={item.rule} className="rounded-lg border border-white/10 bg-black/15 p-4">
+                <div className="text-amber-300 font-semibold text-sm mb-3">{item.rule}</div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div className="text-sm text-slate-500">
+                    <span className="text-rose-300 font-semibold">避免：</span>{item.bad}
+                  </div>
+                  <div className="text-sm text-slate-300">
+                    <span className="text-emerald-300 font-semibold">改成：</span>{item.good}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </main>
+  )
+}

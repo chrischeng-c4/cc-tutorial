@@ -1,160 +1,199 @@
 import { PageLayout, SectionHeader, CodeBlock, Callout, H3 } from '../../components/cc/shared'
 
+const mainThreadPrinciples = [
+  {
+    name: 'Main thread',
+    role: '控制流程與做最後整合',
+    detail: '只保留任務目標、當前決策、驗收條件、下一步。不要把大量搜尋結果、測試 log、文件全文都塞進來。',
+  },
+  {
+    name: 'External storage',
+    role: '保存重要狀態',
+    detail: '規格、決策、review 結論、測試報告、產出草稿要寫到檔案、PR、issue、JIRA、Docs，作為 source of truth。',
+  },
+  {
+    name: 'Subagent',
+    role: '處理隔離工作',
+    detail: '負責探索、搜尋、比較、review、跑測試。只把摘要、結論、風險與檔案引用回傳給 main thread。',
+  },
+]
+
 export default function Part11() {
   return (
     <PageLayout partIndex={10}>
       <SectionHeader partIndex={10} />
 
-      <H3>完整 Workflow Demo</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
-        從收到需求到開出 PR，一個完整的流程長這樣：
+      <p className="text-slate-400 leading-relaxed mb-8">
+        Part 8 講過：context 是工作記憶，不是資料庫。Part 10 又把工具介面拆成 CLI 與 MCP。
+        這一章講 main thread、subagent 與 Codex 背景委派的分工：主線對話保留決策；副工作隔離出去；
+        重要狀態寫到外部儲存。
       </p>
-      <CodeBlock title="從需求到 PR — 完整流程">
-{`# 1. 確保 git 狀態乾淨（重要！有東西要 commit 就先 commit）
-git status
-git checkout -b feature/add-export-api
 
-# 2. 啟動 Claude Code
-claude
-
-# 3. 描述需求（越清楚越好，給參考範例更好）
-> 我需要新增一個 GET /api/reports/export 端點
-> 回傳過去 30 天的訂單數據，格式為 CSV
-> 需要驗證 JWT，只有 admin role 可以使用
-> 參考現有的 /api/reports/summary 的實作風格
-
-# 4. Claude 自動：讀程式碼 → 規劃 → 實作 → 跑測試
-
-# 5. Review 它的改動
-git diff
-
-# 6. 有問題繼續調整
-> 欄位順序改成 date, order_id, amount, status
-> 幫我補上 edge case 測試：空資料的情況
-
-# 7. 確認沒問題，叫它開 PR
-> 幫我 commit 並開一個 PR，標題和描述用繁體中文`}
-      </CodeBlock>
-
-      <Callout type="info">
-        這個流程適合單一任務、改動範圍可控的情境。要做架構調整、跨多檔重構、或讓 Claude 平行探索多個假設，
-        請看 <span className="font-semibold">Part 10：Subagent · Agent Team</span>。
+      <H3>Main thread：保留決策，不保留所有過程</H3>
+      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+        Main thread 是你跟 agent 的主線對話。它應該保存目標、scope、重要決策、待確認問題與最後產出；
+        不應該保存所有中間搜尋、長 log、repo 掃描結果。這些副工作要交給 CLI、MCP 或 subagent。
+      </p>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-5">
+        {mainThreadPrinciples.map((item) => (
+          <div key={item.name} className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+            <div className="text-cyan-300 text-xs font-semibold uppercase tracking-wide mb-2">{item.name}</div>
+            <div className="text-white font-semibold text-sm mb-2">{item.role}</div>
+            <p className="text-slate-400 text-sm leading-relaxed">{item.detail}</p>
+          </div>
+        ))}
+      </div>
+      <Callout type="tip">
+        Main thread 最好像 project lead：知道目標、決策、下一步，也知道去哪裡讀 source of truth。
+        它不需要保存每一行 grep output、每一段 JIRA raw export、每一次測試 stdout。
       </Callout>
 
-      <H3>跨檔重構範例：Context 管理真正派上用場的場景</H3>
+      <H3>Subagent：把 side-quest 隔在獨立 context</H3>
       <p className="text-slate-400 text-sm leading-relaxed mb-4">
-        前面那個 API endpoint 例子是熱身。真正會把 context 燒完的是這種任務——
-        把 5 個檔案裡都重複的 fetch 邏輯抽成共用 hook：
+        Subagent 是「主對話派出去的 worker」：獨立的 context window、自己的 system prompt、自己的 tool 限制、自己的 model。
+        跑完只把<span className="text-white font-medium">摘要</span>送回主對話，工作過程中讀的檔案、log、搜尋結果留在它自己的 context 裡。
       </p>
-      <CodeBlock title="Workflow — 跨檔重構">
-{`# 1. 先進 plan mode，避免 Claude 一頭熱開始改
-> [Shift+Tab] 進入 plan mode
+      <Callout type="tip">
+        什麼時候該用：要做一件「跑完就丟，過程不需要留」的事，例如大範圍 grep、研究某 lib 的 API、
+        跑測試只回失敗清單、review code 只回 issue 列表。Codex cloud task 也適合這類邊界清楚的背景委派。
+        主對話要直接實作時，用 main thread 比較直接。
+      </Callout>
 
-# 2. 給目標 + 邊界
-> 把 src/pages 下用 fetch + useState + useEffect 的元件
-> 統一改用我已經寫好的 src/hooks/useApi.ts
-> 不要動測試檔，不要動樣式
-
-# 3. Claude 在 plan mode 裡：
-#    - 用 Grep 找出所有候選檔案
-#    - 讀每個檔案分析改動風險
-#    - 寫出 plan file（哪些該改、哪些不該改、為什麼）
-> [Approve plan]
-
-# 4. 執行階段中途用 /compact 防止 context 爆炸
-#    （改到第 3 個檔案時下指令）
-> /compact 重點保留：useApi 的型別簽名 + 已經改完的檔案清單
-
-# 5. 全部改完後 review
-git diff --stat
-git diff src/pages/Dashboard.tsx   # 抽查單檔
-
-# 6. 跑測試確認沒打破現有行為
-> npm test 跑起來，把失敗的 case 列出來
-
-# 7. 一切 OK 才 commit
-> 幫我 commit，每個檔案一個 commit，方便之後 review`}
+      <CodeBlock title="Skill 提示 main thread 派 subagent">
+{`# Skill 中可以這樣寫
+If the request requires repo-wide exploration:
+1. Ask the main thread to spawn a read-only subagent.
+2. The subagent should return only:
+   - relevant files
+   - facts found in code
+   - assumptions
+   - risks
+   - HITL questions
+3. Do not paste raw grep output into the main thread.
+4. If the result must be reused, write it to a file, issue, PR comment, or doc.
+5. Main thread decides what to edit after reviewing the summary.`}
       </CodeBlock>
 
-      <H3>常見坑與解法</H3>
+      <h4 className="text-white font-semibold mb-3 mt-6 text-sm">內建 Subagent</h4>
       <p className="text-slate-400 text-sm leading-relaxed mb-4">
-        每個坑都有「事前訊號」——學會看訊號，比事後補救便宜很多。
+        Claude Code 出廠就帶幾個 subagent，用自然語言觸發，Claude 自己挑：
       </p>
-      <div className="space-y-3 mb-10">
+      <div className="rounded-xl border border-white/10 bg-white/[0.02] overflow-hidden mb-5">
         {[
-          {
-            icon: '💸',
-            problem: 'Token 用量爆炸',
-            signal: '/cost 每輪 +5K 以上、或 input token 超過 50K 還在跑。',
-            solution: '長任務中途用 /compact 壓縮。不要把整個 repo 都丟給它，用明確的路徑縮小範圍。',
-          },
-          {
-            icon: '🌀',
-            problem: 'Claude 一直改來改去，沒有收斂',
-            signal: '同一個檔案被改了 3 次以上、或 Claude 開始說「讓我換個方向試試」。',
-            solution: '給更明確的驗收條件：「測試全部過就算完成」。或用 /clear 重新開，這次的 prompt 寫更清楚。',
-          },
-          {
-            icon: '😱',
-            problem: '它動了你不想讓它動的檔案',
-            signal: 'git diff 出現你沒提到的目錄（migrations、config、lockfile）。',
-            solution: 'git checkout <file> 還原單一檔案。預防：在 CLAUDE.md 列出禁止修改的路徑、或用 hook 攔住。',
-          },
-          {
-            icon: '🤦',
-            problem: '生成的程式碼風格和現有 code 不一致',
-            signal: '出現專案沒在用的 library、import 路徑不對、命名慣例突然變了。',
-            solution: '在 CLAUDE.md 加上規範。或在 prompt 說「參考 src/xxx.ts 的風格」，給它具體範例。',
-          },
-          {
-            icon: '🔁',
-            problem: '同樣的錯誤修了又出現',
-            signal: '你發現自己這週第三次糾正同一件事（例如「不要用 any」）。',
-            solution: '把這條規則寫進 CLAUDE.md，讓每次 session 都套用，不要只靠對話記憶。',
-          },
-          {
-            icon: '🐌',
-            problem: '越用越慢，回應延遲明顯增加',
-            signal: '單輪要等 10 秒以上、或 /cost 顯示 input 已經超過 100K token。',
-            solution: 'Context 太長導致的（O(n²) attention）。用 /compact 或 /clear 重置，通常立即恢復速度。',
-          },
-        ].map(({ icon, problem, signal, solution }) => (
-          <div key={problem} className="rounded-xl border border-white/10 bg-white/[0.02] p-5 flex gap-4">
-            <span className="text-2xl flex-shrink-0">{icon}</span>
-            <div className="flex-1 min-w-0">
-              <div className="text-white font-semibold text-sm mb-2">{problem}</div>
-              <div className="flex items-start gap-2 mb-1.5">
-                <span className="text-amber-400 text-xs font-semibold mt-0.5 flex-shrink-0">事前訊號</span>
-                <span className="text-slate-400 text-sm leading-relaxed">{signal}</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-emerald-400 text-xs font-semibold mt-0.5 flex-shrink-0">解法</span>
-                <span className="text-slate-400 text-sm leading-relaxed">{solution}</span>
-              </div>
-            </div>
+          { name: 'Explore',         model: 'Haiku',   tools: 'Read-only',  desc: '快速搜尋與探索 codebase。指定 quick / medium / very thorough 三種深度' },
+          { name: 'Plan',            model: 'inherit', tools: 'Read-only',  desc: 'Plan mode 下蒐集 context 用，輸出 plan file 給你 review' },
+          { name: 'general-purpose', model: 'inherit', tools: 'All',        desc: '需要邊探索邊修改、多步驟複雜任務時用' },
+        ].map(({ name, model, tools, desc }) => (
+          <div key={name} className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-3 items-start px-4 py-3 border-b border-white/5 last:border-0 text-sm">
+            <code className="md:col-span-3 text-cyan-300 bg-cyan-500/10 px-2 py-0.5 rounded font-mono text-xs break-words">{name}</code>
+            <span className="md:col-span-2 text-slate-500 text-xs">{model}</span>
+            <span className="md:col-span-2 text-slate-500 text-xs">{tools}</span>
+            <span className="md:col-span-5 text-slate-400 leading-relaxed">{desc}</span>
           </div>
         ))}
       </div>
 
-      {/* Summary */}
-      <div className="rounded-xl border border-violet-500/20 bg-violet-500/5 p-6">
-        <h3 className="text-white font-semibold mb-4">課程重點回顧</h3>
-        <div className="space-y-2 text-sm">
-          {[
-            { part: 'Part 1', point: 'Claude Code 是 Agentic CLI，不是外掛、不是 chatbot，它主動執行任務' },
-            { part: 'Part 2', point: 'agentic loop = 感知 → 規劃 → 行動 → 觀察，不斷迭代直到目標達成' },
-            { part: 'Part 3-6', point: 'PM 用 Claude Code 寫 PRD：餵 context、CLAUDE.md 鎖格式、迭代修改、多角度 review' },
-            { part: 'Part 7', point: 'Dev 上手三件事：安裝、CLAUDE.md、看懂內建工具' },
-            { part: 'Part 8', point: '多輪對話是打包重送、input token 線性累積；用 /compact /clear 管理；prompt cache 可省 90%' },
-            { part: 'Part 9', point: 'Permission 分層、Hooks 插入邏輯、MCP 擴充工具能力' },
-            { part: 'Part 10', point: 'Subagent 把 side-quest 隔在獨立 context；Agent Team 讓多個 Claude 平行協作' },
-            { part: 'Part 11', point: '動手前確保 git 乾淨，完成後 git diff review；大任務先用 plan mode；context 預算管理 = /compact、subagent、明確邊界' },
-          ].map(({ part, point }, i) => (
-            <div key={i} className="flex items-start gap-3">
-              <span className="text-violet-400 text-xs font-mono mt-0.5 w-12 flex-shrink-0">{part}</span>
-              <span className="text-slate-300">{point}</span>
-            </div>
-          ))}
+      <h4 className="text-white font-semibold mb-3 mt-6 text-sm">自訂 Subagent</h4>
+      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+        重複用同一種 worker、同一套指示時，把它寫成 markdown 檔。
+        YAML frontmatter 是設定，body 是 system prompt：
+      </p>
+      <CodeBlock title=".claude/agents/code-reviewer.md">
+{`---
+name: code-reviewer
+description: Reviews code for quality and best practices. Use proactively after writing or modifying code.
+tools: Read, Grep, Glob, Bash
+model: inherit
+---
+
+You are a senior code reviewer ensuring high standards of code quality and security.
+
+When invoked:
+1. Run git diff to see recent changes
+2. Focus on modified files
+3. Begin review immediately
+
+Review checklist:
+- Code is clear and readable
+- No exposed secrets or API keys
+- Proper error handling
+- Good test coverage
+
+Provide feedback organized by priority:
+- Critical issues (must fix)
+- Warnings (should fix)
+- Suggestions (consider improving)
+
+Return only:
+- findings with file references
+- test gaps
+- suggested next actions
+
+Do not paste full diff or full logs into the main thread.`}
+      </CodeBlock>
+
+      <p className="text-slate-400 text-sm leading-relaxed mb-3">
+        重要 frontmatter 欄位：
+      </p>
+      <div className="rounded-xl border border-white/10 bg-white/[0.02] overflow-hidden mb-5">
+        {[
+          { field: 'name',           req: true,  desc: '小寫加連字號的識別碼' },
+          { field: 'description',    req: true,  desc: 'Claude 用這段判斷何時該委派，寫清楚「什麼情況用我」' },
+          { field: 'tools',          req: false, desc: '允許清單。省略則繼承主對話所有工具' },
+          { field: 'disallowedTools',req: false, desc: '拒絕清單。從繼承來的工具中扣掉' },
+          { field: 'model',          req: false, desc: 'sonnet / opus / haiku / inherit。Haiku 最便宜，適合搜尋類' },
+          { field: 'permissionMode', req: false, desc: 'plan / acceptEdits / dontAsk / bypassPermissions 等' },
+          { field: 'memory',         req: false, desc: 'user / project / local：跨對話累積知識的目錄' },
+          { field: 'isolation',      req: false, desc: 'worktree：在臨時 git worktree 跑，不會弄髒你的工作目錄' },
+        ].map(({ field, req, desc }) => (
+          <div key={field} className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-3 items-start px-4 py-3 border-b border-white/5 last:border-0 text-sm">
+            <code className="md:col-span-3 text-cyan-300 bg-cyan-500/10 px-2 py-0.5 rounded font-mono text-xs break-words">{field}</code>
+            <span className={`md:col-span-1 text-xs ${req ? 'text-rose-300' : 'text-slate-600'}`}>{req ? '必填' : '選填'}</span>
+            <span className="md:col-span-8 text-slate-400 leading-relaxed">{desc}</span>
+          </div>
+        ))}
+      </div>
+
+      <h4 className="text-white font-semibold mb-3 mt-6 text-sm">放在哪？優先序</h4>
+      <p className="text-slate-400 text-sm leading-relaxed mb-3">
+        同名 subagent 以較高優先序覆蓋較低的：
+      </p>
+      <div className="rounded-xl border border-white/10 bg-white/[0.02] overflow-hidden mb-5">
+        {[
+          { p: '1', loc: 'Managed settings',           scope: '組織層級',           note: '管理員透過 managed settings 部署' },
+          { p: '2', loc: '--agents CLI flag',          scope: '本次 session',       note: 'JSON 傳入，不存檔，適合測試' },
+          { p: '3', loc: '.claude/agents/',            scope: '本專案',             note: 'commit 進 repo，團隊共用' },
+          { p: '4', loc: '~/.claude/agents/',          scope: '你所有專案',         note: '個人通用 subagent' },
+          { p: '5', loc: 'Plugin agents/',             scope: 'plugin 啟用範圍',    note: '透過 plugin 散布' },
+        ].map(({ p, loc, scope, note }) => (
+          <div key={loc} className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-3 items-start px-4 py-3 border-b border-white/5 last:border-0 text-sm">
+            <span className="md:col-span-1 text-slate-600 font-mono text-xs">{p}</span>
+            <code className="md:col-span-4 text-cyan-300 font-mono text-xs break-words">{loc}</code>
+            <span className="md:col-span-3 text-slate-400 text-xs">{scope}</span>
+            <span className="md:col-span-4 text-slate-500 text-xs leading-relaxed">{note}</span>
+          </div>
+        ))}
+      </div>
+      <Callout type="tip">
+        互動式管理：對話中輸入 <code className="text-cyan-300 bg-cyan-500/10 px-1 rounded">/agents</code>，
+        進去可以瀏覽、建立、編輯、刪除 subagent，不用手寫 markdown。
+      </Callout>
+
+      <h4 className="text-white font-semibold mb-3 mt-6 text-sm">怎麼觸發</h4>
+      <div className="rounded-xl border border-white/10 bg-white/[0.02] p-4 mb-5">
+        <div className="space-y-3 text-sm">
+          <div>
+            <code className="text-cyan-300 bg-cyan-500/10 px-1.5 py-0.5 rounded text-xs">自然語言</code>
+            <span className="text-slate-400 ml-2">「叫 code-reviewer 看一下我剛改的東西」：Claude 看 description 自己判斷要不要委派</span>
+          </div>
+          <div>
+            <code className="text-cyan-300 bg-cyan-500/10 px-1.5 py-0.5 rounded text-xs">@-mention</code>
+            <span className="text-slate-400 ml-2">輸入 @ 從 typeahead 選，強制由那個 subagent 跑</span>
+          </div>
+          <div>
+            <code className="text-cyan-300 bg-cyan-500/10 px-1.5 py-0.5 rounded text-xs">--agent</code>
+            <span className="text-slate-400 ml-2"><code className="text-emerald-300">claude --agent code-reviewer</code>：整個 session 都用這個 subagent 的 prompt 與工具</span>
+          </div>
         </div>
       </div>
     </PageLayout>

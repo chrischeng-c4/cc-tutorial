@@ -9,11 +9,12 @@ export default function Part1() {
       <div className="rounded-2xl border border-sky-500/20 bg-gradient-to-br from-sky-500/10 to-blue-500/5 p-8 mb-10">
         <div className="text-sky-300 text-xs font-semibold uppercase tracking-widest mb-3">一句話</div>
         <p className="text-2xl md:text-3xl font-bold text-white leading-snug mb-4">
-          Claude Code 是一個跑在你終端機裡的 <span className="bg-gradient-to-r from-sky-300 to-blue-300 bg-clip-text text-transparent">AI 工程師</span>——
-          你給它目標，它自己看檔案、寫程式、跑測試、開 PR。
+          Claude Code 與 Codex 都是 <span className="bg-gradient-to-r from-sky-300 to-blue-300 bg-clip-text text-transparent">coding agent</span>——
+          你給它目標，它可以讀 repo、改檔、跑指令，最後把可 review 的結果交給你。
         </p>
         <p className="text-slate-400 text-base leading-relaxed">
-          不是補全工具、不是聊天機器人，而是會「自己幹活」的 agent。你的角色從駕駛員變成監督者。
+          它們不是單純補全工具，也不是只回答問題的聊天介面。比較準確的說法是：它們能執行多步驟任務，
+          但人仍要控 scope、看 diff、確認結果。
         </p>
       </div>
 
@@ -34,8 +35,8 @@ export default function Part1() {
             tag: 'IDE 增強',
           },
           {
-            title: 'Claude Code 像「實習工程師」',
-            body: '你在 Slack 丟一個 ticket：「幫我加匯出 CSV 功能」。它讀 repo、寫程式、跑測試、改到綠燈，回報結果讓你 review。',
+            title: 'Claude Code / Codex 像「實習工程師」',
+            body: '你給一個明確 ticket：「幫我加匯出 CSV 功能」。它們可以讀 repo、提出計畫、嘗試修改、跑測試，最後回報結果讓你 review。',
             tone: 'border-sky-500/30 bg-sky-500/10',
             tag: 'Agent',
             highlight: true,
@@ -49,8 +50,22 @@ export default function Part1() {
         ))}
       </div>
 
+      <h3 className="text-white font-semibold mb-4 text-base">兩套工具在這堂課是對等的</h3>
+      <div className="rounded-xl border border-white/10 bg-white/[0.02] overflow-hidden mb-10">
+        {[
+          { k: 'Claude Code', v: '本機 terminal / IDE cowork。常見設定是 CLAUDE.md、slash commands、permission、hooks、MCP。' },
+          { k: 'Codex', v: 'CLI / IDE / cloud task。常見設定是 AGENTS.md、approval modes、本機 pairing 與背景委派。' },
+          { k: '共通能力', v: '讀 repo、改檔、跑指令、整理文件、產可 review diff。差別主要在介面、權限模型與委派方式。' },
+        ].map(({ k, v }) => (
+          <div key={k} className="grid grid-cols-1 md:grid-cols-[10rem_1fr] gap-2 px-5 py-3 border-b border-white/5 last:border-0">
+            <div className="text-sky-300 text-sm font-semibold">{k}</div>
+            <div className="text-slate-400 text-sm leading-relaxed">{v}</div>
+          </div>
+        ))}
+      </div>
+
       {/* What it is NOT */}
-      <h3 className="text-white font-semibold mb-4 text-base">這些不是 Claude Code</h3>
+      <h3 className="text-white font-semibold mb-4 text-base">這些不是 coding agent</h3>
       <div className="rounded-xl border border-white/10 bg-white/[0.02] p-5 mb-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-sm">
           {[
@@ -71,8 +86,8 @@ export default function Part1() {
       </div>
 
       <Callout type="info">
-        想知道它怎麼「自己幹活」？下一章 <span className="font-semibold">Part 2 — 它怎麼想</span> 會把它腦袋裡的循環拆給你看。
-        如果你是 PM，看完 Part 2 之後直接跳到 <span className="font-semibold">Part 3 PM 為什麼能寫 PRD</span> 開始實戰。
+        想知道它怎麼執行多步驟任務？下一章 <span className="font-semibold">Part 2 — 它怎麼想</span> 會把循環拆給你看。
+        接著會用 PRD 當文件工作範例，再逐步進到工具操作、token/context 與 demo 流程。
       </Callout>
     </PageLayout>
   )

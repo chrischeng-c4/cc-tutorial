@@ -66,7 +66,7 @@ export default function AgentConcept() {
           </h1>
           <p className="text-lg text-slate-400 leading-relaxed max-w-2xl">
             從 Prompt 工程到 Context 管理，再到 Harness 架構設計。
-            這三層能力決定了一個 AI Agent 是否真的好用、穩定、可擴展。
+            這三層能力會影響 AI Agent 是否能穩定放進實際工作流程。
           </p>
         </div>
 
@@ -74,7 +74,7 @@ export default function AgentConcept() {
         <Section title="Agent 是什麼？">
           <p className="text-slate-400 leading-relaxed mb-6">
             Agent 不只是「更長的對話」，而是一個具備 <span className="text-white font-medium">感知 → 規劃 → 行動 → 觀察</span> 循環能力的系統。
-            它能夠主動使用工具、分解任務、根據結果調整策略，直到完成目標。
+            它可以使用工具、分解任務、根據結果調整下一步，但仍需要人定義邊界與確認結果。
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
             {[
@@ -357,8 +357,8 @@ prompt = f"""
           <Link to="/llm" className="text-slate-400 hover:text-white transition-colors no-underline text-sm">
             ← LLM 基礎
           </Link>
-          <Link to="/claude-code" className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-medium transition-all no-underline text-sm">
-            下一章：Claude Code →
+          <Link to="/coding-agent" className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-medium transition-all no-underline text-sm">
+            下一章：工具教材 →
           </Link>
         </div>
       </div>

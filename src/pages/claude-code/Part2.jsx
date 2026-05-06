@@ -6,9 +6,9 @@ export default function Part2() {
       <SectionHeader partIndex={1} />
 
       <p className="text-slate-400 leading-relaxed mb-8">
-        Part 1 說它是「會自己幹活的 agent」。這一章把它腦袋裡的循環拆給你看——
+        Part 1 說它是能執行多步驟任務的 agent。這一章把背後的循環拆給你看——
         看完你會知道它<span className="text-white">不是用魔法在做事</span>，
-        只是把人類做事的步驟自動化跑很多次而已。
+        只是把人類做事的步驟重複執行很多次而已。
       </p>
 
       {/* Agentic loop diagram */}
@@ -58,25 +58,26 @@ export default function Part2() {
 
       <Callout type="tip">
         這就是「agentic」的核心：不是回答你問題就停了，而是不斷感知 → 規劃 → 行動，直到目標達成。
-        模型本身做不到——是 Claude Code 這個外殼把它包成 agent。
+        模型本身做不到——是 Claude Code / Codex 這類外殼把模型包成 agent。
       </Callout>
 
-      {/* Live screenshot placeholder */}
-      <h3 className="text-white font-semibold mb-4 mt-10 text-base">在 Terminal 看到的樣子</h3>
-      <div className="rounded-xl border border-dashed border-white/15 bg-black/30 p-8 text-center mb-3">
-        <div className="text-4xl mb-3 opacity-40">📺</div>
-        <div className="text-slate-400 text-sm mb-1">實機畫面（30 秒錄影 / 截圖）</div>
-        <div className="text-slate-600 text-xs leading-relaxed max-w-md mx-auto">
-          建議錄一段：啟動 claude → 給上面那個「修登入 bug」任務 → 看它讀檔/呼叫工具/改檔/跑測試的真實過程。
-        </div>
-        <div className="text-slate-700 text-xs mt-3 font-mono">
-          {'<img src="/cc-loop-demo.gif" alt="Claude Code agentic loop" />'}
-        </div>
+      <h3 className="text-white font-semibold mb-4 mt-10 text-base">Demo 時在 Terminal 要讓觀眾看到什麼</h3>
+      <div className="rounded-xl border border-indigo-500/20 bg-indigo-500/5 overflow-hidden">
+        {[
+          { step: '01', title: '先問 repo 結構', detail: '> 簡介這個 repo 的主要模組，以及訂單相關程式在哪裡' },
+          { step: '02', title: '讓它規劃，不要直接改', detail: '> 我想新增訂單匯出 CSV，先列出你會讀哪些檔案與風險' },
+          { step: '03', title: '觀察工具呼叫', detail: '畫面上要出現 Read / Grep / Bash 這類工具動作，對應感知、行動、觀察。' },
+          { step: '04', title: '用結果收斂', detail: '> 根據剛剛讀到的 code，列出技術事實、推測與需要 HITL 確認的問題' },
+        ].map(({ step, title, detail }) => (
+          <div key={step} className="grid grid-cols-[2.5rem_1fr] gap-3 px-5 py-3 border-b border-white/5 last:border-0">
+            <span className="text-indigo-300 text-xs font-mono pt-0.5">{step}</span>
+            <div>
+              <div className="text-white text-sm font-semibold mb-1">{title}</div>
+              <div className="text-slate-400 text-xs leading-relaxed font-mono">{detail}</div>
+            </div>
+          </div>
+        ))}
       </div>
-      <p className="text-slate-500 text-xs leading-relaxed">
-        圖檔放 <code className="text-slate-400">public/cc-loop-demo.gif</code>，再把上面這個 placeholder 換成
-        <code className="text-slate-400 ml-1">{'<img src="/cc-loop-demo.gif" />'}</code>。
-      </p>
     </PageLayout>
   )
 }

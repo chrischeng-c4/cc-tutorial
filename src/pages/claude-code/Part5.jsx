@@ -7,18 +7,19 @@ export default function Part5() {
 
       <p className="text-slate-400 leading-relaxed mb-8">
         上一章你拿到第一份草稿。但<span className="text-white">PRD 的價值在迭代</span>——
-        這章教你兩件事：用 CLAUDE.md 讓 Claude 永遠用你公司的格式寫，以及怎麼透過對話修到滿意。
+        這章教你三件事：用規則檔讓 agent 盡量依照公司格式寫、用工具保證嚴格格式、以及怎麼透過對話修到可 review。
       </p>
 
       {/* CLAUDE.md for PM */}
-      <h3 className="text-white font-semibold mb-4 text-base">CLAUDE.md：你公司的「PRD 模板說明書」</h3>
+      <h3 className="text-white font-semibold mb-4 text-base">CLAUDE.md / AGENTS.md：你公司的「PRD 模板說明書」</h3>
       <p className="text-slate-400 text-sm leading-relaxed mb-4">
-        在專案根目錄放一個 <code className="text-fuchsia-300 bg-fuchsia-500/10 px-1.5 py-0.5 rounded text-xs">CLAUDE.md</code>，
-        Claude 每次啟動都會自動讀。把它當成<span className="text-white">「給 Claude 的工作說明書」</span>——
+        Claude Code 用 <code className="text-fuchsia-300 bg-fuchsia-500/10 px-1.5 py-0.5 rounded text-xs">CLAUDE.md</code>，
+        Codex 用 <code className="text-fuchsia-300 bg-fuchsia-500/10 px-1.5 py-0.5 rounded text-xs">AGENTS.md</code>。
+        把它當成<span className="text-white">「給 agent 的工作說明書」</span>——
         寫一次，整個團隊用同一套規則。
       </p>
 
-      <CodeBlock title="CLAUDE.md（PM 版本範例）">
+      <CodeBlock title="CLAUDE.md / AGENTS.md（PM 版本範例）">
 {`# 我們公司的 PRD 規範
 
 ## 寫作風格
@@ -51,13 +52,33 @@ export default function Part5() {
       </CodeBlock>
 
       <Callout type="tip">
-        這個檔案 commit 到 repo，整個 PM team 共用。每加一份 PRD 累積一次經驗，CLAUDE.md 也會越長越好。
+        這個檔案 commit 到 repo，整個 PM team 共用。每次發現格式或用詞問題，再回頭補規則。
       </Callout>
 
       <p className="text-slate-400 text-sm leading-relaxed mt-6 mb-10">
-        放好之後，下次叫 Claude 寫 PRD 時——<span className="text-white">不用再說格式要求</span>，
-        它自動會照 CLAUDE.md 來。連你說「再寫一份關於 XXX 的 PRD」，它都會記得結尾要有「未決議題」。
+        放好之後，下次叫 Claude Code 或 Codex 寫 PRD 時——<span className="text-white">可以少重複一些格式要求</span>。
+        它通常會參考規則檔，但重要章節、語氣與待確認欄位仍要人工 review。
       </p>
+
+      <Callout type="warn">
+        規則檔只能提高遵循機率，不能保證格式正確。若輸出必須被下游系統吃進去，例如 JSON schema、CSV 欄位順序、
+        JIRA issue payload、Google Sheets 欄位，請做 script / CLI / MCP 讓 agent 呼叫，並用 validator 擋掉不合格輸出。
+      </Callout>
+
+      <CodeBlock title="固定格式不要只靠 prompt">
+{`# 軟約束：可以放在 CLAUDE.md / AGENTS.md
+- 週報請依 docs/templates/weekly.md 格式撰寫
+- JSON 請符合 docs/schemas/jira-task.schema.json
+
+# 硬約束：做成 agent 可呼叫的工具
+scripts/weekly-report render --input tmp/issues.json --output tmp/weekly.md
+scripts/weekly-report validate tmp/weekly.md
+
+# Agent 的任務描述
+> 不要手寫週報格式。
+> 先用 scripts/weekly-report render 產出，再跑 validate。
+> validate 失敗就依錯誤修資料或回報缺口。`}
+      </CodeBlock>
 
       {/* Iteration 1: filling missing fields */}
       <h3 className="text-white font-semibold mb-4 text-base">迭代手法 1：補欄位</h3>
@@ -92,6 +113,7 @@ export default function Part5() {
 10. [技術限制] 同時段 100+ 賣家請求匯出
     → 需 rate limit + queue
     → 失敗的 job 要可重試，並通知用戶`}
+        renderResponseMarkdown
       />
 
       {/* Iteration 2: tone & wording */}
@@ -130,8 +152,8 @@ export default function Part5() {
       />
 
       <Callout type="tip">
-        Claude 不只會改這份，還會主動建議「把規則寫進 CLAUDE.md」。
-        說「好」之後，下次你或同事寫 PRD，就不會再出現這類語氣問題。
+        Agent 有時會建議「把規則寫進 CLAUDE.md / AGENTS.md」。
+        說「好」之後，下次你或同事寫 PRD，出現同類語氣問題的機率會降低，但仍要 review。
       </Callout>
 
       {/* Iteration 3: blind spot review */}
@@ -165,6 +187,7 @@ export default function Part5() {
 
 5. Metrics 寫「客服工單數量變化」——但你怎麼確定下降是因為這功能？
    同期可能有別的改動。建議加 A/B test 或灰度對照組。`}
+        renderResponseMarkdown
       />
 
       <p className="text-slate-400 text-sm leading-relaxed mt-6 mb-10">
@@ -173,7 +196,7 @@ export default function Part5() {
       </p>
 
       <Callout type="pm">
-        到這裡，你已經能完整跑「產草稿 → 鎖格式 → 補欄位 → 調語氣 → 多角度 review」的迭代循環。
+        到這裡，你已經能完整跑「產草稿 → 寫格式規則 → 用工具驗證嚴格格式 → 補欄位 → 調語氣 → 多角度 review」的迭代循環。
         下一章 Part 6 會講限制——它做不到的事 + 一份 PRD 大概要花你多少錢。
       </Callout>
     </PageLayout>

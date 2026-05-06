@@ -1,40 +1,44 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
-
-export const PARTS = [
-  { path: '/claude-code/1',  part: 'Part 1',  title: '它是什麼',                           time: '5 min',  accent: 'sky',     audience: ['PM', 'Dev'] },
-  { path: '/claude-code/2',  part: 'Part 2',  title: '它怎麼想：agentic loop',             time: '5 min',  accent: 'indigo',  audience: ['PM', 'Dev'] },
-  { path: '/claude-code/3',  part: 'Part 3',  title: 'PM：為什麼能幫你寫 PRD',             time: '5 min',  accent: 'rose',    audience: ['PM'] },
-  { path: '/claude-code/4',  part: 'Part 4',  title: 'PM：第一次用 Claude Code 寫 PRD',    time: '10 min', accent: 'pink',    audience: ['PM'] },
-  { path: '/claude-code/5',  part: 'Part 5',  title: 'PM：用 CLAUDE.md 鎖模板 + 迭代',     time: '8 min',  accent: 'fuchsia', audience: ['PM'] },
-  { path: '/claude-code/6',  part: 'Part 6',  title: 'PM：限制與成本',                     time: '5 min',  accent: 'purple',  audience: ['PM'] },
-  { path: '/claude-code/7',  part: 'Part 7',  title: 'Dev：上手三件事',                    time: '10 min', accent: 'amber',   audience: ['Dev'] },
-  { path: '/claude-code/8',  part: 'Part 8',  title: 'Dev：Token 與 context 經濟學',       time: '12 min', accent: 'orange',  audience: ['Dev'] },
-  { path: '/claude-code/9',  part: 'Part 9',  title: 'Dev：Permission · Hooks · MCP',      time: '12 min', accent: 'emerald', audience: ['Dev'] },
-  { path: '/claude-code/10', part: 'Part 10', title: 'Dev：Subagent · Agent Team',          time: '12 min', accent: 'cyan',    audience: ['Dev'] },
-  { path: '/claude-code/11', part: 'Part 11', title: '實戰 Demo + 常見坑',                  time: '8 min',  accent: 'violet',  audience: ['PM', 'Dev'] },
-]
-
-export const ACCENT = {
-  sky:     { bar: 'from-sky-400 to-blue-400',         badge: 'bg-sky-500/20 text-sky-300',          border: 'border-sky-500/20',     bg: 'bg-sky-500/5',     ring: 'ring-sky-500/30' },
-  indigo:  { bar: 'from-indigo-400 to-blue-400',      badge: 'bg-indigo-500/20 text-indigo-300',    border: 'border-indigo-500/20',  bg: 'bg-indigo-500/5',  ring: 'ring-indigo-500/30' },
-  rose:    { bar: 'from-rose-400 to-pink-400',        badge: 'bg-rose-500/20 text-rose-300',        border: 'border-rose-500/20',    bg: 'bg-rose-500/5',    ring: 'ring-rose-500/30' },
-  pink:    { bar: 'from-pink-400 to-rose-400',        badge: 'bg-pink-500/20 text-pink-300',        border: 'border-pink-500/20',    bg: 'bg-pink-500/5',    ring: 'ring-pink-500/30' },
-  fuchsia: { bar: 'from-fuchsia-400 to-pink-400',     badge: 'bg-fuchsia-500/20 text-fuchsia-300',  border: 'border-fuchsia-500/20', bg: 'bg-fuchsia-500/5', ring: 'ring-fuchsia-500/30' },
-  purple:  { bar: 'from-purple-400 to-fuchsia-400',   badge: 'bg-purple-500/20 text-purple-300',    border: 'border-purple-500/20',  bg: 'bg-purple-500/5',  ring: 'ring-purple-500/30' },
-  amber:   { bar: 'from-amber-400 to-orange-400',     badge: 'bg-amber-500/20 text-amber-300',      border: 'border-amber-500/20',   bg: 'bg-amber-500/5',   ring: 'ring-amber-500/30' },
-  orange:  { bar: 'from-orange-400 to-amber-400',     badge: 'bg-orange-500/20 text-orange-300',    border: 'border-orange-500/20',  bg: 'bg-orange-500/5',  ring: 'ring-orange-500/30' },
-  emerald: { bar: 'from-emerald-400 to-teal-400',     badge: 'bg-emerald-500/20 text-emerald-300',  border: 'border-emerald-500/20', bg: 'bg-emerald-500/5', ring: 'ring-emerald-500/30' },
-  cyan:    { bar: 'from-cyan-400 to-sky-400',         badge: 'bg-cyan-500/20 text-cyan-300',        border: 'border-cyan-500/20',    bg: 'bg-cyan-500/5',    ring: 'ring-cyan-500/30' },
-  violet:  { bar: 'from-violet-400 to-purple-400',    badge: 'bg-violet-500/20 text-violet-300',    border: 'border-violet-500/20',  bg: 'bg-violet-500/5',  ring: 'ring-violet-500/30' },
-}
+import { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { ACCENT, AUDIENCE_STYLES, PARTS, USAGE_STYLES } from '../../data/claudeCodeParts'
 
 /* ── Page wrapper with progress bar ── */
 export function PageLayout({ partIndex, children }) {
+  const navigate = useNavigate()
   const current = PARTS[partIndex]
   const prev    = PARTS[partIndex - 1]
   const next    = PARTS[partIndex + 1]
   const c       = ACCENT[current.accent]
+
+  useEffect(() => {
+    function isTypingTarget(target) {
+      if (!(target instanceof HTMLElement)) return false
+      const tag = target.tagName.toLowerCase()
+      return target.isContentEditable || ['input', 'textarea', 'select', 'button'].includes(tag)
+    }
+
+    function onKeyDown(event) {
+      if (event.repeat || event.metaKey || event.ctrlKey || event.altKey || event.shiftKey || isTypingTarget(event.target)) {
+        return
+      }
+
+      const prevKeys = ['ArrowLeft', 'PageUp', 'Backspace']
+      const nextKeys = ['ArrowRight', 'PageDown', ' ', 'Enter']
+
+      if (prevKeys.includes(event.key) && prev) {
+        event.preventDefault()
+        navigate(prev.path)
+      }
+
+      if (nextKeys.includes(event.key) && next) {
+        event.preventDefault()
+        navigate(next.path)
+      }
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [navigate, next, prev])
 
   return (
     <main className="pt-16 min-h-screen">
@@ -51,7 +55,7 @@ export function PageLayout({ partIndex, children }) {
         <div className="flex items-center gap-2 text-xs text-slate-500 mb-10">
           <Link to="/" className="hover:text-slate-300 no-underline transition-colors">首頁</Link>
           <span>/</span>
-          <Link to="/claude-code" className="hover:text-slate-300 no-underline transition-colors">Claude Code</Link>
+          <Link to="/coding-agent" className="hover:text-slate-300 no-underline transition-colors">Coding Agent</Link>
           <span>/</span>
           <span className="text-slate-400">{current.part}</span>
         </div>
@@ -69,7 +73,7 @@ export function PageLayout({ partIndex, children }) {
               </div>
             </Link>
           ) : (
-            <Link to="/claude-code" className="group flex items-center gap-3 no-underline">
+            <Link to="/coding-agent" className="group flex items-center gap-3 no-underline">
               <span className="text-slate-500 group-hover:text-white transition-colors text-lg">←</span>
               <div className="text-sm text-slate-400 group-hover:text-white transition-colors">課程總覽</div>
             </Link>
@@ -112,6 +116,14 @@ export function PageLayout({ partIndex, children }) {
 export function SectionHeader({ partIndex }) {
   const p = PARTS[partIndex]
   const c = ACCENT[p.accent]
+  const tags = p.tags ?? []
+  const badges = [
+    p.usage && { label: p.usage, className: USAGE_STYLES[p.usage] },
+    p.audience && { label: p.audience, className: AUDIENCE_STYLES[p.audience] },
+    p.experimental && { label: '實驗性', className: 'border-amber-500/25 bg-amber-500/10 text-amber-300' },
+    ...tags.map(tag => ({ label: tag, className: 'border-white/10 text-slate-400' })),
+  ].filter(Boolean)
+
   return (
     <div className={`rounded-2xl border ${c.border} ${c.bg} p-6 mb-10`}>
       <div className="flex items-start justify-between gap-4 flex-wrap">
@@ -123,11 +135,19 @@ export function SectionHeader({ partIndex }) {
               <span className="text-slate-500 text-xs">{p.time}</span>
             </div>
             <h1 className="text-3xl font-black text-white leading-tight">{p.title}</h1>
+            {p.demoCases?.length > 0 && (
+              <Link
+                to="/demo-checklist"
+                className="mt-2 inline-flex text-xs text-slate-500 no-underline transition-colors hover:text-slate-300"
+              >
+                對應 Demo Case → {p.demoCases.join(' · ')}
+              </Link>
+            )}
           </div>
         </div>
         <div className="flex gap-1.5 flex-wrap">
-          {p.audience.map(a => (
-            <span key={a} className="px-3 py-1 rounded-full text-xs border border-white/10 text-slate-400">{a}</span>
+          {badges.map(({ label, className }) => (
+            <span key={label} className={`px-3 py-1 rounded-full text-xs border ${className}`}>{label}</span>
           ))}
         </div>
       </div>
@@ -171,7 +191,7 @@ export function Callout({ type = 'info', children }) {
     info:  { style: 'border-sky-500/30 bg-sky-500/5',         icon: 'ℹ️', label: '說明' },
     warn:  { style: 'border-amber-500/30 bg-amber-500/5',      icon: '⚠️', label: '注意' },
     tip:   { style: 'border-emerald-500/30 bg-emerald-500/5',  icon: '💡', label: '技巧' },
-    pm:    { style: 'border-pink-500/30 bg-pink-500/5',        icon: '📋', label: 'PM 視角' },
+    pm:    { style: 'border-pink-500/30 bg-pink-500/5',        icon: '📋', label: '文件工作' },
   }[type]
   return (
     <div className={`rounded-xl border p-4 text-sm leading-relaxed mb-5 ${s.style}`}>
@@ -221,8 +241,106 @@ export function FullBleed({ children, className = '' }) {
   )
 }
 
+function renderInlineMarkdown(text) {
+  return String(text).split(/(`[^`]+`|\*\*[^*]+\*\*)/g).filter(Boolean).map((part, i) => {
+    if (part.startsWith('`') && part.endsWith('`')) {
+      return (
+        <code key={i} className="rounded bg-black/30 px-1 py-0.5 font-mono text-[0.9em] text-emerald-200">
+          {part.slice(1, -1)}
+        </code>
+      )
+    }
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return <strong key={i} className="font-semibold text-white">{part.slice(2, -2)}</strong>
+    }
+    return part
+  })
+}
+
+function flushMarkdownList(blocks, list) {
+  if (!list.items.length) return
+  const Tag = list.type === 'ol' ? 'ol' : 'ul'
+  blocks.push(
+    <Tag key={`list-${blocks.length}`} className={`${list.type === 'ol' ? 'list-decimal' : 'list-disc'} space-y-1 pl-5 text-slate-300`}>
+      {list.items.map((item, i) => (
+        <li key={i} className="pl-1 leading-relaxed">{renderInlineMarkdown(item)}</li>
+      ))}
+    </Tag>
+  )
+  list.items = []
+  list.type = null
+}
+
+/* ── Minimal Markdown renderer for generated docs ── */
+export function MarkdownContent({ children }) {
+  const blocks = []
+  const list = { type: null, items: [] }
+  const lines = String(children).trim().split('\n')
+
+  lines.forEach((line, i) => {
+    const trimmed = line.trim()
+    if (!trimmed) {
+      flushMarkdownList(blocks, list)
+      return
+    }
+
+    const heading = trimmed.match(/^(#{1,4})\s+(.+)$/)
+    if (heading) {
+      flushMarkdownList(blocks, list)
+      const level = heading[1].length
+      const Tag = `h${Math.min(level + 2, 6)}`
+      const size = level === 1 ? 'text-lg' : level === 2 ? 'text-base' : 'text-sm'
+      blocks.push(
+        <Tag key={`h-${i}`} className={`${size} mt-4 first:mt-0 mb-2 font-bold text-white`}>
+          {renderInlineMarkdown(heading[2])}
+        </Tag>
+      )
+      return
+    }
+
+    const checkbox = trimmed.match(/^[-*]\s+\[( |x)\]\s+(.+)$/i)
+    if (checkbox) {
+      flushMarkdownList(blocks, list)
+      blocks.push(
+        <label key={`check-${i}`} className="flex items-start gap-2 text-slate-300 leading-relaxed">
+          <input type="checkbox" checked={checkbox[1].toLowerCase() === 'x'} readOnly className="mt-1 h-3.5 w-3.5 rounded border-white/20 bg-black/30" />
+          <span>{renderInlineMarkdown(checkbox[2])}</span>
+        </label>
+      )
+      return
+    }
+
+    const bullet = trimmed.match(/^[-*•]\s+(.+)$/)
+    if (bullet) {
+      if (list.type !== 'ul') flushMarkdownList(blocks, list)
+      list.type = 'ul'
+      list.items.push(bullet[1])
+      return
+    }
+
+    const numbered = trimmed.match(/^\d+\.\s+(.+)$/)
+    if (numbered) {
+      if (list.type !== 'ol') flushMarkdownList(blocks, list)
+      list.type = 'ol'
+      list.items.push(numbered[1])
+      return
+    }
+
+    flushMarkdownList(blocks, list)
+    blocks.push(
+      <p key={`p-${i}`} className="leading-relaxed text-slate-300">
+        {renderInlineMarkdown(trimmed)}
+      </p>
+    )
+  })
+
+  flushMarkdownList(blocks, list)
+
+  return <div className="space-y-3">{blocks}</div>
+}
+
 /* ── PromptResponse: side-by-side "PM says" vs "Claude returns" ── */
-export function PromptResponse({ prompt, response, promptLabel = '你輸入', responseLabel = 'Claude 輸出', filename }) {
+export function PromptResponse({ prompt, response, promptLabel = '你輸入', responseLabel = 'Claude 輸出', filename, renderResponseMarkdown = false }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
       <div className="rounded-xl overflow-hidden border border-sky-500/20 bg-sky-500/5">
@@ -240,7 +358,13 @@ export function PromptResponse({ prompt, response, promptLabel = '你輸入', re
           </div>
           {filename && <span className="text-emerald-400/70 text-xs font-mono">{filename}</span>}
         </div>
-        <div className="p-4 text-sm text-slate-300 leading-relaxed whitespace-pre-wrap">{response}</div>
+        <div className="p-4 text-sm text-slate-300 leading-relaxed">
+          {renderResponseMarkdown ? (
+            <MarkdownContent>{response}</MarkdownContent>
+          ) : (
+            <div className="whitespace-pre-wrap">{response}</div>
+          )}
+        </div>
       </div>
     </div>
   )

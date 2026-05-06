@@ -6,14 +6,14 @@ export default function Part6() {
       <SectionHeader partIndex={5} />
 
       <p className="text-slate-400 leading-relaxed mb-8">
-        前 3 章你學會用 Claude Code 寫 PRD 的完整流程。這章談兩件殘酷的事：
+        前面幾章用 PRD 當例子，走過一次從資料、模板到迭代的流程。這章談兩件事：
         <span className="text-white">它做不到什麼</span>、以及
-        <span className="text-white"> 寫一份 PRD 大概要花多少錢</span>。
+        <span className="text-white"> 文件與分析工作大概要花多少 token</span>。
         看完後你比較不會踩坑。
       </p>
 
       {/* What it can't do */}
-      <h3 className="text-white font-semibold mb-4 text-base">它做不到的 5 件事（PM 最常踩雷）</h3>
+      <h3 className="text-white font-semibold mb-4 text-base">它做不到的 6 件事</h3>
       <div className="space-y-3 mb-10">
         {[
           {
@@ -25,6 +25,11 @@ export default function Part6() {
             title: '它不會跨產品「記得」上一份 PRD',
             body: '這份對話結束（或 /clear）後，它就忘了。要它「跟我們上次討論的方向一致」，你得自己貼上一份 PRD 給它讀。',
             mistake: '以為它會自動參考公司過去 3 年所有 PRD，結果寫出來的方向跟舊決策矛盾。',
+          },
+          {
+            title: '它不能只靠 codebase 還原產品原因',
+            body: 'Codebase 能描述目前怎麼運作：哪些 API、資料表、流程、限制。但它通常不知道為什麼當初做這個取捨、哪些需求被砍掉、哪個 stakeholder 決定了 scope。',
+            mistake: '讓它從 code 直接回推 PRD，結果把現有實作限制誤寫成產品決策。',
           },
           {
             title: '它對「人」的理解很淺',
@@ -58,13 +63,13 @@ export default function Part6() {
 
       <Callout type="warn">
         最危險的不是它「答錯」，而是它「答得很有條理但偏離真相」。
-        對外部資料（競品、法規、市場數字）一律保持懷疑——能查證就查證。
+        對外部資料（競品、法規、市場數字）與 codebase 推論一律保持懷疑——能查證就查證，不能查證就標成 HITL question。
       </Callout>
 
       {/* Cost */}
-      <h3 className="text-white font-semibold mt-12 mb-4 text-base">一份 PRD 要花多少錢</h3>
+      <h3 className="text-white font-semibold mt-12 mb-4 text-base">一份文件任務要花多少錢</h3>
       <p className="text-slate-400 text-sm leading-relaxed mb-5">
-        Claude Code 是按 token 計費。寫 PRD 的 token 用量取決於——
+        Claude Code 與 Codex 都是按 token / 模型使用量計費。PRD、訪談整理、技術可行性分析都一樣，token 用量取決於——
         repo 多大（它要讀多少 code）、對話多長（你迭代幾輪）、有沒有貼 user research。
       </p>
 
@@ -84,23 +89,31 @@ export default function Part6() {
       </div>
 
       <Callout type="info">
-        這是相對級距，<span className="font-semibold">實際以 <code className="text-emerald-300 bg-emerald-500/10 px-1 rounded">/cost</code> 為準</span>——
-        在對話中隨時輸入 /cost 看當下花了多少。
+        這是相對級距，實際以工具內建狀態為準：
+        Claude Code 可用 <code className="text-emerald-300 bg-emerald-500/10 px-1 rounded">/cost</code>，
+        Codex 可用 <code className="text-emerald-300 bg-emerald-500/10 px-1 rounded">/status</code>
+        看目前模型、context 與 token 狀態。
       </Callout>
 
       <p className="text-slate-400 text-sm leading-relaxed mt-6 mb-10">
-        對比：請一個資深 PM 顧問寫一份標準 PRD，市場行情至少 NT$ 5,000 起跳。
-        Claude Code 不取代 PM，但能讓<span className="text-white">你一個人產出多份 PRD 的速度</span>提升幾倍。
+        Coding agent 不取代人做判斷。比較適合的定位是：協助整理資料、產生骨架、列問題、做多角度 review；
+        最後的判斷、取捨與 scope 仍要由人確認。
       </p>
 
       {/* Cost-saving tips */}
-      <h3 className="text-white font-semibold mb-4 text-base">省 token 的 4 個小撇步</h3>
+      <h3 className="text-white font-semibold mb-4 text-base">省 token 不是少給資訊</h3>
+      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+        不要把「省 token」理解成 prompt 越短越好。若資訊不足，agent 會用更多輪對話、讀更多檔案、
+        跑更多工具來補缺口；最後 input history、tool result、修正來回都會變成 token。
+        真正要省的是<span className="text-white font-medium">低訊號、重複、無關的 token</span>，不是精準必要的 context。
+      </p>
       <div className="space-y-2 mb-10">
         {[
+          { tip: '給足高訊號 context', why: '直接給目標、限制、範例、驗收條件、相關檔案；比讓 agent 多輪搜尋便宜。' },
           { tip: '一份 PRD 一個 session', why: '不同主題 /clear 重開。混在一起 token 會線性累積。' },
-          { tip: '長 session 中途 /compact', why: '把前面對話壓縮成摘要，input token 馬上瘦身。' },
-          { tip: '不要叫它「讀整個 repo」', why: '指定路徑：「讀 src/server/order/」就好，省幾倍 token。' },
-          { tip: '貼大段資料用「先存檔再讀」', why: '不要直接貼 5000 字 user research 進對話，存成檔案叫它讀更便宜（cache 命中）。' },
+          { tip: '長 session 中途 /compact', why: '把前面對話壓縮成摘要，降低後續 input token。' },
+          { tip: '不要叫它「讀整個 repo」', why: '指定路徑：「讀 src/server/order/」就好，減少不必要的 token。' },
+          { tip: '貼大段資料用「先存檔再讀」', why: '不要直接貼 5000 字 user research 進對話；存成檔案可 review、可重用，也方便 agent 按需讀片段。' },
         ].map(({ tip, why }, i) => (
           <div key={i} className="flex items-start gap-3 rounded-lg border border-white/10 bg-white/[0.02] px-4 py-3">
             <span className="text-purple-300 text-sm font-mono flex-shrink-0">0{i + 1}</span>
@@ -130,9 +143,8 @@ Estimated cost: $0.21 USD（約 NT$ 6.7）
       />
 
       <Callout type="pm">
-        PM track 到這裡結束。你已經能：
-        裝 Claude Code、讓它讀公司 repo、產 PRD 草稿、用 CLAUDE.md 鎖格式、迭代修改、估成本。
-        想看 Dev 怎麼用，從 Part 7 繼續。想直接看實戰範例，跳到 Part 11。
+        到這裡你已經看過一個文件型任務怎麼拆：指定 repo 範圍、產 PRD 骨架、
+        用 CLAUDE.md / AGENTS.md 提供格式規則、迭代修改、估 token 成本。下一段會進到更通用的工具操作。
       </Callout>
     </PageLayout>
   )

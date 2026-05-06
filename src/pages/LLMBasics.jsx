@@ -54,7 +54,7 @@ export default function LLMBasics() {
           <p className="text-slate-400 leading-relaxed mb-6">
             大型語言模型（Large Language Model，LLM）是一種基於深度學習的 AI 模型，
             透過學習海量文字資料，習得對語言的理解與生成能力。
-            簡單來說，它是一個「預測下一個詞」的系統，但規模極大、能力極強。
+            簡單來說，它是一個「預測下一個詞」的系統；因為模型與資料規模夠大，所以能處理較複雜的語言任務。
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <InfoCard emoji="📚" title="預訓練">
@@ -106,12 +106,12 @@ export default function LLMBasics() {
           <CodeBlock>{`# 範例：tokenization
 "Hello, world!" → ["Hello", ",", " world", "!"]  # 4 tokens
 
-"你好世界"       → ["你好", "世界"]                # 2 tokens（中文壓縮較好）
+"你好世界"       → 可能切成 2~4 個 tokens          # 依模型 tokenizer 而定
 
 # 為什麼重要？
 # - 模型有 Context Window 限制（例如 200K tokens）
 # - API 費用通常按 token 計費
-# - 中文約 1.5~2 個字 ≈ 1 token`}</CodeBlock>
+# - 不要用固定字數換算成本；實務上用工具內建 token / cost 顯示為準`}</CodeBlock>
         </Section>
 
         {/* Key concepts */}
