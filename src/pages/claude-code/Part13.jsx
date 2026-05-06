@@ -51,7 +51,8 @@ codex review --uncommitted "Focus on correctness, missing tests, and regressions
       </p>
       <CodeBlock title="Workflow — 跨檔重構">
 {`# 1. 先進 plan mode / ask 模式，避免 agent 一頭熱開始改
-> [Shift+Tab] 進入 plan mode
+> Claude Code: Shift+Tab 切到 plan mode
+> Codex: 先要求 plan / ask before edit
 
 # 2. 給目標 + 邊界
 > 把 src/pages 下用 fetch + useState + useEffect 的元件
@@ -63,6 +64,7 @@ codex review --uncommitted "Focus on correctness, missing tests, and regressions
 #    - 讀每個檔案分析改動風險
 #    - 寫出 plan file（哪些該改、哪些不該改、為什麼）
 > [Approve plan]
+> Claude Code: scope 確認後可切到 acceptEdits / Edit automatically
 
 # 4. 執行階段中途用 /compact 防止 context 爆炸
 #    （改到第 3 個檔案時下指令）
