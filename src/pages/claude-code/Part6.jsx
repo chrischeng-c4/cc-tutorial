@@ -5,7 +5,7 @@ export default function Part6() {
     <PageLayout partIndex={5}>
       <SectionHeader partIndex={5} />
 
-      <p className="text-slate-400 leading-relaxed mb-8">
+      <p className="text-slate-300 leading-relaxed mb-8">
         前面幾章用 PRD 當例子，走過一次從資料、模板到迭代的流程。這章談兩件事：
         <span className="text-white">它做不到什麼</span>、以及
         <span className="text-white"> 文件與分析工作大概要花多少 token</span>。
@@ -55,7 +55,7 @@ export default function Part6() {
             <p className="text-slate-300 text-sm leading-relaxed mb-2 ml-10">{body}</p>
             <div className="ml-10 flex items-start gap-2">
               <span className="text-rose-400 text-xs font-semibold flex-shrink-0 mt-0.5">常見坑</span>
-              <span className="text-slate-400 text-sm leading-relaxed">{mistake}</span>
+              <span className="text-slate-300 text-sm leading-relaxed">{mistake}</span>
             </div>
           </div>
         ))}
@@ -73,7 +73,7 @@ export default function Part6() {
 
       {/* Cost */}
       <h3 className="text-white font-semibold mt-12 mb-4 text-base">一份文件任務要花多少錢</h3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-5">
+      <p className="text-slate-300 text-sm leading-relaxed mb-5">
         Claude Code 與 Codex 都是按 token / 模型使用量計費。PRD、訪談整理、技術可行性分析都一樣，token 用量取決於——
         repo 多大（它要讀多少 code）、對話多長（你迭代幾輪）、有沒有貼 user research。
       </p>
@@ -88,7 +88,7 @@ export default function Part6() {
             <div className="text-3xl mb-2">{emoji}</div>
             <div className="text-white font-semibold mb-1">{tier}</div>
             <div className={`font-bold text-lg mb-2 ${color === 'emerald' ? 'text-emerald-400' : color === 'amber' ? 'text-amber-400' : 'text-rose-400'}`}>{cost}</div>
-            <div className="text-slate-400 text-xs leading-relaxed">{detail}</div>
+            <div className="text-slate-300 text-xs leading-relaxed">{detail}</div>
           </div>
         ))}
       </div>
@@ -100,14 +100,14 @@ export default function Part6() {
         看目前模型、context 與 token 狀態。
       </Callout>
 
-      <p className="text-slate-400 text-sm leading-relaxed mt-6 mb-10">
+      <p className="text-slate-300 text-sm leading-relaxed mt-6 mb-10">
         Coding agent 不取代人做判斷。比較適合的定位是：協助整理資料、產生骨架、列問題、做多角度 review；
         最後的判斷、取捨與 scope 仍要由人確認。
       </p>
 
       {/* Cost-saving tips */}
       <h3 className="text-white font-semibold mb-4 text-base">省 token 不是少給資訊</h3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         不要把「省 token」理解成 prompt 越短越好。若資訊不足，agent 會用更多輪對話、讀更多檔案、
         跑更多工具來補缺口；最後 input history、tool result、修正來回都會變成 token。
         真正要省的是<span className="text-white font-medium">低訊號、重複、無關的 token</span>，不是精準必要的 context。
@@ -124,7 +124,7 @@ export default function Part6() {
             <span className="text-purple-300 text-sm font-mono flex-shrink-0">0{i + 1}</span>
             <div className="flex-1 min-w-0 text-sm">
               <div className="text-white font-medium">{tip}</div>
-              <div className="text-slate-500 text-xs mt-0.5">{why}</div>
+              <div className="text-slate-300 text-xs mt-0.5">{why}</div>
             </div>
           </div>
         ))}
@@ -149,7 +149,7 @@ Estimated cost: $0.21 USD（約 NT$ 6.7）
 
       <Callout type="pm">
         到這裡你已經看過一個文件型任務怎麼拆：指定 repo 範圍、產 PRD 骨架、
-        用 CLAUDE.md / AGENTS.md 提供格式規則、迭代修改、估 token 成本。下一章會把完整 demo workflow 收斂起來。
+        用 CLAUDE.md / AGENTS.md 提供格式規則、迭代修改、估 token 成本。下一章會把完整演練流程收斂起來。
       </Callout>
     </PageLayout>
   )

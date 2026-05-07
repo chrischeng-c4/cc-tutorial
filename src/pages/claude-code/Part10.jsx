@@ -13,7 +13,7 @@ export default function Part10() {
     <PageLayout partIndex={10}>
       <SectionHeader partIndex={10} />
 
-      <p className="text-slate-400 leading-relaxed mb-8">
+      <p className="text-slate-300 leading-relaxed mb-8">
         Scripts 是最容易被低估的一層。它不一定比 MCP 漂亮，但最適合教學和落地：
         可重跑、可 commit、可在 CI 跑，也能讓 agent 不必憑記憶手寫固定格式。
         當 MCP 來不及做時，script 通常就是最好的替代路徑。
@@ -43,19 +43,23 @@ export default function Part10() {
         先把流程寫成 script，不代表未來不用 MCP。Script 先幫你確認輸入、輸出、錯誤、dry-run、review 流程；
         等流程穩定、多人共用、需要工具 discoverability 時，再產品化成 MCP。
       </Callout>
+      <Callout type="warn">
+        Script / CLI 不等於免授權。讀寫 JIRA、Confluence、Google、SeaTalk 或內部系統時，CLI 一樣可能需要 OAuth、API token、VPN、SSO 或專案權限。
+        課堂先用本機 fixture，是為了把流程講清楚；真實串接前要把授權方式、失敗訊息、dry-run 與 fallback 設計好。
+      </Callout>
 
       <H3>1. Script 解決的是「可重跑」</H3>
       <div className="grid grid-cols-1 gap-3 mb-5 md:grid-cols-2">
         {scriptUseCases.map((item) => (
           <div key={item.title} className="rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-4">
             <div className="text-white text-sm font-semibold mb-2">{item.title}</div>
-            <p className="text-slate-400 text-sm leading-relaxed">{item.detail}</p>
+            <p className="text-slate-300 text-sm leading-relaxed">{item.detail}</p>
           </div>
         ))}
       </div>
 
       <H3>2. 大量重複修改：不要一個一個改</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         如果任務是大量 rename、把所有檔案改成同一種格式、補 frontmatter、批次改欄位名稱，
         可以明確要求 agent <span className="text-white font-medium">先寫可檢查的腳本</span>，而不是逐檔手改。
         現在好的 agent 多半會自己這樣做，但上課時可以觀察它的行為：它是直接改一堆檔案，還是先建立規則、dry-run、再套用？
@@ -78,7 +82,7 @@ export default function Part10() {
       </Callout>
 
       <H3>3. 固定格式不要只靠 prompt</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         Prompt、Skill、AGENTS.md 都是指令；agent 多半會遵守，但不能把它當 parser、formatter 或 validator。
         只要輸出會被機器吃進去，就把格式契約做成 script。
       </p>
@@ -101,7 +105,7 @@ scripts/jira-bulk dry-run tmp/jira-bulk.json
 > validate 或 dry-run 失敗時，只回報錯誤與需要人工確認的欄位。`}
       </CodeBlock>
 
-      <H3>4. Demo 最穩的 script pattern</H3>
+      <H3>4. 演練最穩的 script pattern</H3>
       <CodeBlock title="外部寫入前先停在 reviewable artifact">
 {`scripts/weekly-report export --project SHOP --since 2026-05-01 \
   --output tmp/weekly-source.json
@@ -112,7 +116,7 @@ scripts/weekly-report render tmp/weekly-source.json \
 
 scripts/weekly-report validate tmp/weekly-report.md
 
-# 只到這裡就能 demo：人 review tmp/weekly-report.md
+# 只到這裡就能演練：人 review tmp/weekly-report.md
 # 真正發送 SeaTalk / 寫回 Docs，要另外加 explicit approval。`}
       </CodeBlock>
 
@@ -122,7 +126,7 @@ scripts/weekly-report validate tmp/weekly-report.md
         <code className="mx-1 rounded bg-cyan-500/10 px-1 py-0.5 text-cyan-300">validate</code>、
         <code className="mx-1 rounded bg-cyan-500/10 px-1 py-0.5 text-cyan-300">dry-run</code> 和
         <code className="mx-1 rounded bg-cyan-500/10 px-1 py-0.5 text-cyan-300">apply</code>。
-        Demo 現場預設停在 dry-run 或 artifact。
+        演練現場預設停在 dry-run 或 artifact。
       </Callout>
     </PageLayout>
   )

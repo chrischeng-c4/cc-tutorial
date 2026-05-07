@@ -24,10 +24,10 @@ export const teachingTracks = [
     parts: ['delegation-subagents', 'parallel-agent-team', 'repo-context', 'programmatic-review'],
   },
   {
-    title: '第五場：Demo lab',
+    title: '第五場：實際演練',
     audience: '要導入到真實工作流的人',
-    goal: '從 demo part 挑場景，練 input、dry-run、artifact、HITL 與 optional MCP。',
-    parts: ['demo-workflow', 'demo-weekly-report-flow', 'demo-prd-codebase-feasibility'],
+    goal: '從演練 part 挑場景，練 input、dry-run、artifact、HITL 與 optional MCP。',
+    parts: ['demo-workflow', 'demo-prd-draft-review', 'demo-prd-codebase-feasibility'],
   },
 ]
 
@@ -43,7 +43,7 @@ export const questionIndex = [
     parts: ['token-context-economics', 'skills-workflows', 'delegation-subagents'],
   },
   {
-    question: 'MCP 來不及做，但 demo 要跑起來',
+    question: 'MCP 來不及做，但演練要跑起來',
     answer: '先用 export、script、CLI、dry-run artifact，MCP 放到穩定後。',
     parts: ['scripts-workflow', 'cli-tooling', 'mcp-integration', 'demo-workflow'],
   },

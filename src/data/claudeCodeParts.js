@@ -11,15 +11,15 @@ const RAW_PARTS = [
   { slug: 'token-context-economics',    path: '/coding-agent/token-context-economics',    title: 'Token 與 context 經濟學',                  time: '12 min', accent: 'orange',  usage: '核心同步', audience: '共通',             tags: ['成本'] },
   { slug: 'permissions-approval',       path: '/coding-agent/permissions-approval',       title: 'Permission · Approval：工具邊界',          time: '8 min',  accent: 'emerald', usage: '核心同步', audience: '共通',             tags: ['權限', '安全'] },
   { slug: 'hooks-automation',           path: '/coding-agent/hooks-automation',           title: 'Hooks：工具呼叫前後的流程閘門',           time: '8 min',  accent: 'emerald', usage: '進階參考', audience: '偏 Engineering',   tags: ['Hooks', '安全', '自動化'] },
-  { slug: 'scripts-workflow',           path: '/coding-agent/scripts-workflow',           title: 'Scripts：可重跑的工作流',                 time: '8 min',  accent: 'cyan',    usage: '核心同步', audience: '共通',             tags: ['Scripts', '操作'], demoCases: ['02', '05', '06', '10', '13'] },
-  { slug: 'cli-tooling',                path: '/coding-agent/cli-tooling',                title: 'CLI：人與 agent 共用的工具介面',           time: '8 min',  accent: 'emerald', usage: '核心同步', audience: '共通',             tags: ['CLI', '工具'], demoCases: ['02', '05', '06', '10', '13'] },
-  { slug: 'mcp-integration',            path: '/coding-agent/mcp-integration',            title: 'MCP：穩定外部系統的工具協定',             time: '8 min',  accent: 'violet',  usage: '進階參考', audience: '偏 Engineering',   tags: ['MCP', '整合'], demoCases: ['01', '02', '03', '04', '07', '09'] },
-  { slug: 'skills-workflows',           path: '/coding-agent/skills-workflows',           title: 'Skill：可重用的工作方法',                 time: '10 min', accent: 'emerald', usage: '進階參考', audience: '偏 Engineering',   tags: ['Skill', 'Context'], demoCases: ['04', '05', '13'] },
+  { slug: 'scripts-workflow',           path: '/coding-agent/scripts-workflow',           title: 'Scripts：可重跑的工作流',                 time: '8 min',  accent: 'cyan',    usage: '核心同步', audience: '共通',             tags: ['Scripts', '操作'], demoCases: ['13', '14'] },
+  { slug: 'cli-tooling',                path: '/coding-agent/cli-tooling',                title: 'CLI：人與 agent 共用的工具介面',           time: '8 min',  accent: 'emerald', usage: '核心同步', audience: '共通',             tags: ['CLI', '工具'], demoCases: ['14', '13'] },
+  { slug: 'mcp-integration',            path: '/coding-agent/mcp-integration',            title: 'MCP：穩定外部系統的工具協定',             time: '8 min',  accent: 'violet',  usage: '進階參考', audience: '偏 Engineering',   tags: ['MCP', '整合'], demoCases: ['03', '04'] },
+  { slug: 'skills-workflows',           path: '/coding-agent/skills-workflows',           title: 'Skill：可重用的工作方法',                 time: '10 min', accent: 'emerald', usage: '進階參考', audience: '偏 Engineering',   tags: ['Skill', 'Context'], demoCases: ['04', '13'] },
   { slug: 'delegation-subagents',       path: '/coding-agent/delegation-subagents',       title: '委派：Subagent / 背景任務',               time: '8 min',  accent: 'cyan',    usage: '進階參考', audience: '偏 Engineering',   tags: ['進階', '分工'] },
   { slug: 'parallel-agent-team',        path: '/coding-agent/parallel-agent-team',        title: '平行協作：Agent Team / Codex',            time: '8 min',  accent: 'cyan',    usage: '進階參考', audience: '偏 Engineering',   tags: ['進階', '平行'], experimental: true },
-  { slug: 'demo-workflow',              path: '/coding-agent/demo-workflow',              title: 'Demo 流程 + 常見坑',                      time: '8 min',  accent: 'violet',  usage: '進階參考', audience: '共通',             tags: ['案例', '收斂'] },
+  { slug: 'demo-workflow',              path: '/coding-agent/demo-workflow',              title: '演練流程 + 常見坑',                      time: '8 min',  accent: 'violet',  usage: '進階參考', audience: '共通',             tags: ['案例', '收斂'] },
   { slug: 'repo-context',               path: '/coding-agent/repo-context',               title: 'Repo 給 LLM 讀：llms.txt · SDD · CDD',    time: '10 min', accent: 'orange',  usage: '進階參考', audience: '偏 Engineering',   tags: ['Repo', 'Context'], demoCases: ['12', '13'] },
-  { slug: 'programmatic-review',        path: '/coding-agent/programmatic-review',        title: 'Programmatic 串接與 Review',              time: '10 min', accent: 'violet',  usage: '進階參考', audience: '偏 Engineering',   tags: ['Automation', 'Review'], demoCases: ['02', '05', '06', '10', '13'] },
+  { slug: 'programmatic-review',        path: '/coding-agent/programmatic-review',        title: 'Programmatic 串接與 Review',              time: '10 min', accent: 'violet',  usage: '進階參考', audience: '偏 Engineering',   tags: ['Automation', 'Review'], demoCases: ['13'] },
   { slug: 'human-in-the-loop',          path: '/coding-agent/human-in-the-loop',          title: 'HITL：人類在 loop 裡做什麼',               time: '8 min',  accent: 'amber',   usage: '核心同步', audience: '共通',             tags: ['HITL', '決策'] },
 ]
 
@@ -39,6 +39,7 @@ const demoSlugById = {
   11: 'demo-interview-outline',
   12: 'demo-code-change-prd-update',
   13: 'demo-prd-codebase-feasibility',
+  14: 'demo-build-validator-script',
 }
 
 const demoAccentByLayer = {
@@ -49,16 +50,19 @@ const demoAccentByLayer = {
 
 export const DEMO_PARTS = demoScenarios.map((scenario) => {
   const slug = demoSlugById[scenario.id]
+  const isLive = scenario.demoMode === 'live'
   return {
     slug,
     path: `/coding-agent/${slug}`,
-    title: `Demo：${scenario.title}`,
+    title: `${isLive ? '實際演練' : '課後自練'}：${scenario.title}`,
     time: scenario.layer === 2 ? '15 min' : '10 min',
     accent: demoAccentByLayer[scenario.layer] ?? 'violet',
-    usage: 'Demo 實作',
+    usage: isLive ? '實際演練' : '課後自練',
     audience: scenario.layer === 1 ? '共通' : '偏 PM',
-    tags: ['Demo', scenario.layerLabel.replace('Layer ', '')],
+    tags: [isLive ? '實際演練' : '課後自練', scenario.layerLabel.replace('Layer ', '')],
     demoId: scenario.id,
+    demoMode: scenario.demoMode,
+    materialsReady: scenario.materialsReady ?? false,
     relatedConcepts: scenario.relatedParts,
   }
 })
@@ -83,16 +87,21 @@ const CONCEPT_PATH = [
   },
   {
     title: '實戰演練',
-    desc: '最後用 PRD 文件流程、限制成本與完整 demo，把前面的觀念串成可操作工作流。',
+    desc: '最後用 PRD 文件流程、限制成本與完整演練，把前面的觀念串成可操作工作流。',
     parts: ['prd-assist', 'prd-draft', 'rules-and-iteration', 'limits-cost', 'demo-workflow'],
   },
 ]
 
 const DEMO_PATH = [
   {
-    title: 'Demo 實作',
-    desc: '後半部每一個 part 都是一個 demo，把前面的觀念套到真實工作情境。',
-    parts: DEMO_PARTS.map(part => part.slug),
+    title: '實際演練（課堂）',
+    desc: '課堂會帶這 5 個流程：4 個純文字 / markdown 演練（讀檔→產草稿）+ 1 個讓 agent 寫小 CLI 工具（學「先寫腳本、先 dry-run、再 apply」）。',
+    parts: DEMO_PARTS.filter(part => part.demoMode === 'live').map(part => part.slug),
+  },
+  {
+    title: '課後自練（依興趣選做）',
+    desc: '課堂不示範，但保留下來當延伸練習。多數情境需要外部系統權限或自備素材；標 ✅ 的有現成 fixture，標 ✗ 的素材還沒備好，可以自行設計。',
+    parts: DEMO_PARTS.filter(part => part.demoMode !== 'live').map(part => part.slug),
   },
 ]
 
@@ -103,8 +112,8 @@ export const COURSE_SECTIONS = [
     groups: CONCEPT_PATH,
   },
   {
-    title: '下半部：Demo 實作',
-    desc: '每個 part 對應一個 demo，重點是輸入資料、CLI first 路徑、HITL 與可 review 產出。',
+    title: '下半部：實際演練',
+    desc: '每個 part 對應一個演練，重點是輸入資料、CLI first 路徑、HITL 與可 review 產出。',
     groups: DEMO_PATH,
   },
 ]
@@ -116,7 +125,8 @@ export const USAGE_STYLES = {
   核心同步: 'border-cyan-500/25 bg-cyan-500/10 text-cyan-300',
   文件案例: 'border-rose-500/25 bg-rose-500/10 text-rose-300',
   進階參考: 'border-violet-500/25 bg-violet-500/10 text-violet-300',
-  'Demo 實作': 'border-amber-500/25 bg-amber-500/10 text-amber-300',
+  實際演練: 'border-amber-500/25 bg-amber-500/10 text-amber-300',
+  課後自練: 'border-slate-500/25 bg-slate-500/10 text-slate-300',
 }
 
 export const AUDIENCE_STYLES = {

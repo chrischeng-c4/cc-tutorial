@@ -5,7 +5,7 @@ export default function Part3() {
     <PageLayout partIndex={2}>
       <SectionHeader partIndex={2} />
 
-      <p className="text-slate-400 leading-relaxed mb-8">
+      <p className="text-slate-300 leading-relaxed mb-8">
         這段用 PRD 當例子，示範 coding agent 如何協助整理文件、列問題、對齊模板。
         重點不是角色分流，而是先看一個非純 coding 的工作怎麼被拆成可 review 的步驟。
       </p>
@@ -40,7 +40,7 @@ export default function Part3() {
               <span className="text-2xl">{icon}</span>
               <span className="text-white font-semibold text-sm">{title}</span>
             </div>
-            <p className="text-slate-400 text-sm leading-relaxed">{body}</p>
+            <p className="text-slate-300 text-sm leading-relaxed">{body}</p>
           </div>
         ))}
       </div>
@@ -63,7 +63,7 @@ export default function Part3() {
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-rose-400/30 text-rose-200 text-xs font-bold flex items-center justify-center mt-0.5">{i + 1}</span>
               <div className="flex-1 min-w-0 text-sm">
                 <div className="text-rose-200 font-medium">{ability}</div>
-                <div className="text-slate-400">→ {match}</div>
+                <div className="text-slate-300">→ {match}</div>
               </div>
             </div>
           ))}
@@ -77,7 +77,7 @@ export default function Part3() {
 
       {/* Concrete demo */}
       <h3 className="text-white font-semibold mb-4 text-base">差別有多大？同樣一句話，看輸出差距</h3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-5">
+      <p className="text-slate-300 text-sm leading-relaxed mb-5">
         假設你想加一個功能：<span className="text-white">「讓使用者可以匯出自己的訂單為 CSV」</span>。
         我們會用這個例子貫穿後面 4 章。先看看「丟給 coding agent」跟「自己手寫」的對比：
       </p>
@@ -125,7 +125,7 @@ export default function Part3() {
         renderResponseMarkdown
       />
 
-      <p className="text-slate-400 text-sm leading-relaxed mb-10">
+      <p className="text-slate-300 text-sm leading-relaxed mb-10">
         差別不只在於它寫得快。比較有用的是：它可以把「已知事實、合理假設、待確認問題」分開，
         讓 PM 不用從空白頁開始，但也不會把 codebase 裡不存在的產品原因硬推成結論。
       </p>

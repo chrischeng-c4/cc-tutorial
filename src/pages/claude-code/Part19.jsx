@@ -35,14 +35,14 @@ export default function Part19() {
     <PageLayout partIndex={13}>
       <SectionHeader partIndex={13} />
 
-      <p className="text-slate-400 leading-relaxed mb-8">
+      <p className="text-slate-300 leading-relaxed mb-8">
         Skill 值得獨立講，因為它不是 CLI、不是 MCP，也不是 subagent。
         Skill 是一個可重用的工作方法包：在需要時把規則、輸出格式、工具路由與風險邊界注入 main thread。
         它讓人可以更懶，但仍然有一致流程。
       </p>
 
       <H3>1. Skill 是受控 prompt injection</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         這裡的 prompt injection 不是攻擊，而是你授權的指令注入。
         好 skill 不塞大量資料，只放穩定規則：怎麼找資料、怎麼產 artifact、什麼情況要問人、什麼情況要派 subagent。
       </p>
@@ -50,7 +50,7 @@ export default function Part19() {
         {skillLayers.map((item) => (
           <div key={item.layer} className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4">
             <div className="text-emerald-300 text-xs font-semibold uppercase tracking-wide mb-2">{item.layer}</div>
-            <p className="text-slate-400 text-sm leading-relaxed">{item.detail}</p>
+            <p className="text-slate-300 text-sm leading-relaxed">{item.detail}</p>
           </div>
         ))}
       </div>
@@ -74,7 +74,7 @@ description: Produce an internal weekly report from Jira and Sheets exports.
       </CodeBlock>
 
       <H3>3. 進階範例：Skill 搭配 CLI & MCP 接 Confluence / JIRA</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         Confluence 與 JIRA 都可以接 MCP。比較穩的做法不是一開始就讓 agent 直接寫外部系統，
         而是把三層拆開：Skill 定義工作規則；CLI 產 dry-run artifact；MCP 在權限穩定後負責 live read 或受控寫入。
       </p>
@@ -114,7 +114,7 @@ scripts/shopee-jira validate tmp/jira-preview.json
         ].map((item) => (
           <div key={item.layer} className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
             <div className="text-violet-300 text-xs font-semibold uppercase tracking-wide mb-2">{item.layer}</div>
-            <p className="text-slate-400 text-sm leading-relaxed">{item.body}</p>
+            <p className="text-slate-300 text-sm leading-relaxed">{item.body}</p>
           </div>
         ))}
       </div>
@@ -128,7 +128,7 @@ scripts/shopee-jira validate tmp/jira-preview.json
         <table className="w-full min-w-[760px] border-collapse text-sm">
           <thead>
             <tr className="border-b border-white/10 bg-white/[0.03]">
-              <th className="px-4 py-3 text-left font-semibold text-slate-400">任務條件</th>
+              <th className="px-4 py-3 text-left font-semibold text-slate-300">任務條件</th>
               <th className="px-4 py-3 text-left font-semibold text-emerald-300">Skill</th>
               <th className="px-4 py-3 text-left font-semibold text-cyan-300">Subagent</th>
             </tr>
@@ -137,8 +137,8 @@ scripts/shopee-jira validate tmp/jira-preview.json
             {skillVsSubagent.map((row) => (
               <tr key={row.question} className="border-b border-white/5 last:border-0">
                 <td className="px-4 py-3 align-top text-white">{row.question}</td>
-                <td className="px-4 py-3 align-top text-slate-400 leading-relaxed">{row.skill}</td>
-                <td className="px-4 py-3 align-top text-slate-400 leading-relaxed">{row.subagent}</td>
+                <td className="px-4 py-3 align-top text-slate-300 leading-relaxed">{row.skill}</td>
+                <td className="px-4 py-3 align-top text-slate-300 leading-relaxed">{row.subagent}</td>
               </tr>
             ))}
           </tbody>

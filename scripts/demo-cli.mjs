@@ -39,12 +39,30 @@ const demos = {
     prompt: 'demo-data/prompts/meeting-actions.md',
     expected: 'demo-data/expected/action-items.md',
   },
+  'prd-update': {
+    caseId: '12',
+    title: '微調功能開發後回補 PRD 草稿',
+    input: [
+      'demo-data/demo-repo/src/orders/exportCsv.js',
+      'demo-data/demo-repo/src/auth/permissions.js',
+      'demo-data/fixtures/codebase-prd.md',
+    ],
+    prompt: 'demo-data/prompts/prd-update.md',
+    expected: 'demo-data/expected/prd-update.md',
+  },
   'jira-subtasks': {
     caseId: '02',
     title: 'JIRA Epic 建立 Sub-tasks 草稿',
     input: ['demo-data/fixtures/jira-epic.json'],
     prompt: 'demo-data/prompts/jira-subtasks.md',
     expected: 'demo-data/expected/jira-subtasks-dry-run.json',
+  },
+  'build-validator': {
+    caseId: '14',
+    title: '打造自己的 CLI：JIRA bulk JSON 驗證器',
+    input: ['demo-data/expected/jira-subtasks-dry-run.json'],
+    prompt: 'demo-data/prompts/build-validator.md',
+    expected: 'demo-data/expected/build-validator.mjs',
   },
 }
 

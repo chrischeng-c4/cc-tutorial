@@ -23,7 +23,7 @@ export default function ClaudeCodeIndex() {
           </h1>
           <p className="text-lg text-slate-300 leading-relaxed max-w-2xl">
             整份教材分成上下兩半：上半部先教 coding agent 的觀念、產品用法與進階技巧；
-            下半部每一個 part 都是一個 demo，把方法套到真實工作情境。
+            下半部每一個 part 都是一個實際演練，把方法套到真實工作情境。
           </p>
         </div>
 
@@ -31,7 +31,7 @@ export default function ClaudeCodeIndex() {
           <div className="text-white font-semibold mb-2">這份補充教材怎麼用</div>
           <p className="text-slate-300 text-sm leading-relaxed">
             每個章節都可以單獨回看。先看上半部建立共通語言與風險邊界；
-            再進下半部，逐個 demo 練輸入資料、CLI first、HITL 與可 review 產出。
+            再進下半部，逐個演練輸入資料、CLI first、HITL 與可 review 產出。
             非 dev 可以從「什麼時候用、怎麼安全用」切入；dev 可以從「怎麼把流程工程化」切入。
           </p>
         </div>
@@ -56,7 +56,7 @@ export default function ClaudeCodeIndex() {
                       <Link
                         key={slug}
                         to={part.path}
-                        className="rounded-md border border-white/10 px-2 py-1 font-mono text-xs text-slate-400 no-underline transition-colors hover:border-white/20 hover:text-white"
+                        className="rounded-md border border-white/10 px-2 py-1 font-mono text-xs text-slate-300 no-underline transition-colors hover:border-white/20 hover:text-white"
                       >
                         {slug}
                       </Link>
@@ -85,7 +85,7 @@ export default function ClaudeCodeIndex() {
                       <Link
                         key={slug}
                         to={part.path}
-                        className="rounded-md border border-white/10 px-2 py-1 font-mono text-xs text-slate-400 no-underline transition-colors hover:border-white/20 hover:text-white"
+                        className="rounded-md border border-white/10 px-2 py-1 font-mono text-xs text-slate-300 no-underline transition-colors hover:border-white/20 hover:text-white"
                       >
                         {slug}
                       </Link>
@@ -124,7 +124,7 @@ export default function ClaudeCodeIndex() {
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-1">
                               <span className={`text-xs font-semibold font-mono ${c.badge.split(' ')[1]}`}>{p.slug}</span>
-                              <span className="text-slate-400 text-xs">{p.time}</span>
+                              <span className="text-slate-300 text-xs">{p.time}</span>
                               <div className="flex gap-1 ml-1 flex-wrap">
                                 <PartBadge className={USAGE_STYLES[p.usage]}>{p.usage}</PartBadge>
                                 <PartBadge className={AUDIENCE_STYLES[p.audience]}>{p.audience}</PartBadge>
@@ -132,7 +132,7 @@ export default function ClaudeCodeIndex() {
                                   <PartBadge className="border-amber-500/25 bg-amber-500/10 text-amber-300">實驗性</PartBadge>
                                 )}
                                 {p.tags.map(a => (
-                                  <span key={a} className="px-1.5 py-0.5 rounded text-xs border border-white/10 text-slate-400">{a}</span>
+                                  <span key={a} className="px-1.5 py-0.5 rounded text-xs border border-white/10 text-slate-300">{a}</span>
                                 ))}
                               </div>
                             </div>
@@ -167,7 +167,7 @@ export default function ClaudeCodeIndex() {
         </div>
 
         <div className="flex items-center justify-between pt-12 mt-12 border-t border-white/10">
-          <Link to="/agent" className="text-slate-400 hover:text-white transition-colors no-underline text-sm">
+          <Link to="/agent" className="text-slate-300 hover:text-white transition-colors no-underline text-sm">
             ← Agent 概念
           </Link>
         </div>

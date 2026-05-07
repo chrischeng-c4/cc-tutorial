@@ -50,7 +50,7 @@ export default function Part11() {
     <PageLayout partIndex={14}>
       <SectionHeader partIndex={14} />
 
-      <p className="text-slate-400 leading-relaxed mb-8">
+      <p className="text-slate-300 leading-relaxed mb-8">
         <span className="font-mono text-slate-300">token-context-economics</span> 講過：context 是工作記憶，不是資料庫。
         <span className="font-mono text-slate-300">skills-workflows</span> 又把 Skill 和 subagent 的分工拆清楚。
         這一章講 main thread、subagent 與 Codex 背景委派的分工：主線對話保留決策；副工作隔離出去；
@@ -58,7 +58,7 @@ export default function Part11() {
       </p>
 
       <H3>Main thread：保留決策，不保留所有過程</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         Main thread 是你跟 agent 的主線對話。它應該保存目標、scope、重要決策、待確認問題與最後產出；
         不應該保存所有中間搜尋、長 log、repo 掃描結果。這些副工作要交給 CLI、MCP 或 subagent。
       </p>
@@ -67,7 +67,7 @@ export default function Part11() {
           <div key={item.name} className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
             <div className="text-cyan-300 text-xs font-semibold uppercase tracking-wide mb-2">{item.name}</div>
             <div className="text-white font-semibold text-sm mb-2">{item.role}</div>
-            <p className="text-slate-400 text-sm leading-relaxed">{item.detail}</p>
+            <p className="text-slate-300 text-sm leading-relaxed">{item.detail}</p>
           </div>
         ))}
       </div>
@@ -77,7 +77,7 @@ export default function Part11() {
       </Callout>
 
       <H3>Subagent：把 side-quest 隔在獨立 context</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         Subagent 是「主對話派出去的 worker」：獨立的 context window、自己的 system prompt、自己的 tool 限制、自己的 model。
         跑完只把<span className="text-white font-medium">摘要</span>送回主對話，工作過程中讀的檔案、log、搜尋結果留在它自己的 context 裡。
       </p>
@@ -97,7 +97,7 @@ export default function Part11() {
         <div className="mb-4">
           <div className="text-cyan-300 text-xs font-semibold uppercase tracking-wide mb-1">Progressive Disclosure</div>
           <div className="text-white font-semibold">把懶得整理資料，變成可控的 context 外包流程</div>
-          <p className="text-slate-400 text-sm leading-relaxed mt-2">
+          <p className="text-slate-300 text-sm leading-relaxed mt-2">
             前面先教手動 artifact，這裡才把 Skill 與 subagent 補上。重點不是禁止人偷懶，
             而是把高噪音探索隔離出去，只讓 main thread 接收可 review 的 artifact。
           </p>
@@ -112,7 +112,7 @@ export default function Part11() {
                 <span className="text-white text-sm font-semibold">{item.title}</span>
               </div>
               <p className="text-slate-300 text-sm leading-relaxed">{item.desc}</p>
-              <p className="text-slate-500 text-xs leading-relaxed mt-2">{item.risk}</p>
+              <p className="text-slate-300 text-xs leading-relaxed mt-2">{item.risk}</p>
             </div>
           ))}
         </div>
@@ -144,7 +144,7 @@ When the task requires broad repo exploration or unknown domain discovery:
       </Callout>
 
       <h4 className="text-white font-semibold mb-3 mt-6 text-sm">內建 Subagent</h4>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         Claude Code 出廠就帶幾個 subagent，用自然語言觸發，Claude 自己挑：
       </p>
       <div className="rounded-xl border border-white/10 bg-white/[0.02] overflow-hidden mb-5">
@@ -157,13 +157,13 @@ When the task requires broad repo exploration or unknown domain discovery:
             <code className="md:col-span-3 text-cyan-300 bg-cyan-500/10 px-2 py-0.5 rounded font-mono text-xs break-words">{name}</code>
             <span className="md:col-span-2 text-slate-300 text-sm">{model}</span>
             <span className="md:col-span-2 text-slate-300 text-sm">{tools}</span>
-            <span className="md:col-span-5 text-slate-400 leading-relaxed">{desc}</span>
+            <span className="md:col-span-5 text-slate-300 leading-relaxed">{desc}</span>
           </div>
         ))}
       </div>
 
       <h4 className="text-white font-semibold mb-3 mt-6 text-sm">自訂 Subagent</h4>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         重複用同一種 worker、同一套指示時，把它寫成 markdown 檔。
         YAML frontmatter 是設定，body 是 system prompt：
       </p>
@@ -201,7 +201,7 @@ Return only:
 Do not paste full diff or full logs into the main thread.`}
       </CodeBlock>
 
-      <p className="text-slate-400 text-sm leading-relaxed mb-3">
+      <p className="text-slate-300 text-sm leading-relaxed mb-3">
         重要 frontmatter 欄位：
       </p>
       <div className="rounded-xl border border-white/10 bg-white/[0.02] overflow-hidden mb-5">
@@ -217,14 +217,14 @@ Do not paste full diff or full logs into the main thread.`}
         ].map(({ field, req, desc }) => (
           <div key={field} className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-3 items-start px-4 py-3 border-b border-white/5 last:border-0 text-sm">
             <code className="md:col-span-3 text-cyan-300 bg-cyan-500/10 px-2 py-0.5 rounded font-mono text-xs break-words">{field}</code>
-            <span className={`md:col-span-1 text-xs ${req ? 'text-rose-300' : 'text-slate-400'}`}>{req ? '必填' : '選填'}</span>
-            <span className="md:col-span-8 text-slate-400 leading-relaxed">{desc}</span>
+            <span className={`md:col-span-1 text-xs ${req ? 'text-rose-300' : 'text-slate-300'}`}>{req ? '必填' : '選填'}</span>
+            <span className="md:col-span-8 text-slate-300 leading-relaxed">{desc}</span>
           </div>
         ))}
       </div>
 
       <h4 className="text-white font-semibold mb-3 mt-6 text-sm">放在哪？優先序</h4>
-      <p className="text-slate-400 text-sm leading-relaxed mb-3">
+      <p className="text-slate-300 text-sm leading-relaxed mb-3">
         同名 subagent 以較高優先序覆蓋較低的：
       </p>
       <div className="rounded-xl border border-white/10 bg-white/[0.02] overflow-hidden mb-5">
@@ -236,9 +236,9 @@ Do not paste full diff or full logs into the main thread.`}
           { p: '5', loc: 'Plugin agents/',             scope: 'plugin 啟用範圍',    note: '透過 plugin 散布' },
         ].map(({ p, loc, scope, note }) => (
           <div key={loc} className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-3 items-start px-4 py-3 border-b border-white/5 last:border-0 text-sm">
-            <span className="md:col-span-1 text-slate-400 font-mono text-xs">{p}</span>
+            <span className="md:col-span-1 text-slate-300 font-mono text-xs">{p}</span>
             <code className="md:col-span-4 text-cyan-300 font-mono text-xs break-words">{loc}</code>
-            <span className="md:col-span-3 text-slate-400 text-xs">{scope}</span>
+            <span className="md:col-span-3 text-slate-300 text-xs">{scope}</span>
             <span className="md:col-span-4 text-slate-300 text-xs leading-relaxed">{note}</span>
           </div>
         ))}
@@ -253,15 +253,15 @@ Do not paste full diff or full logs into the main thread.`}
         <div className="space-y-3 text-sm">
           <div>
             <code className="text-cyan-300 bg-cyan-500/10 px-1.5 py-0.5 rounded text-xs">自然語言</code>
-            <span className="text-slate-400 ml-2">「叫 code-reviewer 看一下我剛改的東西」：Claude 看 description 自己判斷要不要委派</span>
+            <span className="text-slate-300 ml-2">「叫 code-reviewer 看一下我剛改的東西」：Claude 看 description 自己判斷要不要委派</span>
           </div>
           <div>
             <code className="text-cyan-300 bg-cyan-500/10 px-1.5 py-0.5 rounded text-xs">@-mention</code>
-            <span className="text-slate-400 ml-2">輸入 @ 從 typeahead 選，強制由那個 subagent 跑</span>
+            <span className="text-slate-300 ml-2">輸入 @ 從 typeahead 選，強制由那個 subagent 跑</span>
           </div>
           <div>
             <code className="text-cyan-300 bg-cyan-500/10 px-1.5 py-0.5 rounded text-xs">--agent</code>
-            <span className="text-slate-400 ml-2"><code className="text-emerald-300">claude --agent code-reviewer</code>：整個 session 都用這個 subagent 的 prompt 與工具</span>
+            <span className="text-slate-300 ml-2"><code className="text-emerald-300">claude --agent code-reviewer</code>：整個 session 都用這個 subagent 的 prompt 與工具</span>
           </div>
         </div>
       </div>

@@ -15,7 +15,10 @@ npm run demo:list
 npm run demo:case -- prd-draft
 npm run demo:case -- technical-questions
 npm run demo:case -- meeting-actions
+npm run demo:case -- prd-update
 npm run demo:case -- jira-subtasks
+npm run demo:case -- build-validator
 ```
 
 The CLI does not call an LLM. It prints the exact prompt and deterministic expected output so the instructor can keep the lesson moving.
+Real company CLIs may still require OAuth, SSO, VPN, API tokens, or project permissions; this fallback CLI avoids those dependencies by using only local fixtures.

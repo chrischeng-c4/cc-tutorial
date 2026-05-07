@@ -41,14 +41,14 @@ export default function Part20() {
     <PageLayout partSlug="human-in-the-loop">
       <SectionHeader partSlug="human-in-the-loop" />
 
-      <p className="text-slate-400 leading-relaxed mb-8">
+      <p className="text-slate-300 leading-relaxed mb-8">
         HITL 常被講成「agent 不確定就問人」，但這只是一小部分。
         更實用的理解是：<span className="text-white">人類要進入 agentic loop，負責真相、判斷、盲點與責任邊界</span>。
         Agent 很適合幫你整理資訊與提出問題；最後哪些方向要做、哪些風險能接受，仍然要由人決定。
       </p>
 
       <H3>1. HITL 不是人工批准每一步</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         如果每一步都要人批准，agent 會變成慢速 autocomplete。
         如果完全不讓人進 loop，它又會把缺少的脈絡自己補完。
         好的 HITL 是把人放在<span className="text-white font-medium">資訊缺口、決策分歧、盲點暴露與高風險行動</span>這些位置。
@@ -82,7 +82,7 @@ export default function Part20() {
       </Callout>
 
       <H3>2. 讓 agent 幫你釐清思緒</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         當你只有模糊想法，不要直接叫它產完整 PRD 或實作。
         先讓它把你的想法拆成決策題、scope 題、風險題。這種 HITL 是用 agent 反過來幫人類整理思考。
       </p>
@@ -102,7 +102,7 @@ export default function Part20() {
       </CodeBlock>
 
       <H3>3. 用角色視角解除盲點</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         PRD case 很接地氣：如果你請 agent 扮演工程師，它不只是幫你寫文件，而是會問出實作前必須釐清的問題。
         同一招也可以換成 QA、Legal、Security、Data 或客服 lead。
       </p>
@@ -169,7 +169,7 @@ export default function Part20() {
       </div>
 
       <H3>5. 好的 HITL output 長什麼樣</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         問題不要只是一串問號。要讓人能快速回答，就要附上背景、選項、風險與建議下一步。
       </p>
       <CodeBlock title="HITL questions schema">

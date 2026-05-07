@@ -5,8 +5,8 @@ export default function Part12() {
     <PageLayout partIndex={15}>
       <SectionHeader partIndex={15} />
 
-      <p className="text-slate-400 leading-relaxed mb-8">
-        Part 11 的 subagent 是單向委派：跑完回報給 main thread。Agent Team 則把多個 Claude session 組成小組，
+      <p className="text-slate-300 leading-relaxed mb-8">
+        前一章〈委派：Subagent / 背景任務〉的 subagent 是單向委派：跑完回報給 main thread。Agent Team 則把多個 Claude session 組成小組，
         讓 lead 與 teammate 可以互相訊息、共享 task list。Codex 的課堂對等場景先用 codex exec / 背景委派：
         把明確 issue 交給 CLI 產可 review diff。cloud task 只作補充入口；兩者都需要更明確的邊界與 review。
       </p>
@@ -18,7 +18,7 @@ export default function Part12() {
         {' '}才能啟用。
       </Callout>
 
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         Subagent 只能跑完回報給主對話，彼此之間講不到話。
         Agent Team 把它升級成<span className="text-white font-medium">能互相訊息、共享 task list</span>的小組。
         一個 lead 帶幾個 teammate，每個 teammate 是獨立的 Claude Code session、獨立 context，
@@ -27,7 +27,7 @@ export default function Part12() {
 
       <h4 className="text-white font-semibold mb-3 mt-6 text-sm">Subagent vs Agent Team 對照</h4>
       <div className="rounded-xl border border-white/10 bg-white/[0.02] overflow-hidden mb-5">
-        <div className="hidden md:grid grid-cols-12 gap-3 px-4 py-3 border-b border-white/10 bg-white/[0.03] text-xs text-slate-500 font-semibold">
+        <div className="hidden md:grid grid-cols-12 gap-3 px-4 py-3 border-b border-white/10 bg-white/[0.03] text-xs text-slate-300 font-semibold">
           <span className="col-span-3"></span>
           <span className="col-span-4">Subagent</span>
           <span className="col-span-5">Agent Team</span>
@@ -41,7 +41,7 @@ export default function Part12() {
         ].map(({ k, a, b }) => (
           <div key={k} className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-3 items-start px-4 py-3 border-b border-white/5 last:border-0 text-sm">
             <span className="md:col-span-3 text-white font-medium text-xs">{k}</span>
-            <span className="md:col-span-4 text-slate-400 leading-relaxed">{a}</span>
+            <span className="md:col-span-4 text-slate-300 leading-relaxed">{a}</span>
             <span className="md:col-span-5 text-cyan-200 leading-relaxed">{b}</span>
           </div>
         ))}
@@ -57,7 +57,7 @@ export default function Part12() {
       </CodeBlock>
 
       <h4 className="text-white font-semibold mb-3 mt-6 text-sm">怎麼開團</h4>
-      <p className="text-slate-400 text-sm leading-relaxed mb-3">
+      <p className="text-slate-300 text-sm leading-relaxed mb-3">
         啟用後，用自然語言告訴 Claude 你想要什麼樣的 team。它會生成成員、分派任務、整合結果：
       </p>
       <CodeBlock title="對話範例 — 平行 PR review">
@@ -84,7 +84,7 @@ export default function Part12() {
         ].map(({ t, d }) => (
           <div key={t} className="rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-4">
             <div className="text-cyan-300 font-semibold text-sm mb-1.5">{t}</div>
-            <p className="text-slate-400 text-xs leading-relaxed">{d}</p>
+            <p className="text-slate-300 text-xs leading-relaxed">{d}</p>
           </div>
         ))}
       </div>
@@ -121,13 +121,13 @@ export default function Part12() {
       </Callout>
 
       <H3>Codex 對等場景：CLI task / 背景委派</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         Codex 不一定用 teammate mailbox 這種模型。比較常見的對等做法是把明確、可驗收、可 review 的 issue
         寫成 codex exec 可執行的 task prompt，讓它產 diff，再由人 review。適合「規格清楚、可以用測試驗收」的工作。
       </p>
       <Callout type="info">
         這裡先以 codex exec / CLI task 講對等概念。若使用 Codex cloud 背景任務，它指的是 OpenAI Codex 的雲端委派能力，
-        不是 Google Cloud 的 Cloud Tasks 佇列服務；本課不把 cloud task 當主線 demo。
+        不是 Google Cloud 的 Cloud Tasks 佇列服務；本課不把 cloud task 當主線演練。
       </Callout>
       <CodeBlock title="Codex CLI task prompt 範例">
 {`Implement the order CSV export described in JIRA-142.
@@ -148,7 +148,7 @@ Return:
 
       <div className="rounded-2xl border border-cyan-500/20 bg-cyan-500/5 p-5 mt-8">
         <h4 className="text-white font-semibold text-sm mb-2">回到 Agent 概念</h4>
-        <p className="text-slate-400 text-sm leading-relaxed">
+        <p className="text-slate-300 text-sm leading-relaxed">
           Subagent 對應「Orchestrator → Specialist」的單向委派；Agent Team 對應彼此能溝通的協作網。
           本質都是把 <span className="text-cyan-300">context 預算</span>當成稀缺資源在管，
           只是切片方式不同：subagent 切「side-quest 隔離」，agent team 切「平行 + 對話」。

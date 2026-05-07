@@ -37,7 +37,7 @@ export default function Part9() {
       <SectionHeader partIndex={8} />
 
       <H3>Permission Model</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         Claude Code 與 Codex 都有權限邊界：讀檔、改檔、執行指令、網路請求、寫入外部系統的風險不同。
         Claude Code 依操作風險分層，可在{' '}
         <code className="text-emerald-300 bg-emerald-500/10 px-1.5 py-0.5 rounded text-xs">/config</code> 或{' '}
@@ -57,7 +57,7 @@ export default function Part9() {
           <div key={op} className="flex items-center gap-4 px-5 py-3 border-b border-white/5 last:border-0">
             <span className="text-white text-sm w-24 flex-shrink-0">{op}</span>
             <PermBadge level={perm} />
-            <code className="text-slate-500 text-xs font-mono ml-auto hidden sm:block">{example}</code>
+            <code className="text-slate-300 text-xs font-mono ml-auto hidden sm:block">{example}</code>
           </div>
         ))}
       </div>
@@ -71,7 +71,7 @@ export default function Part9() {
       </Callout>
 
       <H3>Claude Code Modes：Plan / Edit / Auto</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         Claude Code 的 mode selector 決定「它需要多常停下來問你」。CLI 互動中可以用
         <code className="mx-1 rounded bg-emerald-500/10 px-1.5 py-0.5 text-xs text-emerald-300">Shift+Tab</code>
         切換常用模式；也可以用
@@ -81,7 +81,7 @@ export default function Part9() {
         / UI「Edit automatically」。
       </p>
       <div className="rounded-xl border border-white/10 bg-white/[0.02] overflow-hidden mb-5">
-        <div className="hidden md:grid grid-cols-12 gap-3 px-4 py-3 border-b border-white/10 bg-white/[0.03] text-xs text-slate-500 font-semibold">
+        <div className="hidden md:grid grid-cols-12 gap-3 px-4 py-3 border-b border-white/10 bg-white/[0.03] text-xs text-slate-300 font-semibold">
           <span className="col-span-3">UI / 口語</span>
           <span className="col-span-2">mode</span>
           <span className="col-span-4">行為</span>
@@ -91,10 +91,10 @@ export default function Part9() {
           <div key={item.mode} className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-3 items-start px-4 py-3 border-b border-white/5 last:border-0 text-sm">
             <div className="md:col-span-3">
               <div className="text-white font-medium">{item.label}</div>
-              <div className="text-xs text-slate-400 mt-0.5">{item.shorthand}</div>
+              <div className="text-xs text-slate-300 mt-0.5">{item.shorthand}</div>
             </div>
             <code className="md:col-span-2 text-emerald-300 bg-emerald-500/10 px-2 py-0.5 rounded font-mono text-xs break-words">{item.mode}</code>
-            <span className="md:col-span-4 text-slate-400 leading-relaxed">{item.canDo}</span>
+            <span className="md:col-span-4 text-slate-300 leading-relaxed">{item.canDo}</span>
             <span className="md:col-span-3 text-slate-300 leading-relaxed">{item.useWhen}</span>
           </div>
         ))}
@@ -116,7 +116,7 @@ Shift+Tab  # default -> acceptEdits -> plan
       </Callout>
 
       <H3>HITL 在 permission 章的位置：用問題取代猜測</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         完整 HITL 方法在 <span className="font-mono text-white">human-in-the-loop</span>。
         這裡只看它跟 permission / approval 的交界：當 agent 要做高風險或外部寫入時，
         不要猜，不要直接做，先把問題、preview 和風險交給人確認。

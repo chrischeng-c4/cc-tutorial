@@ -5,14 +5,14 @@ export default function Part5() {
     <PageLayout partIndex={4}>
       <SectionHeader partIndex={4} />
 
-      <p className="text-slate-400 leading-relaxed mb-8">
+      <p className="text-slate-300 leading-relaxed mb-8">
         上一章你拿到第一份草稿。但<span className="text-white">PRD 的價值在迭代</span>——
         這章教你三件事：用規則檔讓 agent 盡量依照公司格式寫、用工具保證嚴格格式、以及怎麼透過對話修到可 review。
       </p>
 
       {/* CLAUDE.md for PM */}
       <h3 className="text-white font-semibold mb-4 text-base">CLAUDE.md / AGENTS.md：你公司的「PRD 模板說明書」</h3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         Claude Code 用 <code className="text-fuchsia-300 bg-fuchsia-500/10 px-1.5 py-0.5 rounded text-xs">CLAUDE.md</code>，
         Codex 用 <code className="text-fuchsia-300 bg-fuchsia-500/10 px-1.5 py-0.5 rounded text-xs">AGENTS.md</code>。
         把它當成<span className="text-white">「給 agent 的工作說明書」</span>——
@@ -55,7 +55,7 @@ export default function Part5() {
         這個檔案 commit 到 repo，整個 PM team 共用。每次發現格式或用詞問題，再回頭補規則。
       </Callout>
 
-      <p className="text-slate-400 text-sm leading-relaxed mt-6 mb-10">
+      <p className="text-slate-300 text-sm leading-relaxed mt-6 mb-10">
         放好之後，下次叫 Claude Code 或 Codex 寫 PRD 時——<span className="text-white">可以少重複一些格式要求</span>。
         它通常會參考規則檔，但重要章節、語氣與待確認欄位仍要人工 review。
       </p>
@@ -82,7 +82,7 @@ scripts/weekly-report validate tmp/weekly.md
 
       {/* Iteration 1: filling missing fields */}
       <h3 className="text-white font-semibold mb-4 text-base">迭代手法 1：補欄位</h3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-5">
+      <p className="text-slate-300 text-sm leading-relaxed mb-5">
         看完草稿你發現某個維度寫得淺。直接告訴它，讓它擴寫：
       </p>
 
@@ -118,7 +118,7 @@ scripts/weekly-report validate tmp/weekly.md
 
       {/* Iteration 2: tone & wording */}
       <h3 className="text-white font-semibold mt-12 mb-4 text-base">迭代手法 2：調語氣 / 改用詞</h3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-5">
+      <p className="text-slate-300 text-sm leading-relaxed mb-5">
         寫完發現語氣不對。直接 diff 給它看，它會學起來：
       </p>
 
@@ -158,7 +158,7 @@ scripts/weekly-report validate tmp/weekly.md
 
       {/* Iteration 3: blind spot review */}
       <h3 className="text-white font-semibold mt-12 mb-4 text-base">迭代手法 3：找盲點 review</h3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-5">
+      <p className="text-slate-300 text-sm leading-relaxed mb-5">
         寫完最有用的一招——<span className="text-white">叫它扮演不同角色 review 你的 PRD</span>：
       </p>
 
@@ -190,7 +190,7 @@ scripts/weekly-report validate tmp/weekly.md
         renderResponseMarkdown
       />
 
-      <p className="text-slate-400 text-sm leading-relaxed mt-6 mb-10">
+      <p className="text-slate-300 text-sm leading-relaxed mt-6 mb-10">
         這是<span className="text-white">最值得學的一招</span>。換不同角色 review：
         資安、法務、客服 lead、QA、財務——每個視角都會看出你想不到的盲點。
       </p>

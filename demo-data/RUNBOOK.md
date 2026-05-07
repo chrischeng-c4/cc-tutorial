@@ -7,10 +7,10 @@
 ```bash
 git clone https://github.com/chrischeng-c4/cc-tutorial.git
 cd cc-tutorial
-npm run demo:list
 ```
 
-`demo:list` 不需要 `npm install`，因為 CLI 只用 Node built-ins。若要跑網站才需要：
+課堂主流程是進 repo 後直接開 `claude` 或 `codex`，再貼各 case 的 prompt。
+`npm run demo:list` 是講師備課與 fallback 自檢用，不是學生上課第一步。若要跑網站才需要：
 
 ```bash
 npm install
@@ -24,7 +24,8 @@ npm run dev
 1. Agent path：把 prompt 貼給 Claude Code / Codex，請它讀 `demo-data/` 裡的指定檔案。
 2. CLI fallback：如果 agent 或外部工具卡住，跑 `npm run demo:case -- <case>` 顯示固定輸出。
 
-課堂主路徑不依賴 Google / JIRA / Figma / MCP。那些工具可以加演，但不應該是 demo 成功的必要條件。
+課堂主路徑只讀本機 fixture，不依賴 Google / JIRA / Figma / MCP。那些工具可以加演，但不應該是 demo 成功的必要條件。
+真實公司 CLI 仍可能需要 OAuth、token、SSO、VPN 或專案權限；CLI first 的價值是授權點比較可見，且比較容易先停在 export 檔、dry-run payload 或本機 fixture。
 
 學生上課建議直接開互動式 UI：
 
@@ -175,6 +176,7 @@ npm run lint
 ```
 
 如果只需要 demo CLI，不跑網站，可以只跑前兩個 command。
+這個 demo CLI 只用 Node built-ins 和本機 `demo-data/`，不需要 `npm install`，也不呼叫外部服務。
 
 ## 7. 用 Claude Code Print Mode 評估
 
@@ -209,6 +211,7 @@ claude -p --allowedTools Read --permission-mode auto \
 ```
 
 這些指令只允許 Claude Code 使用 `Read` tool；不需要 Google / JIRA / MCP auth。
+若改成讀公司內部 CLI 或 live 外部系統，仍要另外處理 OAuth、token、SSO、VPN 或專案權限。
 
 ## 8. 用 Codex Exec 評估
 
@@ -243,3 +246,4 @@ codex --sandbox read-only --ask-for-approval never exec --ephemeral \
 ```
 
 這些指令不需要 Google / JIRA / MCP auth；只需要本機已登入 Codex。
+若改成讀公司內部 CLI 或 live 外部系統，仍要另外處理 OAuth、token、SSO、VPN 或專案權限。

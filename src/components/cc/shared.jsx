@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ACCENT, AUDIENCE_STYLES, COURSE_PARTS, CURRICULUM_ORDER, PARTS, USAGE_STYLES } from '../../data/claudeCodeParts'
+import { ACCENT, AUDIENCE_STYLES, COURSE_PARTS, CURRICULUM_ORDER, DEMO_PARTS, PARTS, USAGE_STYLES } from '../../data/claudeCodeParts'
 
 const partsBySlug = new Map(COURSE_PARTS.map(part => [part.slug, part]))
 const curriculumParts = CURRICULUM_ORDER.map(slug => partsBySlug.get(slug)).filter(Boolean)
+const demoPartByCaseId = new Map(DEMO_PARTS.map(part => [String(part.demoId), part]))
 
 /* ── Page wrapper with progress bar ── */
 export function PageLayout({ partIndex, partSlug, children }) {
@@ -60,12 +61,12 @@ export function PageLayout({ partIndex, partSlug, children }) {
 
       <div className="max-w-[110rem] mx-auto px-10 py-14">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-sm text-slate-400 mb-10">
+        <div className="flex items-center gap-2 text-sm text-slate-300 mb-10">
           <Link to="/" className="hover:text-slate-300 no-underline transition-colors">首頁</Link>
           <span>/</span>
           <Link to="/coding-agent" className="hover:text-slate-300 no-underline transition-colors">Coding Agent</Link>
           <span>/</span>
-          <span className="text-slate-400 font-mono">{current.slug}</span>
+          <span className="text-slate-300 font-mono">{current.slug}</span>
         </div>
 
         {children}
@@ -83,7 +84,7 @@ export function PageLayout({ partIndex, partSlug, children }) {
           ) : (
             <Link to="/coding-agent" className="group flex items-center gap-3 no-underline">
               <span className="text-slate-500 group-hover:text-white transition-colors text-lg">←</span>
-              <div className="text-sm text-slate-400 group-hover:text-white transition-colors">課程總覽</div>
+              <div className="text-sm text-slate-300 group-hover:text-white transition-colors">課程總覽</div>
             </Link>
           )}
 
@@ -110,7 +111,7 @@ export function PageLayout({ partIndex, partSlug, children }) {
             </Link>
           ) : (
             <Link to="/" className="group flex items-center gap-3 no-underline">
-              <div className="text-sm text-slate-400 group-hover:text-white transition-colors">回到首頁</div>
+              <div className="text-sm text-slate-300 group-hover:text-white transition-colors">回到首頁</div>
               <span className="text-slate-500 group-hover:text-white transition-colors text-lg">→</span>
             </Link>
           )}
@@ -129,7 +130,7 @@ export function SectionHeader({ partIndex, partSlug }) {
     p.usage && { label: p.usage, className: USAGE_STYLES[p.usage] },
     p.audience && { label: p.audience, className: AUDIENCE_STYLES[p.audience] },
     p.experimental && { label: '實驗性', className: 'border-amber-500/25 bg-amber-500/10 text-amber-300' },
-    ...tags.map(tag => ({ label: tag, className: 'border-white/10 text-slate-400' })),
+    ...tags.map(tag => ({ label: tag, className: 'border-white/10 text-slate-300' })),
   ].filter(Boolean)
 
   return (
@@ -140,12 +141,26 @@ export function SectionHeader({ partIndex, partSlug }) {
           <div>
             <div className="flex items-center gap-2 mb-1.5">
               <span className={`px-2.5 py-0.5 rounded-full text-sm font-bold font-mono ${c.badge}`}>{p.slug}</span>
-              <span className="text-slate-400 text-sm">{p.time}</span>
+              <span className="text-slate-300 text-sm">{p.time}</span>
             </div>
             <h1 className="text-3xl font-black text-white leading-tight">{p.title}</h1>
             {p.demoCases?.length > 0 && (
-              <div className="mt-2 text-sm text-slate-300">
-                對應 Demo Case → {p.demoCases.join(' · ')}
+              <div className="mt-2 flex flex-wrap items-center gap-1.5 text-sm text-slate-300">
+                <span>對應實際演練 →</span>
+                {p.demoCases.map((caseId) => {
+                  const demoPart = demoPartByCaseId.get(String(caseId))
+                  return demoPart ? (
+                    <Link
+                      key={caseId}
+                      to={demoPart.path}
+                      className="rounded-md border border-white/10 bg-white/[0.03] px-2 py-0.5 font-mono text-xs text-slate-300 no-underline transition-colors hover:border-white/30 hover:text-white"
+                    >
+                      {caseId}
+                    </Link>
+                  ) : (
+                    <span key={caseId} className="font-mono text-xs">{caseId}</span>
+                  )
+                })}
               </div>
             )}
           </div>
@@ -178,7 +193,7 @@ export function CodeBlock({ title, children }) {
             <span className="w-3 h-3 rounded-full bg-green-500/70" />
             <span className="text-slate-300 text-sm ml-2">{title}</span>
           </div>
-          <button onClick={copy} className="text-sm text-slate-400 hover:text-white transition-colors">
+          <button onClick={copy} className="text-sm text-slate-300 hover:text-white transition-colors">
             {copied ? '已複製 ✓' : '複製'}
           </button>
         </div>

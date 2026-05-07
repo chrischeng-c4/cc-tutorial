@@ -91,7 +91,7 @@ export default function Part8() {
     <PageLayout partIndex={7}>
       <SectionHeader partIndex={7} />
 
-      <p className="text-slate-400 leading-relaxed mb-8">
+      <p className="text-slate-300 leading-relaxed mb-8">
         前兩章先建立 coding agent 的心智模型。這一章講<span className="text-white">為什麼某些操作貴、某些便宜</span>——
         為什麼 <code className="text-emerald-300 bg-emerald-500/10 px-1 rounded">/compact</code> 跟
         <code className="text-emerald-300 bg-emerald-500/10 px-1 rounded ml-1">/clear</code> 存在、什麼時候該用、什麼時候是反模式。
@@ -100,7 +100,7 @@ export default function Part8() {
 
       {/* 1. Multi-turn */}
       <H3>1. 多輪對話技術上是怎麼進行的</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         很多人以為模型有長期記憶。就單次 API 呼叫來看，模型本身主要是依賴本輪送進去的 context。
         每一輪對話，<span className="text-white font-medium">client 都必須把完整的對話歷史重新打包傳給 API</span>，
         模型從頭讀一次才能「知道」之前說了什麼。
@@ -112,19 +112,19 @@ export default function Part8() {
         <div className="text-sky-300">{']'}</div>
         <div className="text-slate-500 mt-3 mb-2">{'// 第 2 輪 API 請求（完整歷史全部重送）'}</div>
         <div className="text-sky-300">{'messages: ['}</div>
-        <div className="text-slate-400 ml-4">{'{ role: "user",      content: "幫我看這個 function" },'}</div>
-        <div className="text-slate-400 ml-4">{'{ role: "assistant", content: "這個 function 有以下問題..." },'}</div>
+        <div className="text-slate-300 ml-4">{'{ role: "user",      content: "幫我看這個 function" },'}</div>
+        <div className="text-slate-300 ml-4">{'{ role: "assistant", content: "這個 function 有以下問題..." },'}</div>
         <div className="text-emerald-300 ml-4">{'{ role: "user",      content: "好，幫我修掉第二個問題" }'}</div>
         <div className="text-sky-300">{']'}</div>
         <div className="text-slate-500 mt-3">{'// 第 N 輪：歷史 × N 條訊息全部重送，input token 持續累積'}</div>
       </div>
-      <p className="text-slate-400 text-sm leading-relaxed mb-10">
+      <p className="text-slate-300 text-sm leading-relaxed mb-10">
         對話越長，<span className="text-amber-300 font-medium">每一輪的 input token 就越多</span>。
         Claude Code 與 Codex 會幫你管理這個歷史，但底層原理就是如此——沒有魔法，只有打包重送。
       </p>
 
       <H3>2. Tool call 也是對話歷史的一部分</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         Coding agent 看起來像「跑了一個工具」，但對模型來說它仍然是訊息流：
         assistant 輸出 tool call，工具回傳 tool result，client 再把 tool result 接回下一輪模型呼叫。
         所以讀檔、grep、跑測試、看 diff 都不是對話外的免費動作。
@@ -132,10 +132,10 @@ export default function Part8() {
       <div className="rounded-xl bg-black/40 border border-white/10 p-5 font-mono text-xs leading-relaxed mb-4">
         <div className="text-slate-500 mb-2">{'// 同一個「看檔案」動作，在 history 裡會長這樣'}</div>
         <div className="text-sky-300">{'messages: ['}</div>
-        <div className="text-slate-400 ml-4">{'{ role: "user",      content: "找出登入失敗的原因" },'}</div>
+        <div className="text-slate-300 ml-4">{'{ role: "user",      content: "找出登入失敗的原因" },'}</div>
         <div className="text-violet-300 ml-4">{'{ role: "assistant", tool_call: Read({ file: "src/auth.ts" }) },'}</div>
         <div className="text-cyan-300 ml-4">{'{ role: "tool",      content: "...auth.ts file content..." },'}</div>
-        <div className="text-slate-400 ml-4">{'{ role: "assistant", content: "我看到 token expired path..." }'}</div>
+        <div className="text-slate-300 ml-4">{'{ role: "assistant", content: "我看到 token expired path..." }'}</div>
         <div className="text-sky-300">{']'}</div>
       </div>
       <Callout type="warn">
@@ -156,7 +156,7 @@ export default function Part8() {
         <div className="space-y-3">
           {turnCostBars.map((row) => (
             <div key={row.turn} className="grid grid-cols-[56px_1fr_58px] sm:grid-cols-[64px_1fr_64px] items-center gap-3">
-              <span className="text-slate-400 text-xs font-medium">{row.turn}</span>
+              <span className="text-slate-300 text-xs font-medium">{row.turn}</span>
               <div className="min-w-0">
                 <div className="h-8 rounded-md bg-slate-900 border border-white/5 overflow-hidden">
                   <div
@@ -164,7 +164,7 @@ export default function Part8() {
                     style={{ width: row.width }}
                   />
                 </div>
-                <div className="text-xs text-slate-400 mt-1 truncate">{row.note}</div>
+                <div className="text-xs text-slate-300 mt-1 truncate">{row.note}</div>
               </div>
               <span className="text-right text-xs font-mono text-amber-300">{row.input}</span>
             </div>
@@ -178,7 +178,7 @@ export default function Part8() {
 
       {/* 2. Context is not a database */}
       <H3>3. Context 不是資料庫</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         最重要的心法是：<span className="text-white font-medium">context 是工作記憶，不是可靠儲存</span>。
         它適合保留這一輪推理需要的目標、限制、少量事實與目前決策；不適合保存所有訪談、log、review 結果、
         規格全文或長期狀態。重要資訊要落到外部儲存，agent 需要時再讀。
@@ -199,7 +199,7 @@ export default function Part8() {
                 <td className="px-4 py-3 align-top text-orange-300 font-semibold">{row.place}</td>
                 <td className="px-4 py-3 align-top text-slate-300 leading-relaxed">{row.bestFor}</td>
                 <td className="px-4 py-3 align-top text-slate-300 leading-relaxed">{row.notFor}</td>
-                <td className="px-4 py-3 align-top text-slate-400 leading-relaxed">{row.rule}</td>
+                <td className="px-4 py-3 align-top text-slate-300 leading-relaxed">{row.rule}</td>
               </tr>
             ))}
           </tbody>
@@ -212,7 +212,7 @@ export default function Part8() {
 
       {/* 4. High-signal context */}
       <H3>4. 不要省錯 token：高訊號 context 要給足</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         省 token 的目標不是讓 prompt 變短，而是減少無效 token。若任務描述太省，agent 會用更多 tool calls 補洞：
         找檔案、讀錯範圍、問澄清問題、重跑測試。這些 output 與 tool result 也會留進歷史，
         下一輪繼續變成 input token。
@@ -239,7 +239,7 @@ acceptance:
         給精準且大量的 context 不是浪費；浪費是模糊、重複、無關的上下文造成多輪探索。
         該給的目標、限制、範例、相關檔與驗收條件要一次給足。
       </Callout>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         也可以承認一件事：人常常就是懶得先整理資料，想叫 agent 自己去找。這沒問題，但不要讓
         「探索過程」跟「真正實作」混在同一個長 session。比較穩的做法是先讓 agent 找資料、整理成 artifact，
         你 review 後重置 session，下一輪只讀這份 artifact 和必要檔案。
@@ -278,7 +278,7 @@ Implement according to the acceptance criteria.`}
 
       {/* 5. Token billing */}
       <H3>5. 計費模型：Input / Output / Thinking Token</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         以 Claude / Anthropic 的計費模型為例，常見會看到三種 token，價格不同。
         Codex / OpenAI 也會區分 input、cached input、output、reasoning 等成本，但實際名稱與費率以當下官方 pricing 為準：
       </p>
@@ -302,22 +302,22 @@ Implement according to the acceptance criteria.`}
         ))}
       </div>
       <div className="rounded-xl bg-black/40 border border-white/10 p-4 text-xs font-mono mb-10">
-        <div className="text-slate-400 mb-2">{'// 一次典型「修 bug」任務的 token 分佈'}</div>
+        <div className="text-slate-300 mb-2">{'// 一次典型「修 bug」任務的 token 分佈'}</div>
         <div className="flex gap-6 flex-wrap">
-          <div><span className="text-sky-300">input:</span><span className="text-slate-300 ml-2">~8,000 tokens</span><span className="text-slate-400 ml-2">(歷史 + 相關程式碼)</span></div>
+          <div><span className="text-sky-300">input:</span><span className="text-slate-300 ml-2">~8,000 tokens</span><span className="text-slate-300 ml-2">(歷史 + 相關程式碼)</span></div>
           <div><span className="text-violet-300">output:</span><span className="text-slate-300 ml-2">~500 tokens</span></div>
-          <div><span className="text-rose-300">thinking:</span><span className="text-slate-300 ml-2">~2,000 tokens</span><span className="text-slate-400 ml-2">(若開啟)</span></div>
+          <div><span className="text-rose-300">thinking:</span><span className="text-slate-300 ml-2">~2,000 tokens</span><span className="text-slate-300 ml-2">(若開啟)</span></div>
         </div>
       </div>
 
       <H3>6. Reasoning effort：調整推理深度與成本，不是準確率保證</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         Reasoning / effort 現在不適合只講成「thinking budget 上限」。
         比較準確的講法是：它是 <span className="text-white font-medium">推理深度、成本與延遲的控制旋鈕</span>。
         OpenAI 這類 effort label 會影響模型回答前投入多少 reasoning；
         Claude extended thinking 的 <code className="text-emerald-300 bg-emerald-500/10 px-1 rounded">budget_tokens</code> 則更接近 token budget。
       </p>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         可以把它想成演進過程：早期多半是用 prompt 要模型「think step by step」，
         或用外部 budget 限制可見 / 內部 thinking token；現在的 reasoning model 已經把「何時需要多想」
         這件事訓練進模型行為裡。Effort 不是在 prompt 裡提醒它要努力一點，而是 API 層的推理策略設定。
@@ -354,16 +354,16 @@ Implement according to the acceptance criteria.`}
 
       {/* 7. Prompt caching */}
       <H3>7. Prompt Caching：降低重複前綴成本</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         既然多輪對話每次都要重送歷史，Anthropic 提供了 <span className="text-white font-medium">prompt caching</span>：
         重複出現的前綴（system prompt、CLAUDE.md、已讀過的檔案）會被緩存，
         下一次請求命中 cache 時，重複前綴的計費會比較低。
       </p>
       <div className="rounded-xl bg-black/40 border border-white/10 p-4 font-mono text-xs leading-relaxed mb-4">
         <div className="flex gap-6 flex-wrap">
-          <div><span className="text-slate-400">cache write:</span><span className="text-amber-300 ml-2">1.25×</span></div>
-          <div><span className="text-slate-400">cache read:</span><span className="text-emerald-300 ml-2">0.1×</span><span className="text-slate-400 ml-2">← 命中後較便宜</span></div>
-          <div><span className="text-slate-400">TTL:</span><span className="text-slate-300 ml-2">5 min</span><span className="text-slate-400 ml-2">(每次命中會續期)</span></div>
+          <div><span className="text-slate-300">cache write:</span><span className="text-amber-300 ml-2">1.25×</span></div>
+          <div><span className="text-slate-300">cache read:</span><span className="text-emerald-300 ml-2">0.1×</span><span className="text-slate-300 ml-2">← 命中後較便宜</span></div>
+          <div><span className="text-slate-300">TTL:</span><span className="text-slate-300 ml-2">5 min</span><span className="text-slate-300 ml-2">(每次命中會續期)</span></div>
         </div>
       </div>
       <Callout type="warn">
@@ -373,7 +373,7 @@ Implement according to the acceptance criteria.`}
       </Callout>
 
       <H3>8. 用語言類型壓縮 prompt</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         省 token 不只靠少貼資料，也靠把條件寫得更像程式。模型對符號、pseudo-code、JSON、YAML、regex、
         SQL、TypeScript type 這類語言型態很熟；用它們描述條件與結構，常比口語更短、更精確。
       </p>
@@ -398,7 +398,7 @@ num <= 10 => risk = normal`}
 
       {/* 9. Why context too long is bad */}
       <H3>9. Context Window：日常預設用 200K，不要把 1M 當預設</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         Claude Code 與 Codex 可能遇到不同的 context window（依模型、方案與設定而定）。
         內部日常教學建議：<span className="text-white font-medium">預設用 200K；1M 只留給明確需要一次讀大型材料的情境</span>。
         原因不是 1M 沒用，而是它容易讓人不整理 context。
@@ -406,14 +406,14 @@ num <= 10 => risk = normal`}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
         <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4">
           <div className="text-emerald-300 font-semibold text-sm mb-2">200K：日常預設</div>
-          <p className="text-slate-400 text-sm leading-relaxed">
+          <p className="text-slate-300 text-sm leading-relaxed">
             適合一般 feature、bug fix、PRD review、demo script 推演。它會逼你定期 /compact、/clear、切 task，
             反而比較容易維持可控的成本與品質。
           </p>
         </div>
         <div className="rounded-xl border border-rose-500/20 bg-rose-500/5 p-4">
           <div className="text-rose-300 font-semibold text-sm mb-2">1M：不要當日常預設</div>
-          <p className="text-slate-400 text-sm leading-relaxed">
+          <p className="text-slate-300 text-sm leading-relaxed">
             只在需要一次讀大量文件或大型 repo 片段時考慮。用 1M 但不 compact，會讓後面每一輪都帶著大量歷史繼續計費。
           </p>
         </div>
@@ -421,7 +421,7 @@ num <= 10 => risk = normal`}
       <div className="space-y-3 mb-6">
         <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4">
           <div className="text-amber-300 font-semibold text-sm mb-2">問題一：每輪 input 成本會隨歷史變大</div>
-          <p className="text-slate-400 text-sm leading-relaxed">
+          <p className="text-slate-300 text-sm leading-relaxed">
             每輪對話的 input token = 所有歷史訊息的總和。對話進行 10 輪、每輪輸出 1,000 token，
             到第 10 輪光是 input 就要帶入前 9 輪的輸出與工具結果。工具呼叫越多，歷史膨脹越快。
             1M 會延後你被迫 compact 的時間，但不會讓 token 消耗消失。
@@ -429,7 +429,7 @@ num <= 10 => risk = normal`}
         </div>
         <div className="rounded-xl border border-rose-500/20 bg-rose-500/5 p-4">
           <div className="text-rose-300 font-semibold text-sm mb-2">問題二：Lost in the Middle，注意力缺失</div>
-          <p className="text-slate-400 text-sm leading-relaxed mb-3">
+          <p className="text-slate-300 text-sm leading-relaxed mb-3">
             Transformer 的 Self-Attention 讓每個 token 都要跟 context 裡的所有其他 token 計算相關性。
             Context 越長，注意力越分散——出現 <span className="text-white font-medium">「Lost in the Middle」</span> 現象：
             頭尾記得清楚，中間的重要資訊容易被忽略。
@@ -459,11 +459,11 @@ num <= 10 => risk = normal`}
             兩者共同提醒：context window 大，不代表中間資訊會被穩定使用。
           </p>
           <div className="rounded-lg bg-black/40 border border-white/5 p-3 font-mono text-xs">
-            <div className="text-slate-400 mb-1">{'// Attention 計算複雜度'}</div>
-            <div><span className="text-rose-300">O(n²)</span><span className="text-slate-400 ml-2">← context 長度 n 的平方</span></div>
-            <div className="text-slate-400 mt-1">{'// 1K tokens → 1M 次計算'}</div>
-            <div className="text-slate-400">{'// 10K tokens → 100M 次計算'}</div>
-            <div className="text-slate-400">{'// 100K tokens → 10B 次計算  ← 費用與延遲爆炸'}</div>
+            <div className="text-slate-300 mb-1">{'// Attention 計算複雜度'}</div>
+            <div><span className="text-rose-300">O(n²)</span><span className="text-slate-300 ml-2">← context 長度 n 的平方</span></div>
+            <div className="text-slate-300 mt-1">{'// 1K tokens → 1M 次計算'}</div>
+            <div className="text-slate-300">{'// 10K tokens → 100M 次計算'}</div>
+            <div className="text-slate-300">{'// 100K tokens → 10B 次計算  ← 費用與延遲爆炸'}</div>
           </div>
         </div>
       </div>

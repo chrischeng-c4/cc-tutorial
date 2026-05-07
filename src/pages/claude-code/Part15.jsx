@@ -75,7 +75,7 @@ export default function Part15() {
     <PageLayout partIndex={18}>
       <SectionHeader partIndex={18} />
 
-      <p className="text-slate-400 leading-relaxed mb-8">
+      <p className="text-slate-300 leading-relaxed mb-8">
         到這裡，你已經會在互動 session 裡跟 coding agent 協作。下一步是把它接進固定流程：
         script、CI、PR review、排程或背景任務。Programmatic 的重點不是讓 agent 自動亂跑，
         而是把 <span className="text-white font-medium">輸入、權限、輸出、驗收與人工 checkpoint</span> 固定。
@@ -86,19 +86,19 @@ export default function Part15() {
         <table className="w-full min-w-[900px] border-collapse text-sm">
           <thead>
             <tr className="border-b border-white/10 bg-white/[0.03]">
-              <th className="px-4 py-3 text-left font-semibold text-slate-400">模式</th>
-              <th className="px-4 py-3 text-left font-semibold text-slate-400">適合</th>
-              <th className="px-4 py-3 text-left font-semibold text-slate-400">輸出</th>
-              <th className="px-4 py-3 text-left font-semibold text-slate-400">主要風險</th>
+              <th className="px-4 py-3 text-left font-semibold text-slate-300">模式</th>
+              <th className="px-4 py-3 text-left font-semibold text-slate-300">適合</th>
+              <th className="px-4 py-3 text-left font-semibold text-slate-300">輸出</th>
+              <th className="px-4 py-3 text-left font-semibold text-slate-300">主要風險</th>
             </tr>
           </thead>
           <tbody>
             {integrationRows.map((row) => (
               <tr key={row.mode} className="border-b border-white/5 last:border-0">
                 <td className="px-4 py-3 align-top text-white font-semibold">{row.mode}</td>
-                <td className="px-4 py-3 align-top text-slate-400 leading-relaxed">{row.fit}</td>
-                <td className="px-4 py-3 align-top text-slate-400 leading-relaxed">{row.output}</td>
-                <td className="px-4 py-3 align-top text-slate-400 leading-relaxed">{row.risk}</td>
+                <td className="px-4 py-3 align-top text-slate-300 leading-relaxed">{row.fit}</td>
+                <td className="px-4 py-3 align-top text-slate-300 leading-relaxed">{row.output}</td>
+                <td className="px-4 py-3 align-top text-slate-300 leading-relaxed">{row.risk}</td>
               </tr>
             ))}
           </tbody>
@@ -110,7 +110,7 @@ export default function Part15() {
       </Callout>
 
       <H3>2. Codex review：低風險、高價值的第一條 automation</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         Codex 有互動式 <code className="text-violet-300 bg-violet-500/10 px-1.5 py-0.5 rounded text-xs">/review</code>，
         也可以用 CLI 版本提供的 <code className="text-violet-300 bg-violet-500/10 px-1.5 py-0.5 rounded text-xs">codex review</code>
         跑非互動 review。實務上請先用 <code className="text-violet-300 bg-violet-500/10 px-1.5 py-0.5 rounded text-xs">codex review --help</code>
@@ -121,7 +121,7 @@ export default function Part15() {
           <div key={item.lane} className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-3 items-start px-4 py-3 border-b border-white/5 last:border-0 text-sm">
             <span className="md:col-span-3 text-white font-semibold">{item.lane}</span>
             <code className="md:col-span-4 text-violet-300 font-mono text-xs break-words">{item.command}</code>
-            <span className="md:col-span-5 text-slate-400 leading-relaxed">{item.value}</span>
+            <span className="md:col-span-5 text-slate-300 leading-relaxed">{item.value}</span>
           </div>
         ))}
       </div>
@@ -147,7 +147,7 @@ codex review --uncommitted - < docs/review-prompts/backend.md`}
       </Callout>
 
       <H3>3. Claude Code 的 programmatic 對等：claude -p</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         Claude Code 的對等做法是用 Agent SDK / CLI 的非互動模式：
         <code className="text-emerald-300 bg-emerald-500/10 px-1.5 py-0.5 rounded text-xs">claude -p</code>。
         它適合接 scripts、CI/CD，並可用 <code className="text-emerald-300 bg-emerald-500/10 px-1.5 py-0.5 rounded text-xs">--output-format json</code>
@@ -207,7 +207,7 @@ codex review --base main \
       </div>
 
       <H3>5. CI / PR：先 report-only，再決定 gate</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         CI 裡的 agent review 最好一開始只產報告，不要直接 fail build。等團隊累積幾週 findings，
         看 false positive、漏報、耗時與成本，再決定哪些檢查值得變成必擋 gate。
       </p>
@@ -249,7 +249,7 @@ jobs:
       </Callout>
 
       <H3>6. Review prompt template：用語言類型表達，少一點歧義</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         Prompt 不必全部寫成自然語言。模型看過大量 code、pseudo-code、YAML、JSON schema 與 checklist。
         條件用符號會更省 token，也更精準：例如 <code className="text-violet-300 bg-violet-500/10 px-1.5 py-0.5 rounded text-xs">order_count &gt; 1000</code>
         通常比「訂單數大於一千」更不容易被誤解。

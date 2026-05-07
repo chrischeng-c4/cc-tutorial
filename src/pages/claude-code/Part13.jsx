@@ -5,8 +5,8 @@ export default function Part13() {
     <PageLayout partIndex={16}>
       <SectionHeader partIndex={16} />
 
-      <H3>完整 Workflow Demo</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <H3>完整 Workflow 演練</H3>
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         從收到需求到開出 PR，一個完整的流程長這樣：
       </p>
       <CodeBlock title="從需求到 PR — 完整流程">
@@ -45,7 +45,7 @@ codex review --uncommitted "Focus on correctness, missing tests, and regressions
       </Callout>
 
       <H3>跨檔重構範例：Context 管理真正派上用場的場景</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         前面那個 API endpoint 例子是熱身。真正會把 context 燒完的是這種任務——
         把 5 個檔案裡都重複的 fetch 邏輯抽成共用 hook：
       </p>
@@ -83,7 +83,7 @@ codex review --uncommitted "Review only the changed files. Ignore style-only com
       </CodeBlock>
 
       <H3>常見坑與解法</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         每個坑都有「事前訊號」——學會看訊號，比事後補救便宜很多。
       </p>
       <div className="space-y-3 mb-10">
@@ -131,11 +131,11 @@ codex review --uncommitted "Review only the changed files. Ignore style-only com
               <div className="text-white font-semibold text-sm mb-2">{problem}</div>
               <div className="flex items-start gap-2 mb-1.5">
                 <span className="text-amber-400 text-xs font-semibold mt-0.5 flex-shrink-0">事前訊號</span>
-                <span className="text-slate-400 text-sm leading-relaxed">{signal}</span>
+                <span className="text-slate-300 text-sm leading-relaxed">{signal}</span>
               </div>
               <div className="flex items-start gap-2">
                 <span className="text-emerald-400 text-xs font-semibold mt-0.5 flex-shrink-0">解法</span>
-                <span className="text-slate-400 text-sm leading-relaxed">{solution}</span>
+                <span className="text-slate-300 text-sm leading-relaxed">{solution}</span>
               </div>
             </div>
           </div>

@@ -5,7 +5,7 @@ export default function Part4() {
     <PageLayout partIndex={3}>
       <SectionHeader partIndex={3} />
 
-      <p className="text-slate-400 leading-relaxed mb-8">
+      <p className="text-slate-300 leading-relaxed mb-8">
         這一章你會跟著做完<span className="text-white">第一份 PRD 草稿</span>。
         延續上一章的例子：「讓使用者匯出訂單為 CSV」。
         我們會走 4 步：安裝 → 進入專案 → 餵 context → 產草稿。
@@ -13,7 +13,7 @@ export default function Part4() {
 
       {/* Quick install */}
       <h3 className="text-white font-semibold mb-4 text-base">第 1 步：安裝（5 分鐘）</h3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         PM 也是要安裝在自己電腦上。一次安裝、之後每天用。
       </p>
       <CodeBlock title="Terminal">
@@ -41,7 +41,7 @@ codex`}
 
       {/* Step 2: enter project */}
       <h3 className="text-white font-semibold mt-10 mb-4 text-base">第 2 步：進到專案資料夾再啟動</h3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         關鍵——<span className="text-white">cd 進你公司的專案 repo 再啟動 agent</span>，它才能讀你產品的 code。
         如果你電腦沒有 repo，請工程團隊協助 clone 一份就好（read-only 也可以）。
       </p>
@@ -74,7 +74,7 @@ codex
 主要 model 是 Order、OrderItem、Shipment。`}
       />
 
-      <p className="text-slate-400 text-sm leading-relaxed mb-10">
+      <p className="text-slate-300 text-sm leading-relaxed mb-10">
         這一步只能建立<span className="text-white"> implementation context</span>：
         目前有哪些模組、資料表、API、既有流程。它還不知道這些設計背後的產品原因。
       </p>
@@ -86,7 +86,7 @@ codex
 
       {/* Step 3: feed PRD context */}
       <h3 className="text-white font-semibold mb-4 text-base">第 3 步：餵 PRD 需要的 context</h3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         寫 PRD 不只靠 code，還需要<span className="text-white">市場 / 用戶 / 競品 / 過往決策</span>等資訊。
         這些 Claude 不會自動知道，要你餵給它。常見的餵法有 3 種：
       </p>
@@ -147,7 +147,7 @@ https://www.shopify.com/admin/orders/export
       />
 
       <H3>PRD HITL：先問會卡住實作的問題</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         這個例子很接地氣：寫 PRD 前，先讓 agent 扮演會接手實作的人。
         它不一定知道答案，但它很擅長把「工程師會追問的問題」列出來，幫你提早釐清 scope、資料、權限、風險與 edge cases。
       </p>
@@ -176,13 +176,13 @@ https://www.shopify.com/admin/orders/export
 
       {/* Step 4: produce draft */}
       <h3 className="text-white font-semibold mt-10 mb-4 text-base">第 4 步：請它產 PRD 草稿</h3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         Context 餵夠後，再請它產 PRD 骨架。<span className="text-white">重點是標清楚不確定性</span>——
         哪些是 code fact、哪些是 PM 假設、哪些需要 HITL。
       </p>
 
       <h4 className="text-white font-semibold mb-3 mt-6 text-sm">Prompt 小技巧：多用符號與 pseudo-code</h4>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         模型看過大量程式語言、pseudo-code、JSON、YAML、regex 與邏輯符號。
         條件、門檻、輸出結構若能用這些語言類型表達，通常比長句自然語言更省 token，也更少歧義。
       </p>

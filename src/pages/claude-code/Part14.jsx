@@ -56,7 +56,7 @@ export default function Part14() {
     <PageLayout partIndex={17}>
       <SectionHeader partIndex={17} />
 
-      <p className="text-slate-400 leading-relaxed mb-8">
+      <p className="text-slate-300 leading-relaxed mb-8">
         如果 repo 對人難讀，對 LLM 也會難讀。你不應該期待 agent 每次都掃完整個 codebase，
         再從雜訊裡猜出架構、規則與產品決策。比較好的做法是把 repo 整理成
         <span className="text-white font-medium">可索引、可引用、可 review 的外部 context</span>。
@@ -64,7 +64,7 @@ export default function Part14() {
 
       <H3>1. 讓 repo 對 LLM 友善的核心原則</H3>
       <div className="rounded-xl border border-white/10 bg-white/[0.02] overflow-hidden mb-5">
-        <div className="hidden md:grid grid-cols-12 gap-3 px-4 py-3 border-b border-white/10 bg-white/[0.03] text-xs text-slate-500 font-semibold">
+        <div className="hidden md:grid grid-cols-12 gap-3 px-4 py-3 border-b border-white/10 bg-white/[0.03] text-xs text-slate-300 font-semibold">
           <span className="col-span-3">檔案 / 目錄</span>
           <span className="col-span-3">用途</span>
           <span className="col-span-6">應該包含</span>
@@ -73,7 +73,7 @@ export default function Part14() {
           <div key={row.file} className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-3 items-start px-4 py-3 border-b border-white/5 last:border-0 text-sm">
             <code className="md:col-span-3 text-orange-300 font-mono text-xs break-words">{row.file}</code>
             <span className="md:col-span-3 text-white font-medium">{row.purpose}</span>
-            <span className="md:col-span-6 text-slate-400 leading-relaxed">{row.include}</span>
+            <span className="md:col-span-6 text-slate-300 leading-relaxed">{row.include}</span>
           </div>
         ))}
       </div>
@@ -83,7 +83,7 @@ export default function Part14() {
       </Callout>
 
       <H3>2. llms.txt：給 LLM 的 curated index</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         <code className="text-orange-300 bg-orange-500/10 px-1.5 py-0.5 rounded text-xs">llms.txt</code>
         是一個放在網站或文件根目錄的 Markdown proposal，用來提供 LLM-friendly 的專案摘要與重要連結。
         proposal 建議內容包含專案 H1、短摘要 blockquote、補充說明，以及用 H2 分組的重要連結。
@@ -122,20 +122,20 @@ Read this repo in this order:
       </Callout>
 
       <H3>3. SDD：Spec-Driven Development</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         這裡的 SDD 指 <span className="text-white font-medium">Spec-Driven Development</span>：
         先把需求與設計寫成可 review 的 spec，再讓 agent 按 spec 實作。它適合需求清楚、會跨多人協作、
         需要回溯決策的功能。
       </p>
       <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-5 mb-5">
-        <div className="space-y-2 text-sm text-slate-300">
+        <ol className="list-none m-0 p-0 space-y-2 text-sm text-slate-300">
           {sddSteps.map((step, i) => (
-            <div key={step} className="flex items-start gap-3">
+            <li key={step} className="flex items-start gap-3">
               <span className="text-emerald-300 text-xs font-mono mt-0.5">{String(i + 1).padStart(2, '0')}</span>
               <span>{step}</span>
-            </div>
+            </li>
           ))}
-        </div>
+        </ol>
       </div>
       <CodeBlock title="SDD 目錄範例">
 {`specs/order-export/
@@ -146,7 +146,7 @@ Read this repo in this order:
       </CodeBlock>
 
       <H3>4. CDD：Context-Driven Development</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         這裡的 CDD 指 <span className="text-white font-medium">Context-Driven Development</span>：
         先整理 agent 需要的 context packet，再開始探索或實作。它適合大型既有 repo、模組邊界不清、
         或任務一開始還不知道要改哪裡的情境。
@@ -156,14 +156,14 @@ Read this repo in this order:
         但第一輪產物應該是 artifact，不是直接開改。等 artifact 被 review 過，再 /clear 重開乾淨 session 實作。
       </Callout>
       <div className="rounded-xl border border-cyan-500/20 bg-cyan-500/5 p-5 mb-5">
-        <div className="space-y-2 text-sm text-slate-300">
+        <ol className="list-none m-0 p-0 space-y-2 text-sm text-slate-300">
           {cddSteps.map((step, i) => (
-            <div key={step} className="flex items-start gap-3">
+            <li key={step} className="flex items-start gap-3">
               <span className="text-cyan-300 text-xs font-mono mt-0.5">{String(i + 1).padStart(2, '0')}</span>
               <span>{step}</span>
-            </div>
+            </li>
           ))}
-        </div>
+        </ol>
       </div>
       <CodeBlock title="Context packet 範例">
 {`docs/context/order-export.md
@@ -227,7 +227,7 @@ After I review this artifact, I will /clear and start a new implementation sessi
         ].map(({ k, v }) => (
           <div key={k} className="grid grid-cols-1 md:grid-cols-[14rem_1fr] gap-2 px-5 py-3 border-b border-white/5 last:border-0 text-sm">
             <div className="text-white font-semibold">{k}</div>
-            <div className="text-slate-400 leading-relaxed">{v}</div>
+            <div className="text-slate-300 leading-relaxed">{v}</div>
           </div>
         ))}
       </div>

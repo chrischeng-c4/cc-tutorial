@@ -129,12 +129,12 @@ export default function Part7() {
     <PageLayout partIndex={6}>
       <SectionHeader partIndex={6} />
 
-      <p className="text-slate-400 leading-relaxed mb-8">
+      <p className="text-slate-300 leading-relaxed mb-8">
         前面已經講完 agent loop 與 token/context。接著進到產品操作，先把基本三件事學會：
         <span className="text-white">怎麼裝怎麼啟動</span>、
         <span className="text-white">規則檔怎麼寫</span>、
         <span className="text-white">內建有哪些工具</span>。這堂課只用 claude / codex CLI 示範；
-        desktop、IDE extension、cloud 只作補充入口。後面 Part 8 再進到 token 與 context 的經濟學。
+        desktop、IDE extension、cloud 只作補充入口。
       </p>
 
       <H3>1. 安裝與啟動</H3>
@@ -215,7 +215,7 @@ $ codex
       ]} />
 
       <H3>2. 規則檔：給 agent 的工作說明書</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         Claude Code 常用 <code className="text-amber-300 bg-amber-500/10 px-1.5 py-0.5 rounded text-xs">CLAUDE.md</code>；
         Codex 常用 <code className="text-amber-300 bg-amber-500/10 px-1.5 py-0.5 rounded text-xs">AGENTS.md</code>。
         放在專案根目錄、commit 進 repo，讓整個團隊共用同一套規則。
@@ -248,7 +248,7 @@ $ codex
       </Callout>
 
       <H3>3. Tool list：Claude Code 跟 Codex</H3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+      <p className="text-slate-300 text-sm leading-relaxed mb-4">
         <span className="font-mono text-slate-300">agentic-loop</span> 講過「規劃 → 行動」，這裡就是行動的底牌。
         兩套工具的能力很像，但呈現方式不同：Claude Code 會明確暴露一組 tool names；
         Codex 比較常看到的是 shell、patch、sandbox、approval、MCP、exec / review 這些 CLI 操作介面。
@@ -257,7 +257,7 @@ $ codex
       </p>
 
       <div className="rounded-xl border border-white/10 bg-white/[0.02] overflow-hidden mb-5">
-        <div className="hidden md:grid grid-cols-12 gap-3 px-4 py-3 border-b border-white/10 bg-white/[0.03] text-xs text-slate-500 font-semibold">
+        <div className="hidden md:grid grid-cols-12 gap-3 px-4 py-3 border-b border-white/10 bg-white/[0.03] text-xs text-slate-300 font-semibold">
           <span className="col-span-3">共通能力</span>
           <span className="col-span-4">Claude Code 常見工具</span>
           <span className="col-span-5">Codex 對等介面</span>
@@ -266,7 +266,7 @@ $ codex
           <div key={row.task} className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-3 items-start px-4 py-3 border-b border-white/5 last:border-0 text-sm">
             <span className="md:col-span-3 text-white font-medium">{row.task}</span>
             <code className="md:col-span-4 text-cyan-300 font-mono text-xs leading-relaxed">{row.claude}</code>
-            <span className="md:col-span-5 text-slate-400 leading-relaxed">{row.codex}</span>
+            <span className="md:col-span-5 text-slate-300 leading-relaxed">{row.codex}</span>
           </div>
         ))}
       </div>
@@ -289,7 +289,7 @@ $ codex
                 <code key={tool} className="text-cyan-300 bg-cyan-500/10 px-2 py-0.5 rounded font-mono text-xs">{tool}</code>
               ))}
             </div>
-            <p className="text-slate-400 text-sm leading-relaxed">{desc}</p>
+            <p className="text-slate-300 text-sm leading-relaxed">{desc}</p>
           </div>
         ))}
       </div>
@@ -325,7 +325,7 @@ claude --allowedTools "Bash(npm test *) Edit" --disallowedTools "Bash(git push *
                 <code key={tool} className="text-violet-300 bg-violet-500/10 px-2 py-0.5 rounded font-mono text-xs">{tool}</code>
               ))}
             </div>
-            <p className="text-slate-400 text-sm leading-relaxed">{desc}</p>
+            <p className="text-slate-300 text-sm leading-relaxed">{desc}</p>
           </div>
         ))}
       </div>
