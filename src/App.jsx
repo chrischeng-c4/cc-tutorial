@@ -24,6 +24,7 @@ import Part16 from './pages/claude-code/Part16'
 import Part17 from './pages/claude-code/Part17'
 import Part18 from './pages/claude-code/Part18'
 import Part19 from './pages/claude-code/Part19'
+import Part20 from './pages/claude-code/Part20'
 import DemoPart from './pages/claude-code/DemoPart'
 import { DEMO_PARTS, PARTS } from './data/claudeCodeParts'
 
@@ -47,6 +48,7 @@ const partComponents = [
   Part13,
   Part14,
   Part15,
+  Part20,
 ]
 
 function ScrollToTop() {
@@ -72,6 +74,10 @@ export default function App() {
         <Route path="/demo-checklist" element={<Navigate to="/coding-agent" replace />} />
         <Route path="/coding-agent"  element={<ClaudeCodeIndex />} />
         <Route path="/claude-code"   element={<ClaudeCodeIndex />} />
+        <Route path="/coding-agent/limits-cost-hitl" element={<Navigate to="/coding-agent/limits-cost" replace />} />
+        <Route path="/claude-code/limits-cost-hitl" element={<Navigate to="/claude-code/limits-cost" replace />} />
+        <Route path="/coding-agent/permissions-approval-hitl" element={<Navigate to="/coding-agent/permissions-approval" replace />} />
+        <Route path="/claude-code/permissions-approval-hitl" element={<Navigate to="/claude-code/permissions-approval" replace />} />
         {PARTS.map((part, index) => {
           const Component = partComponents[index]
           return <Route key={part.slug} path={`/coding-agent/${part.slug}`} element={<Component />} />

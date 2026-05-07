@@ -197,7 +197,8 @@ scripts/weekly-report validate tmp/weekly.md
 
       <Callout type="pm">
         到這裡，你已經能完整跑「產草稿 → 寫格式規則 → 用工具驗證嚴格格式 → 補欄位 → 調語氣 → 多角度 review」的迭代循環。
-        下一段 <span className="font-mono font-semibold">limits-cost-hitl</span> 會講限制——它做不到的事 + 一份 PRD 大概要花你多少錢。
+        後面的 <span className="font-mono font-semibold">human-in-the-loop</span> 會把「問問題、釐清思緒、找盲點」拆成獨立方法；
+        <span className="font-mono font-semibold">limits-cost</span> 則保留限制與成本。
       </Callout>
     </PageLayout>
   )

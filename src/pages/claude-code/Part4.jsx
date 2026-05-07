@@ -1,4 +1,4 @@
-import { PageLayout, SectionHeader, Callout, CodeBlock, PromptResponse, Steps, Diff } from '../../components/cc/shared'
+import { PageLayout, SectionHeader, Callout, CodeBlock, PromptResponse, Steps, Diff, H3 } from '../../components/cc/shared'
 
 export default function Part4() {
   return (
@@ -145,6 +145,34 @@ https://www.shopify.com/admin/orders/export
 
 建議先找 PM / Tech Lead 確認以上問題，再產 PRD 草稿。`}
       />
+
+      <H3>PRD HITL：先問會卡住實作的問題</H3>
+      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+        這個例子很接地氣：寫 PRD 前，先讓 agent 扮演會接手實作的人。
+        它不一定知道答案，但它很擅長把「工程師會追問的問題」列出來，幫你提早釐清 scope、資料、權限、風險與 edge cases。
+      </p>
+      <CodeBlock title="Prompt：請 agent 先扮演工程師問問題">
+{`你先不要寫 PRD。請你扮演會負責實作這個功能的 senior engineer，
+根據目前 context，列出你會問 PM 的問題。
+
+請分成：
+1. v1 scope / blocker
+2. data model / API / permission
+3. edge cases
+4. privacy / security / compliance
+5. launch / metrics
+
+每題都附上：
+- why_it_matters
+- options
+- risk_if_unanswered
+- recommended_default（如果你有建議）`}
+      </CodeBlock>
+
+      <Callout type="tip">
+        這不是只適用工程師角色。同一份 PRD 也可以請 agent 扮演 QA、Legal、Security、Data analyst 或客服 lead，
+        讓它從不同角度問你「這份需求還缺什麼」。
+      </Callout>
 
       {/* Step 4: produce draft */}
       <h3 className="text-white font-semibold mt-10 mb-4 text-base">第 4 步：請它產 PRD 草稿</h3>

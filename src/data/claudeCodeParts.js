@@ -6,10 +6,10 @@ const RAW_PARTS = [
   { slug: 'prd-assist',                 path: '/coding-agent/prd-assist',                 title: '文件工作：PRD 可以怎麼輔助',              time: '5 min',  accent: 'rose',    usage: '文件案例', audience: '偏 PM',            tags: ['文件', '中階'], demoCases: ['04', '13'] },
   { slug: 'prd-draft',                  path: '/coding-agent/prd-draft',                  title: '第一次產 PRD 骨架',                       time: '10 min', accent: 'pink',    usage: '文件案例', audience: '偏 PM',            tags: ['文件', '操作'], demoCases: ['04', '13'] },
   { slug: 'rules-and-iteration',        path: '/coding-agent/rules-and-iteration',        title: '規則檔、格式工具與迭代',                  time: '8 min',  accent: 'fuchsia', usage: '文件案例', audience: '偏 PM',            tags: ['模板', '操作'], demoCases: ['04', '13'] },
-  { slug: 'limits-cost-hitl',           path: '/coding-agent/limits-cost-hitl',           title: '限制、成本與 HITL',                       time: '5 min',  accent: 'purple',  usage: '文件案例', audience: '共通',             tags: ['限制', '成本'] },
+  { slug: 'limits-cost',                path: '/coding-agent/limits-cost',                title: '限制與成本：Agent 做不到什麼',            time: '5 min',  accent: 'purple',  usage: '文件案例', audience: '共通',             tags: ['限制', '成本'] },
   { slug: 'tooling-basics',             path: '/coding-agent/tooling-basics',             title: '兩套工具上手',                            time: '10 min', accent: 'amber',   usage: '核心同步', audience: '共通',             tags: ['工具', '操作'] },
   { slug: 'token-context-economics',    path: '/coding-agent/token-context-economics',    title: 'Token 與 context 經濟學',                  time: '12 min', accent: 'orange',  usage: '核心同步', audience: '共通',             tags: ['成本'] },
-  { slug: 'permissions-approval-hitl',  path: '/coding-agent/permissions-approval-hitl',  title: 'Permission · Approval · HITL',            time: '8 min',  accent: 'emerald', usage: '核心同步', audience: '共通',             tags: ['權限', '安全'] },
+  { slug: 'permissions-approval',       path: '/coding-agent/permissions-approval',       title: 'Permission · Approval：工具邊界',          time: '8 min',  accent: 'emerald', usage: '核心同步', audience: '共通',             tags: ['權限', '安全'] },
   { slug: 'hooks-automation',           path: '/coding-agent/hooks-automation',           title: 'Hooks：工具呼叫前後的流程閘門',           time: '8 min',  accent: 'emerald', usage: '進階參考', audience: '偏 Engineering',   tags: ['Hooks', '安全', '自動化'] },
   { slug: 'scripts-workflow',           path: '/coding-agent/scripts-workflow',           title: 'Scripts：可重跑的工作流',                 time: '8 min',  accent: 'cyan',    usage: '核心同步', audience: '共通',             tags: ['Scripts', '操作'], demoCases: ['02', '05', '06', '10', '13'] },
   { slug: 'cli-tooling',                path: '/coding-agent/cli-tooling',                title: 'CLI：人與 agent 共用的工具介面',           time: '8 min',  accent: 'emerald', usage: '核心同步', audience: '共通',             tags: ['CLI', '工具'], demoCases: ['02', '05', '06', '10', '13'] },
@@ -20,6 +20,7 @@ const RAW_PARTS = [
   { slug: 'demo-workflow',              path: '/coding-agent/demo-workflow',              title: 'Demo 流程 + 常見坑',                      time: '8 min',  accent: 'violet',  usage: '進階參考', audience: '共通',             tags: ['案例', '收斂'] },
   { slug: 'repo-context',               path: '/coding-agent/repo-context',               title: 'Repo 給 LLM 讀：llms.txt · SDD · CDD',    time: '10 min', accent: 'orange',  usage: '進階參考', audience: '偏 Engineering',   tags: ['Repo', 'Context'], demoCases: ['12', '13'] },
   { slug: 'programmatic-review',        path: '/coding-agent/programmatic-review',        title: 'Programmatic 串接與 Review',              time: '10 min', accent: 'violet',  usage: '進階參考', audience: '偏 Engineering',   tags: ['Automation', 'Review'], demoCases: ['02', '05', '06', '10', '13'] },
+  { slug: 'human-in-the-loop',          path: '/coding-agent/human-in-the-loop',          title: 'HITL：人類在 loop 裡做什麼',               time: '8 min',  accent: 'amber',   usage: '核心同步', audience: '共通',             tags: ['HITL', '決策'] },
 ]
 
 export const PARTS = RAW_PARTS
@@ -67,13 +68,13 @@ export const COURSE_PARTS = [...PARTS, ...DEMO_PARTS]
 const CONCEPT_PATH = [
   {
     title: '基礎觀念',
-    desc: '先建立 coding agent 心智模型：它是什麼、怎麼迭代，以及 context/token 為什麼要管理。',
-    parts: ['what-is-coding-agent', 'agentic-loop', 'token-context-economics'],
+    desc: '先建立 coding agent 心智模型：它是什麼、怎麼迭代，何時讓人進入 loop，以及 context/token 為什麼要管理。',
+    parts: ['what-is-coding-agent', 'agentic-loop', 'human-in-the-loop', 'token-context-economics'],
   },
   {
     title: '產品用法',
     desc: '再學實際怎麼裝、怎麼啟動、常見指令、規則檔、工具清單與 permission / approval。',
-    parts: ['tooling-basics', 'permissions-approval-hitl', 'hooks-automation'],
+    parts: ['tooling-basics', 'permissions-approval', 'hooks-automation'],
   },
   {
     title: '進階觀念',
@@ -82,8 +83,8 @@ const CONCEPT_PATH = [
   },
   {
     title: '實戰演練',
-    desc: '最後用 PRD 文件流程與完整 demo，把前面的觀念串成可操作工作流。',
-    parts: ['prd-assist', 'prd-draft', 'rules-and-iteration', 'limits-cost-hitl', 'demo-workflow'],
+    desc: '最後用 PRD 文件流程、限制成本與完整 demo，把前面的觀念串成可操作工作流。',
+    parts: ['prd-assist', 'prd-draft', 'rules-and-iteration', 'limits-cost', 'demo-workflow'],
   },
 ]
 

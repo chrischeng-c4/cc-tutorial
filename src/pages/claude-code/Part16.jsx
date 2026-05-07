@@ -28,7 +28,7 @@ export default function Part16() {
       <div className="grid grid-cols-1 gap-3 mb-5 md:grid-cols-3">
         {[
           { title: 'Permission', desc: '決定工具能不能執行，屬於權限邊界。' },
-          { title: 'HITL', desc: '把不確定或高風險判斷交回人類。' },
+          { title: 'HITL', desc: '把資訊缺口、決策、盲點與高風險判斷交回人類。' },
           { title: 'Hooks', desc: '在工具呼叫前後自動跑檢查、記錄或通知。' },
         ].map(({ title, desc }) => (
           <div key={title} className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4">

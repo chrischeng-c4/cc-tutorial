@@ -310,16 +310,22 @@ Implement according to the acceptance criteria.`}
         </div>
       </div>
 
-      <H3>6. Reasoning effort：調整 thinking budget，不是準確率保證</H3>
+      <H3>6. Reasoning effort：調整推理深度與成本，不是準確率保證</H3>
       <p className="text-slate-400 text-sm leading-relaxed mb-4">
-        Reasoning / effort 可以先理解成 <span className="text-white font-medium">thinking budget 上限</span>。
-        開高代表允許模型花更多內部推理 token 與時間，但不代表它一定會用滿，也不代表一定比較準。
-        如果模型判斷「這樣夠了」，它可能提早停止；如果前提、context 或 scope 錯了，高 effort 也可能只是更有自信地走錯路。
+        Reasoning / effort 現在不適合只講成「thinking budget 上限」。
+        比較準確的講法是：它是 <span className="text-white font-medium">推理深度、成本與延遲的控制旋鈕</span>。
+        OpenAI 這類 effort label 會影響模型回答前投入多少 reasoning；
+        Claude extended thinking 的 <code className="text-emerald-300 bg-emerald-500/10 px-1 rounded">budget_tokens</code> 則更接近 token budget。
+      </p>
+      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+        可以把它想成演進過程：早期多半是用 prompt 要模型「think step by step」，
+        或用外部 budget 限制可見 / 內部 thinking token；現在的 reasoning model 已經把「何時需要多想」
+        這件事訓練進模型行為裡。Effort 不是在 prompt 裡提醒它要努力一點，而是 API 層的推理策略設定。
       </p>
       <Callout type="warn">
-        Effort label 不是跨模型可比較的固定數字。同樣叫 low / medium / high / max，
-        不同 provider、不同 model、不同版本背後的 thinking budget、計費方式、是否顯示 thinking token 都可能不同。
-        課堂只講選擇原則，不把任何一家的 label 當成通用換算表。
+        同樣叫 effort / thinking budget，不同 provider、不同 model、不同版本的語意不一樣：
+        有的是 level，有的是 token budget，有的是 maximum，有的是 target。
+        高 effort 通常比較適合複雜推理、重構、規劃與多約束問題，但不會修正錯的前提、缺的 context 或過大的 scope。
       </Callout>
       <div className="overflow-x-auto rounded-xl border border-white/10 bg-white/[0.02] mb-4">
         <table className="w-full min-w-[780px] border-collapse text-sm">
@@ -470,7 +476,7 @@ num <= 10 => risk = normal`}
             '完成一個獨立任務後 → /clear，開新 session 做下一件事',
             '同一任務進行到一半但對話變長 → /compact 壓縮，保留摘要繼續',
             '把 tool call 當成對話歷史：讀檔、grep、跑測試的結果都會回到 context',
-            'Reasoning effort 是 thinking budget 上限，不是準確率保證；缺 context 時先補資料，不要只升 effort',
+            'Reasoning effort 是推理深度、成本與延遲的控制旋鈕，不是準確率保證；缺 context 時先補資料，不要只升 effort',
             '給足高訊號 context：目標、限制、相關檔、範例、驗收條件；不要讓 agent 用多輪工具呼叫補缺口',
             '懶得整理資料時 → 先開探索 session 產 context artifact，review 後 /clear，下一輪只讀 artifact 實作',
             '日常 agent session → 選合理 context；不要因為有大 context 就把所有資料都塞進同一輪',

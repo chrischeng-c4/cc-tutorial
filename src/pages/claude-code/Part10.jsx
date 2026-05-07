@@ -3,6 +3,7 @@ import { PageLayout, SectionHeader, CodeBlock, Callout, H3 } from '../../compone
 const scriptUseCases = [
   { title: '資料匯出', detail: '把 JIRA、Sheets、Docs、repo scan 先匯成 JSON / CSV / Markdown。' },
   { title: '格式產生', detail: '用 script 產 payload、frontmatter、PR comment、週報，不讓 agent 手刻固定格式。' },
+  { title: '批次重複修改', detail: '大量 rename、欄位改名、檔案格式轉換、frontmatter 補欄位，先寫腳本再套用。' },
   { title: 'dry-run', detail: '外部寫入前先產 preview 檔，讓人 review 後再執行真的寫入。' },
   { title: '驗證', detail: 'schema check、欄位檢查、lint、format 都交給可重跑工具。' },
 ]
@@ -53,7 +54,30 @@ export default function Part10() {
         ))}
       </div>
 
-      <H3>2. 固定格式不要只靠 prompt</H3>
+      <H3>2. 大量重複修改：不要一個一個改</H3>
+      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+        如果任務是大量 rename、把所有檔案改成同一種格式、補 frontmatter、批次改欄位名稱，
+        可以明確要求 agent <span className="text-white font-medium">先寫可檢查的腳本</span>，而不是逐檔手改。
+        現在好的 agent 多半會自己這樣做，但上課時可以觀察它的行為：它是直接改一堆檔案，還是先建立規則、dry-run、再套用？
+      </p>
+      <CodeBlock title="Prompt：批次修改先產腳本與 dry-run">
+{`我要把 docs/**/*.md 裡的 frontmatter 統一成新的格式。
+
+請不要逐檔手改。請先：
+1. 掃描受影響檔案，列出變更規則與風險
+2. 寫一個 scripts/normalize-frontmatter.* 腳本
+3. 先支援 --dry-run，輸出會改哪些檔案與 diff summary
+4. 我確認後才執行真正修改
+5. 修改後跑 formatter / lint / build 驗證
+
+如果你發現規則不明確，先列 HITL questions，不要猜。`}
+      </CodeBlock>
+      <Callout type="tip">
+        批次腳本的重點不是「少打字」，而是可重跑、可 review、可驗證。
+        尤其大量 rename 時，腳本可以先檢查 collision、漏改引用、大小寫不一致與 rollback 方式。
+      </Callout>
+
+      <H3>3. 固定格式不要只靠 prompt</H3>
       <p className="text-slate-400 text-sm leading-relaxed mb-4">
         Prompt、Skill、AGENTS.md 都是指令；agent 多半會遵守，但不能把它當 parser、formatter 或 validator。
         只要輸出會被機器吃進去，就把格式契約做成 script。
@@ -77,7 +101,7 @@ scripts/jira-bulk dry-run tmp/jira-bulk.json
 > validate 或 dry-run 失敗時，只回報錯誤與需要人工確認的欄位。`}
       </CodeBlock>
 
-      <H3>3. Demo 最穩的 script pattern</H3>
+      <H3>4. Demo 最穩的 script pattern</H3>
       <CodeBlock title="外部寫入前先停在 reviewable artifact">
 {`scripts/weekly-report export --project SHOP --since 2026-05-01 \
   --output tmp/weekly-source.json

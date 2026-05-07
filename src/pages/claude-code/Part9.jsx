@@ -115,10 +115,11 @@ Shift+Tab  # default -> acceptEdits -> plan
         Auto mode 是研究預覽，會降低中斷，但不能替代 git diff、測試、HITL 與可回復環境。
       </Callout>
 
-      <H3>HITL：用問題取代猜測</H3>
+      <H3>HITL 在 permission 章的位置：用問題取代猜測</H3>
       <p className="text-slate-400 text-sm leading-relaxed mb-4">
-        HITL 是 Human in the Loop。重點不是讓人批准每一行，而是讓 agent 在高風險或不確定處停下來問人。
-        一個好的問題通常比錯誤實作後再 rollback 便宜很多。
+        完整 HITL 方法在 <span className="font-mono text-white">human-in-the-loop</span>。
+        這裡只看它跟 permission / approval 的交界：當 agent 要做高風險或外部寫入時，
+        不要猜，不要直接做，先把問題、preview 和風險交給人確認。
       </p>
       <div className="rounded-xl border border-white/10 bg-white/[0.02] overflow-hidden mb-5">
         {[

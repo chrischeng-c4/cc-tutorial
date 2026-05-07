@@ -66,19 +66,10 @@ export default function Part6() {
         對外部資料（競品、法規、市場數字）與 codebase 推論一律保持懷疑——能查證就查證，不能查證就標成 HITL question。
       </Callout>
 
-      <h3 className="text-white font-semibold mt-10 mb-4 text-base">HITL：Human in the Loop</h3>
-      <p className="text-slate-400 text-sm leading-relaxed mb-4">
-        HITL 就是<span className="text-white font-medium">把人放在關鍵判斷點</span>。
-        不是每一步都要人工批准，而是遇到產品取捨、外部寫入、權限風險、資料不確定、codebase 推論時，
-        agent 應該停下來把問題交給對的人確認。
-      </p>
-      <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 mb-10">
-        <div className="text-amber-300 font-semibold text-sm mb-2">為什麼重要</div>
-        <p className="text-slate-300 text-sm leading-relaxed">
-          Agent 最容易出事的地方不是「不會寫」，而是它替你補了缺口：假設 PM 想要 A、假設 Legal 沒問題、
-          假設某段 code 代表產品決策。HITL 的目的就是把這些假設變成明確問題，讓人用很小的成本阻止後面的大返工。
-        </p>
-      </div>
+      <Callout type="info">
+        HITL 已拆成獨立章 <span className="font-mono font-semibold">human-in-the-loop</span>。
+        這章只保留限制與成本；遇到產品取捨、資料缺口、盲點 review 或外部寫入時，回到 HITL 章的問題框架。
+      </Callout>
 
       {/* Cost */}
       <h3 className="text-white font-semibold mt-12 mb-4 text-base">一份文件任務要花多少錢</h3>

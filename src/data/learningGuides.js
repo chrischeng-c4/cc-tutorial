@@ -2,14 +2,14 @@ export const teachingTracks = [
   {
     title: '第一場：共通心智模型',
     audience: '非 dev / dev 都適合',
-    goal: '先知道 agent 是什麼、怎麼迭代、context 為什麼會爆、何時要 HITL。',
-    parts: ['what-is-coding-agent', 'agentic-loop', 'token-context-economics', 'limits-cost-hitl'],
+    goal: '先知道 agent 是什麼、怎麼迭代、HITL 如何幫人做判斷，以及 context 為什麼會爆。',
+    parts: ['what-is-coding-agent', 'agentic-loop', 'human-in-the-loop', 'token-context-economics', 'limits-cost'],
   },
   {
     title: '第二場：安全使用與工具上手',
     audience: '所有實際會操作工具的人',
     goal: '看懂規則檔、permission、approval、hooks，以及基本工具邊界。',
-    parts: ['tooling-basics', 'permissions-approval-hitl', 'hooks-automation'],
+    parts: ['tooling-basics', 'permissions-approval', 'hooks-automation'],
   },
   {
     title: '第三場：可重用工作流',
@@ -35,7 +35,7 @@ export const questionIndex = [
   {
     question: '我不是工程師，想先知道怎麼安全使用 agent',
     answer: '先看心智模型、HITL、工具上手與 scripts/CLI 的直覺版。',
-    parts: ['what-is-coding-agent', 'limits-cost-hitl', 'tooling-basics', 'scripts-workflow', 'cli-tooling'],
+    parts: ['what-is-coding-agent', 'human-in-the-loop', 'limits-cost', 'tooling-basics', 'scripts-workflow', 'cli-tooling'],
   },
   {
     question: '對話太長、agent 開始忘記重點',
@@ -49,8 +49,8 @@ export const questionIndex = [
   },
   {
     question: '怕 agent 亂改外部系統',
-    answer: '先看 permission / HITL，再用 hooks、dry-run、reviewable artifact 擋住外部寫入。',
-    parts: ['permissions-approval-hitl', 'hooks-automation', 'demo-workflow'],
+    answer: '先看 HITL 與 permission / approval，再用 hooks、dry-run、reviewable artifact 擋住外部寫入。',
+    parts: ['human-in-the-loop', 'permissions-approval', 'hooks-automation', 'demo-workflow'],
   },
   {
     question: '同一類任務一直重複，想變成流程',
