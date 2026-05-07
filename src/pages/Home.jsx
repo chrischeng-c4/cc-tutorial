@@ -32,16 +32,10 @@ export default function Home() {
             </p>
             <div className="flex flex-wrap gap-3">
               <Link
-                to="/workshop"
+                to="/coding-agent"
                 className="px-5 py-3 rounded-lg bg-cyan-700 hover:bg-cyan-600 text-white font-semibold transition-colors no-underline"
               >
-                看課程安排
-              </Link>
-              <Link
-                to="/demo-checklist"
-                className="px-5 py-3 rounded-lg border border-white/10 hover:border-white/20 text-slate-300 hover:text-white font-medium transition-colors no-underline"
-              >
-                看 Demo 清單
+                開始工具教材
               </Link>
             </div>
           </div>

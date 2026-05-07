@@ -97,43 +97,6 @@ export default function ClaudeCodeIndex() {
           </div>
         </section>
 
-        <Link
-          to="/workshop"
-          className="block rounded-2xl border border-cyan-500/25 bg-cyan-500/[0.06] p-5 mb-4 no-underline hover:border-cyan-400/40 transition-colors"
-        >
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div>
-              <div className="text-cyan-300 text-sm font-semibold mb-2">課程順序</div>
-              <h2 className="text-white font-bold text-lg mb-2">先看多場教學安排</h2>
-              <p className="text-slate-300 text-sm leading-relaxed max-w-2xl">
-                第一輪只挑主線，後續場次再深入工具、自動化、agentic coding 與 demo lab。
-              </p>
-            </div>
-            <span className="px-4 py-2 rounded-lg bg-cyan-700 text-white text-sm font-semibold flex-shrink-0">
-              查看安排 →
-            </span>
-          </div>
-        </Link>
-
-        <Link
-          to="/demo-checklist"
-          className="block rounded-2xl border border-violet-500/25 bg-violet-500/[0.06] p-5 mb-8 no-underline hover:border-violet-400/40 transition-colors"
-        >
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div>
-              <div className="text-violet-300 text-sm font-semibold mb-2">Demo 清單</div>
-              <h2 className="text-white font-bold text-lg mb-2">講師 Demo 準備清單</h2>
-              <p className="text-slate-300 text-sm leading-relaxed max-w-2xl">
-                學員主路徑已經在下半部 demo part。這頁保留給講師檢查資料準備、CLI / export 優先路徑、
-                MCP optional 項與 HITL 確認。
-              </p>
-            </div>
-            <span className="px-4 py-2 rounded-lg bg-violet-600 text-white text-sm font-semibold flex-shrink-0">
-              查看清單 →
-            </span>
-          </div>
-        </Link>
-
         {/* Course cards */}
         <div className="space-y-8 mb-16">
           {COURSE_SECTIONS.map((section) => (
@@ -206,9 +169,6 @@ export default function ClaudeCodeIndex() {
         <div className="flex items-center justify-between pt-12 mt-12 border-t border-white/10">
           <Link to="/agent" className="text-slate-400 hover:text-white transition-colors no-underline text-sm">
             ← Agent 概念
-          </Link>
-          <Link to="/pre-quiz" className="text-slate-400 hover:text-white transition-colors no-underline text-sm">
-            課前預習測驗 →
           </Link>
         </div>
       </div>

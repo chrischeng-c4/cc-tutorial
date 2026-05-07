@@ -144,12 +144,9 @@ export function SectionHeader({ partIndex, partSlug }) {
             </div>
             <h1 className="text-3xl font-black text-white leading-tight">{p.title}</h1>
             {p.demoCases?.length > 0 && (
-              <Link
-                to="/demo-checklist"
-                className="mt-2 inline-flex text-sm text-slate-300 no-underline transition-colors hover:text-white"
-              >
+              <div className="mt-2 text-sm text-slate-300">
                 對應 Demo Case → {p.demoCases.join(' · ')}
-              </Link>
+              </div>
             )}
           </div>
         </div>

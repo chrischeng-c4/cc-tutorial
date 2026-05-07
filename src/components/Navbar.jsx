@@ -2,10 +2,7 @@ import { useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 
 const links = [
-  { to: '/workshop', label: '課程安排', match: path => path === '/workshop' },
   { to: '/coding-agent', label: '工具教材', match: path => path === '/coding-agent' || path === '/claude-code' || /^\/(coding-agent|claude-code)\/\d+$/.test(path) },
-  { to: '/demo-checklist', label: 'Demo 清單', match: path => path === '/demo-checklist' },
-  { to: '/pre-quiz', label: '課前測驗', match: path => path === '/pre-quiz' },
 ]
 
 export default function Navbar() {

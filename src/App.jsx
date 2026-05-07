@@ -1,12 +1,9 @@
 import { useEffect } from 'react'
-import { HashRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { HashRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import LLMBasics from './pages/LLMBasics'
 import AgentConcept from './pages/AgentConcept'
-import PreQuiz from './pages/PreQuiz'
-import DemoChecklist from './pages/DemoChecklist'
-import WorkshopPlan from './pages/WorkshopPlan'
 import ClaudeCodeIndex from './pages/claude-code/index'
 import Part1  from './pages/claude-code/Part1'
 import Part2  from './pages/claude-code/Part2'
@@ -71,8 +68,8 @@ export default function App() {
         <Route path="/"              element={<Home />} />
         <Route path="/llm"           element={<LLMBasics />} />
         <Route path="/agent"         element={<AgentConcept />} />
-        <Route path="/workshop"      element={<WorkshopPlan />} />
-        <Route path="/demo-checklist" element={<DemoChecklist />} />
+        <Route path="/workshop"      element={<Navigate to="/coding-agent" replace />} />
+        <Route path="/demo-checklist" element={<Navigate to="/coding-agent" replace />} />
         <Route path="/coding-agent"  element={<ClaudeCodeIndex />} />
         <Route path="/claude-code"   element={<ClaudeCodeIndex />} />
         {PARTS.map((part, index) => {
@@ -101,7 +98,7 @@ export default function App() {
           const Component = partComponents[index]
           return <Route key={`legacy-claude-${index + 1}`} path={`/claude-code/${index + 1}`} element={<Component />} />
         })}
-        <Route path="/pre-quiz"       element={<PreQuiz />} />
+        <Route path="/pre-quiz"       element={<Navigate to="/coding-agent" replace />} />
       </Routes>
     </HashRouter>
   )

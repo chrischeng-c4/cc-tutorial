@@ -60,7 +60,7 @@ npm install
 npm run dev
 ```
 
-Then open the Vite URL and go to `#/demo-checklist`.
+Then open the Vite URL and go to `#/coding-agent`.
 
 ## Verify
 
