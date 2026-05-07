@@ -1,16 +1,72 @@
-# React + Vite
+# Coding Agent Tutorial
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Course site and demo fixtures for the Claude Code + Codex workshop.
 
-Currently, two official plugins are available:
+## Run Demo CLI
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Detailed classroom steps are in:
 
-## React Compiler
+```text
+demo-data/RUNBOOK.md
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The classroom-safe demo CLI lives at:
 
-## Expanding the ESLint configuration
+```text
+scripts/demo-cli.mjs
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+It uses only local files under `demo-data/` and Node built-ins. It does not call an LLM, MCP server, JIRA, Google Docs, Figma, or any external API.
+
+After cloning the repo:
+
+```bash
+npm run demo:list
+npm run demo:case -- prd-draft
+npm run demo:case -- technical-questions
+npm run demo:case -- meeting-actions
+npm run demo:case -- jira-subtasks
+```
+
+You can also run all fallback outputs:
+
+```bash
+npm run demo:case -- all
+```
+
+## Demo Files
+
+```text
+demo-data/
+  fixtures/      # Input data students can inspect or ask an agent to read
+  prompts/       # Exact prompts for each classroom demo
+  expected/      # Deterministic fallback outputs
+  demo-repo/     # Tiny codebase for the PRD + codebase feasibility demo
+```
+
+Recommended classroom order:
+
+1. `prd-draft` - Case 04, PRD draft and review.
+2. `technical-questions` - Case 13, PRD + codebase to facts / assumptions / HITL questions.
+3. `meeting-actions` - Case 03, meeting notes to action items.
+4. `jira-subtasks` - Case 02, dry-run JIRA subtasks.
+
+## Run Course Site
+
+Install dependencies only if you want to run the website locally:
+
+```bash
+npm install
+npm run dev
+```
+
+Then open the Vite URL and go to `#/demo-checklist`.
+
+## Verify
+
+```bash
+npm run demo:list
+npm run demo:case -- all
+npm run build
+npm run lint
+```

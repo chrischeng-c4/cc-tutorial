@@ -4,7 +4,7 @@ const mainThreadPrinciples = [
   {
     name: 'Main thread',
     role: '控制流程與做最後整合',
-    detail: '只保留任務目標、當前決策、驗收條件、下一步。不要把大量搜尋結果、測試 log、文件全文都塞進來。',
+    detail: '只保留任務目標、目前決策、驗收條件、下一步。不要把大量搜尋結果、測試 log、文件全文都塞進來。',
   },
   {
     name: 'External storage',
@@ -83,7 +83,8 @@ export default function Part11() {
       </p>
       <Callout type="tip">
         什麼時候該用：要做一件「跑完就丟，過程不需要留」的事，例如大範圍 grep、研究某 lib 的 API、
-        跑測試只回失敗清單、review code 只回 issue 列表。Codex cloud 背景任務也適合這類邊界清楚的背景委派。
+        跑測試只回失敗清單、review code 只回 issue 清單。Codex 這邊先用 codex exec 這類明確任務示範；
+        cloud task 只作補充入口。
         主對話要直接實作時，用 main thread 比較直接。
       </Callout>
       <Callout type="info">

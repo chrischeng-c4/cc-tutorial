@@ -73,7 +73,57 @@ description: Produce an internal weekly report from Jira and Sheets exports.
 7. Do not send messages or update tickets without explicit approval.`}
       </CodeBlock>
 
-      <H3>3. Skill vs Subagent</H3>
+      <H3>3. 進階範例：Skill 搭配 CLI & MCP 接 Confluence / JIRA</H3>
+      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+        Confluence 與 JIRA 都可以接 MCP。比較穩的做法不是一開始就讓 agent 直接寫外部系統，
+        而是把三層拆開：Skill 定義工作規則；CLI 產 dry-run artifact；MCP 在權限穩定後負責 live read 或受控寫入。
+      </p>
+      <CodeBlock title="進階流程：Skill + CLI + MCP">
+{`# 1. Skill 注入規則
+# .claude/skills/shopee-delivery-sync/SKILL.md
+Rules:
+- Confluence is source of truth for product context.
+- JIRA is source of truth for execution status.
+- Use CLI first when the workflow needs dry-run, schema validation, or class demo fallback.
+- Use MCP when live Confluence / JIRA data is required and credentials are available.
+- Never write JIRA without would-create preview and human approval.
+
+# 2. CLI 產可 review artifact，不依賴 MCP 成功
+scripts/shopee-context confluence-export \
+  --space SHOP \
+  --page "Order Export PRD" \
+  --output tmp/confluence-order-export.md
+
+scripts/shopee-jira create-preview \
+  --source tmp/confluence-order-export.md \
+  --schema docs/schemas/jira-subtasks.schema.json \
+  --output tmp/jira-preview.json
+
+scripts/shopee-jira validate tmp/jira-preview.json
+
+# 3. MCP 可用時才做 live read / write adapter
+> Use the Shopee Confluence MCP to refresh the page summary.
+> Compare it with tmp/confluence-order-export.md and list deltas.
+> If I approve tmp/jira-preview.json, use Shopee JIRA MCP to create the issues.`}
+      </CodeBlock>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-5">
+        {[
+          { layer: 'Skill', body: '保存操作規則、欄位對應、HITL checkpoint、何時選 CLI 或 MCP。' },
+          { layer: 'CLI', body: '產 fixture、preview、schema validation、dry-run output；課堂與 CI 都能重跑。' },
+          { layer: 'MCP', body: '在 OAuth / 權限穩定後做 live read；寫入型 tool 一律先 read-only / dry-run。' },
+        ].map((item) => (
+          <div key={item.layer} className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+            <div className="text-violet-300 text-xs font-semibold uppercase tracking-wide mb-2">{item.layer}</div>
+            <p className="text-slate-400 text-sm leading-relaxed">{item.body}</p>
+          </div>
+        ))}
+      </div>
+      <Callout type="warn">
+        Confluence 主要風險是讀到過多或敏感內容；JIRA 主要風險是寫錯 project、issue type、assignee 或狀態。
+        所以 Confluence MCP 先限制讀取 scope；JIRA MCP 先做 preview，人工確認後才寫入。
+      </Callout>
+
+      <H3>4. Skill vs Subagent</H3>
       <div className="overflow-x-auto rounded-xl border border-white/10 bg-white/[0.02] mb-5">
         <table className="w-full min-w-[760px] border-collapse text-sm">
           <thead>

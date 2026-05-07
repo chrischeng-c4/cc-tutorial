@@ -1,0 +1,19 @@
+{
+  "key": "SHOP-1842",
+  "summary": "Seller Order CSV Export",
+  "description": "Allow sellers to export their own order history as CSV from the Orders page.",
+  "acceptanceCriteria": [
+    "Seller can select a date range before exporting.",
+    "Export contains stable finance-approved columns.",
+    "Export only includes orders owned by the current seller.",
+    "Large exports show a clear error with next steps.",
+    "No production write happens without human approval."
+  ],
+  "defaultAssigneeRules": {
+    "Frontend": "unassigned",
+    "Backend": "unassigned",
+    "QA": "unassigned",
+    "Docs": "unassigned"
+  }
+}
+

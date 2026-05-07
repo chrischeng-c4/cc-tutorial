@@ -11,7 +11,7 @@ const turnCostBars = [
 const storageRows = [
   {
     place: 'Context',
-    bestFor: '短期推理、當前任務目標、正在比較的選項、下一步',
+    bestFor: '短期推理、目前任務目標、正在比較的選項、下一步',
     notFor: '長期決策紀錄、完整訪談、完整 log、review 全文',
     rule: '只放這一輪真的需要推理的材料',
   },
@@ -32,6 +32,57 @@ const storageRows = [
     bestFor: '需求、決策、產品狀態、跨職能協作紀錄',
     notFor: '暫時性的工具輸出或一次性 debug log',
     rule: '讓 ticket / doc 成為 source of truth，對話只引用摘要',
+  },
+]
+
+const effortRows = [
+  {
+    effort: 'low',
+    use: '摘要、整理 meeting notes、固定格式草稿、已知路徑的小修改',
+    avoid: '跨檔推理、模糊需求、需要找 root cause 的 bug',
+  },
+  {
+    effort: 'medium',
+    use: '一般 PRD review、小型 feature、已知模組內的實作與測試修正',
+    avoid: '高風險 security / data migration / 架構取捨',
+  },
+  {
+    effort: 'high',
+    use: '未知 codebase 探索、跨檔實作、複雜 debug、多角度 review',
+    avoid: '只是在補格式、產清單、整理已知資料',
+  },
+  {
+    effort: 'max',
+    use: '高風險決策、架構方案比較、需要完整 trade-off 與 failure mode 的 review',
+    avoid: '當成日常預設，或拿來彌補缺 context / scope 太大',
+  },
+]
+
+const longContextEvidenceRows = [
+  {
+    source: 'OpenAI 長 context eval',
+    evidence: 'GPT-5.5 在 MRCR v2 8-needle 從 98.1%（4K-8K）降到 74.0%（512K-1M）；Claude Opus 4.7 在 128K-256K 為 59.2%，512K-1M 降到 32.2%。',
+    note: '不是原始 lost-middle 測試，但可作為 frontier model 長 context 仍會退化的公開數字。',
+  },
+  {
+    source: 'Lost in the Middle',
+    evidence: 'GPT-3.5-Turbo 在 20/30 documents 情境，答案放中間時最差可掉超過 20%；甚至低於不給文件的 closed-book baseline 56.1%。',
+    note: '原始 U-shaped curve 證據；答案在頭尾較準，中間較差。',
+  },
+  {
+    source: 'RULER',
+    evidence: '17 個 long-context LMs 中，幾乎全部在 context 變長時明顯掉分；雖然都宣稱 32K+ context，只有約一半能在 32K 維持滿意表現。',
+    note: '比 vanilla needle-in-haystack 更難，加入多針、多跳、aggregation。',
+  },
+  {
+    source: 'NoLiMa',
+    evidence: '13 個宣稱支援 128K+ 的模型，在 32K 時有 11 個低於短 context baseline 的 50%；GPT-4o 從 99.3% 降到 69.7%。',
+    note: '移除字面匹配線索後，長 context 退化更明顯。',
+  },
+  {
+    source: 'BABILong',
+    evidence: 'NeurIPS 2024 benchmark 報告 popular LLMs 實際有效利用約 10-20% context，且 reasoning complexity 上升時表現急遽下降。',
+    note: '測試分散在長文本中的 fact chaining、deduction、counting 等推理。',
   },
 ]
 
@@ -72,6 +123,26 @@ export default function Part8() {
         Claude Code 與 Codex 會幫你管理這個歷史，但底層原理就是如此——沒有魔法，只有打包重送。
       </p>
 
+      <H3>2. Tool call 也是對話歷史的一部分</H3>
+      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+        Coding agent 看起來像「跑了一個工具」，但對模型來說它仍然是訊息流：
+        assistant 輸出 tool call，工具回傳 tool result，client 再把 tool result 接回下一輪模型呼叫。
+        所以讀檔、grep、跑測試、看 diff 都不是對話外的免費動作。
+      </p>
+      <div className="rounded-xl bg-black/40 border border-white/10 p-5 font-mono text-xs leading-relaxed mb-4">
+        <div className="text-slate-500 mb-2">{'// 同一個「看檔案」動作，在 history 裡會長這樣'}</div>
+        <div className="text-sky-300">{'messages: ['}</div>
+        <div className="text-slate-400 ml-4">{'{ role: "user",      content: "找出登入失敗的原因" },'}</div>
+        <div className="text-violet-300 ml-4">{'{ role: "assistant", tool_call: Read({ file: "src/auth.ts" }) },'}</div>
+        <div className="text-cyan-300 ml-4">{'{ role: "tool",      content: "...auth.ts file content..." },'}</div>
+        <div className="text-slate-400 ml-4">{'{ role: "assistant", content: "我看到 token expired path..." }'}</div>
+        <div className="text-sky-300">{']'}</div>
+      </div>
+      <Callout type="warn">
+        工具用越多，history 裡就越多 tool call / tool result。下一輪若沒有 /compact 或 /clear，
+        這些內容會跟人類訊息一樣成為 input context；尤其是長 log、完整檔案、測試輸出，膨脹很快。
+      </Callout>
+
       <div className="rounded-xl border border-white/10 bg-white/[0.02] p-5 mb-10">
         <div className="flex items-center justify-between gap-4 mb-4">
           <div>
@@ -106,10 +177,10 @@ export default function Part8() {
       </div>
 
       {/* 2. Context is not a database */}
-      <H3>2. Context 不是資料庫</H3>
+      <H3>3. Context 不是資料庫</H3>
       <p className="text-slate-400 text-sm leading-relaxed mb-4">
         最重要的心法是：<span className="text-white font-medium">context 是工作記憶，不是可靠儲存</span>。
-        它適合保留這一輪推理需要的目標、限制、少量事實與當前決策；不適合保存所有訪談、log、review 結果、
+        它適合保留這一輪推理需要的目標、限制、少量事實與目前決策；不適合保存所有訪談、log、review 結果、
         規格全文或長期狀態。重要資訊要落到外部儲存，agent 需要時再讀。
       </p>
       <div className="overflow-x-auto rounded-xl border border-white/10 bg-white/[0.02] mb-4">
@@ -139,8 +210,8 @@ export default function Part8() {
         實務上把檔案、PR、issue、JIRA、Docs 當 source of truth，main thread 只保留必要摘要與下一步。
       </Callout>
 
-      {/* 3. High-signal context */}
-      <H3>3. 不要省錯 token：高訊號 context 要給足</H3>
+      {/* 4. High-signal context */}
+      <H3>4. 不要省錯 token：高訊號 context 要給足</H3>
       <p className="text-slate-400 text-sm leading-relaxed mb-4">
         省 token 的目標不是讓 prompt 變短，而是減少無效 token。若任務描述太省，agent 會用更多 tool calls 補洞：
         找檔案、讀錯範圍、問澄清問題、重跑測試。這些 output 與 tool result 也會留進歷史，
@@ -205,8 +276,8 @@ Implement according to the acceptance criteria.`}
         <span className="font-mono font-semibold">delegation-subagents</span> 會再把探索工作外包給 subagent。
       </Callout>
 
-      {/* 4. Token billing */}
-      <H3>4. 計費模型：Input / Output / Thinking Token</H3>
+      {/* 5. Token billing */}
+      <H3>5. 計費模型：Input / Output / Thinking Token</H3>
       <p className="text-slate-400 text-sm leading-relaxed mb-4">
         以 Claude / Anthropic 的計費模型為例，常見會看到三種 token，價格不同。
         Codex / OpenAI 也會區分 input、cached input、output、reasoning 等成本，但實際名稱與費率以當下官方 pricing 為準：
@@ -216,7 +287,7 @@ Implement according to the acceptance criteria.`}
           <span>類型</span><span>內容</span><span className="text-right">相對費率</span>
         </div>
         {[
-          { type: 'Input Token',   color: 'text-sky-300',    dot: 'bg-sky-400',    rate: '1×',  rateColor: 'text-emerald-400', content: '你送出的所有內容：system prompt、完整對話歷史、工具定義、當前訊息' },
+          { type: 'Input Token',   color: 'text-sky-300',    dot: 'bg-sky-400',    rate: '1×',  rateColor: 'text-emerald-400', content: '你送出的所有內容：system prompt、完整對話歷史、工具定義、目前訊息、tool result' },
           { type: 'Output Token',  color: 'text-violet-300', dot: 'bg-violet-400', rate: '5×',  rateColor: 'text-amber-400',   content: '模型生成的回覆，包含工具呼叫的參數' },
           { type: 'Thinking Token',color: 'text-rose-300',   dot: 'bg-rose-400',   rate: '5×',  rateColor: 'text-amber-400',   content: '開啟 Extended Thinking 時，模型的內部推理過程（你看不到全部，但要付錢）' },
         ].map(({ type, color, dot, rate, rateColor, content }) => (
@@ -239,8 +310,44 @@ Implement according to the acceptance criteria.`}
         </div>
       </div>
 
-      {/* 5. Prompt caching */}
-      <H3>5. Prompt Caching：降低重複前綴成本</H3>
+      <H3>6. Reasoning effort：調整 thinking budget，不是準確率保證</H3>
+      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+        Reasoning / effort 可以先理解成 <span className="text-white font-medium">thinking budget 上限</span>。
+        開高代表允許模型花更多內部推理 token 與時間，但不代表它一定會用滿，也不代表一定比較準。
+        如果模型判斷「這樣夠了」，它可能提早停止；如果前提、context 或 scope 錯了，高 effort 也可能只是更有自信地走錯路。
+      </p>
+      <Callout type="warn">
+        Effort label 不是跨模型可比較的固定數字。同樣叫 low / medium / high / max，
+        不同 provider、不同 model、不同版本背後的 thinking budget、計費方式、是否顯示 thinking token 都可能不同。
+        課堂只講選擇原則，不把任何一家的 label 當成通用換算表。
+      </Callout>
+      <div className="overflow-x-auto rounded-xl border border-white/10 bg-white/[0.02] mb-4">
+        <table className="w-full min-w-[780px] border-collapse text-sm">
+          <thead>
+            <tr className="border-b border-white/10 bg-white/[0.03] text-xs text-slate-500">
+              <th className="px-4 py-3 text-left font-semibold">Effort</th>
+              <th className="px-4 py-3 text-left font-semibold">適合</th>
+              <th className="px-4 py-3 text-left font-semibold">避免</th>
+            </tr>
+          </thead>
+          <tbody>
+            {effortRows.map((row) => (
+              <tr key={row.effort} className="border-b border-white/5 last:border-0">
+                <td className="px-4 py-3 align-top font-mono text-rose-300">{row.effort}</td>
+                <td className="px-4 py-3 align-top text-slate-300 leading-relaxed">{row.use}</td>
+                <td className="px-4 py-3 align-top text-slate-500 leading-relaxed">{row.avoid}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <Callout type="tip">
+        省錢的第一步通常不是降 effort，而是縮 scope、指定要讀的檔案、先產 artifact、避免無效 tool call。
+        需要更深推理時再升 effort；需要更正確資料時，先補 context 或查 source of truth。
+      </Callout>
+
+      {/* 7. Prompt caching */}
+      <H3>7. Prompt Caching：降低重複前綴成本</H3>
       <p className="text-slate-400 text-sm leading-relaxed mb-4">
         既然多輪對話每次都要重送歷史，Anthropic 提供了 <span className="text-white font-medium">prompt caching</span>：
         重複出現的前綴（system prompt、CLAUDE.md、已讀過的檔案）會被緩存，
@@ -259,7 +366,7 @@ Implement according to the acceptance criteria.`}
         中間離開超過 5 分鐘 cache 可能過期，下一輪重新從 cache write 開始算錢。
       </Callout>
 
-      <H3>6. 用語言類型壓縮 prompt</H3>
+      <H3>8. 用語言類型壓縮 prompt</H3>
       <p className="text-slate-400 text-sm leading-relaxed mb-4">
         省 token 不只靠少貼資料，也靠把條件寫得更像程式。模型對符號、pseudo-code、JSON、YAML、regex、
         SQL、TypeScript type 這類語言型態很熟；用它們描述條件與結構，常比口語更短、更精確。
@@ -283,8 +390,8 @@ num <= 10 => risk = normal`}
         不需要把整個 prompt 寫成程式碼，但條件式、表格欄位、輸出 schema 優先用符號表達。
       </Callout>
 
-      {/* 7. Why context too long is bad */}
-      <H3>7. Context Window：日常預設用 200K，不要把 1M 當預設</H3>
+      {/* 9. Why context too long is bad */}
+      <H3>9. Context Window：日常預設用 200K，不要把 1M 當預設</H3>
       <p className="text-slate-400 text-sm leading-relaxed mb-4">
         Claude Code 與 Codex 可能遇到不同的 context window（依模型、方案與設定而定）。
         內部日常教學建議：<span className="text-white font-medium">預設用 200K；1M 只留給明確需要一次讀大型材料的情境</span>。
@@ -321,6 +428,30 @@ num <= 10 => risk = normal`}
             Context 越長，注意力越分散——出現 <span className="text-white font-medium">「Lost in the Middle」</span> 現象：
             頭尾記得清楚，中間的重要資訊容易被忽略。
           </p>
+          <div className="overflow-x-auto rounded-lg border border-white/10 bg-black/30 mb-3">
+            <table className="w-full min-w-[760px] border-collapse text-xs">
+              <thead>
+                <tr className="border-b border-white/10 text-slate-500">
+                  <th className="px-3 py-2 text-left font-semibold">來源</th>
+                  <th className="px-3 py-2 text-left font-semibold">數字</th>
+                  <th className="px-3 py-2 text-left font-semibold">解讀</th>
+                </tr>
+              </thead>
+              <tbody>
+                {longContextEvidenceRows.map((row) => (
+                  <tr key={row.source} className="border-b border-white/5 last:border-0">
+                    <td className="px-3 py-2 align-top font-semibold text-rose-200">{row.source}</td>
+                    <td className="px-3 py-2 align-top leading-relaxed text-slate-300">{row.evidence}</td>
+                    <td className="px-3 py-2 align-top leading-relaxed text-slate-500">{row.note}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-slate-500 text-xs leading-relaxed mb-3">
+            補充：GPT-5.5 / Opus 4.7 這列是長 context retrieval benchmark，不是原始 lost-middle 位置偏差實驗；
+            兩者共同提醒：context window 大，不代表中間資訊會被穩定使用。
+          </p>
           <div className="rounded-lg bg-black/40 border border-white/5 p-3 font-mono text-xs">
             <div className="text-slate-500 mb-1">{'// Attention 計算複雜度'}</div>
             <div><span className="text-rose-300">O(n²)</span><span className="text-slate-400 ml-2">← context 長度 n 的平方</span></div>
@@ -331,13 +462,15 @@ num <= 10 => risk = normal`}
         </div>
       </div>
 
-      {/* 8. Practical guidance */}
-      <H3>8. 實務建議</H3>
+      {/* 10. Practical guidance */}
+      <H3>10. 實務建議</H3>
       <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-5">
         <div className="space-y-2 text-sm text-slate-300">
           {[
             '完成一個獨立任務後 → /clear，開新 session 做下一件事',
             '同一任務進行到一半但對話變長 → /compact 壓縮，保留摘要繼續',
+            '把 tool call 當成對話歷史：讀檔、grep、跑測試的結果都會回到 context',
+            'Reasoning effort 是 thinking budget 上限，不是準確率保證；缺 context 時先補資料，不要只升 effort',
             '給足高訊號 context：目標、限制、相關檔、範例、驗收條件；不要讓 agent 用多輪工具呼叫補缺口',
             '懶得整理資料時 → 先開探索 session 產 context artifact，review 後 /clear，下一輪只讀 artifact 實作',
             '日常 agent session → 選合理 context；不要因為有大 context 就把所有資料都塞進同一輪',

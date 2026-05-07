@@ -1,0 +1,37 @@
+{
+  "dryRun": true,
+  "sourceEpic": "SHOP-1842",
+  "wouldCreate": [
+    {
+      "type": "Backend",
+      "summary": "Implement seller-scoped CSV export endpoint",
+      "description": "Use seller permission filtering and enforce row limits before generating CSV."
+    },
+    {
+      "type": "Frontend",
+      "summary": "Add Orders page CSV export entry point",
+      "description": "Add date range selection, loading state, success download, and row-limit error handling."
+    },
+    {
+      "type": "QA",
+      "summary": "Test CSV export permission and row-limit cases",
+      "description": "Cover seller scoping, empty results, large exports, and CSV encoding."
+    },
+    {
+      "type": "Docs",
+      "summary": "Draft support FAQ for seller export",
+      "description": "Explain date range, row limits, expected columns, and troubleshooting."
+    },
+    {
+      "type": "PM / Compliance",
+      "summary": "Confirm CSV columns and PII masking rules",
+      "description": "Resolve buyer email and phone masking before launch."
+    }
+  ],
+  "humanReviewRequired": [
+    "PM needs to confirm whether 10,000 rows is the final product limit.",
+    "Tech Lead needs to confirm whether export audit logging is required.",
+    "Compliance needs to confirm buyer email and phone masking rules.",
+    "Finance needs to approve final CSV column names and ordering."
+  ]
+}

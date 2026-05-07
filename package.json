@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+    "demo:list": "node scripts/demo-cli.mjs list",
+    "demo:case": "node scripts/demo-cli.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

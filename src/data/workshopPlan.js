@@ -3,7 +3,7 @@ export const agenda = [
     block: '基礎觀念',
     minutes: '00-10',
     title: '定位這類工具：不是 chatbot，是 coding agent',
-    focus: 'Claude Code 與 Codex 都能讀 repo、改檔、跑指令；差別在操作介面、權限模型與適合委派的工作型態。',
+    focus: 'Claude Code 與 Codex 都能讀 repo、改檔、跑指令；這堂課以 claude / codex CLI 為主，desktop、IDE extension、cloud 只帶過。',
     outcome: '學員知道哪些任務可以交給 agent，哪些產品或技術決策仍要人負責。',
   },
   {
@@ -17,8 +17,8 @@ export const agenda = [
     block: '基礎觀念',
     minutes: '25-40',
     title: 'Token / context 經濟學',
-    focus: '用 bar 表看多輪對話成本如何成長；不要為了省 token 省略必要 context；可以先讓 agent 探索並整理 artifact，再 /clear 讓下一輪讀 artifact。',
-    outcome: '所有學員都知道何時該 /compact、/clear、開新 task，並理解 lost middle、成本累積與 source of truth 風險。',
+    focus: '用 bar 表看多輪對話成本如何成長；tool call / tool result 也是對話歷史；不要為了省 token 省略必要 context；可以先讓 agent 探索並整理 artifact，再 /clear 讓下一輪讀 artifact。',
+    outcome: '所有學員都知道何時該 /compact、/clear、開新 task，並理解工具呼叫如何增加 context、lost middle、成本累積與 source of truth 風險。',
   },
   {
     block: '產品用法',
@@ -32,7 +32,7 @@ export const agenda = [
     minutes: '55-70',
     title: '工具對照：CLI vs MCP、Skill、委派',
     focus: '先分清楚 CLI / script 與 MCP 是同一層工具介面；Skill 本質上是受控 prompt injection / 指令注入；委派與 programmatic review 只適合邊界清楚的工作。',
-    outcome: '學員知道何時用 CLI 快速跑通，何時才值得把外部系統接成 MCP，如何用 Skill 注入操作規則，以及何時用 subagent / Codex cloud 背景任務。',
+    outcome: '學員知道何時用 CLI 快速跑通，何時才值得把外部系統接成 MCP，如何用 Skill 注入操作規則，以及何時用 subagent / codex exec 類背景委派。',
   },
   {
     block: '實戰演練',
@@ -53,20 +53,21 @@ export const agenda = [
 export const tools = [
   {
     name: 'Claude Code',
-    surface: '本機 terminal / IDE 整合',
-    setup: ['claude 啟動互動 session', 'claude -p 跑 programmatic prompt', 'CLAUDE.md 放專案規範', '/usage、/compact、/clear 管理 context'],
-    strengths: ['本機 repo 操作', 'hooks / permission 流程控制', 'CLI / script 可以先替代多數 MCP demo', '適合現場 cowork 與 script / CI review'],
+    surface: '主線：claude CLI；補充：Claude Desktop 整合、VS Code / JetBrains extensions',
+    setup: ['claude --version 確認 CLI', 'claude 啟動互動 session', 'claude -p 跑 programmatic prompt', 'CLAUDE.md 放專案規範', '/usage（舊版可能是 /cost）、/compact、/clear 管理 context'],
+    strengths: ['CLI 適合本機 repo 操作與現場 cowork', 'hooks / MCP 權限與流程控制', 'desktop / IDE extension 課堂只做入口補充'],
   },
   {
     name: 'Codex',
-    surface: 'CLI / IDE / Codex cloud 背景任務',
-    setup: ['npm i -g @openai/codex', 'codex 啟動本機 CLI', 'codex review 做本機 / PR 前 review', 'AGENTS.md 放專案規範', 'approval modes 控制讀寫與 command 執行'],
-    strengths: ['CLI 適合本機 pairing', 'codex review 適合低風險檢查 diff', 'Codex cloud 背景任務適合委派與平行工作', '適合把明確 issue 轉成可 review diff'],
+    surface: '主線：codex CLI；補充：desktop / cloud task（只帶過）',
+    setup: ['npm i -g @openai/codex', 'codex --version 確認 CLI', 'codex 啟動互動 session', 'codex exec 跑 programmatic prompt', 'codex review 做本機 / PR 前 review', 'AGENTS.md 放專案規範', 'approval modes 控制讀寫與 command 執行'],
+    strengths: ['CLI 適合本機 pairing', 'codex review 適合低風險檢查 diff', 'codex exec 適合明確、可重跑的任務', 'desktop / cloud 課堂只做入口補充'],
   },
 ]
 
 export const tokenRules = [
   { rule: '先問地圖，再指定路徑', bad: '讀整個 repo 幫我分析', good: '先找訂單匯出相關模組，列出 5 個候選檔案，等我確認後再讀' },
+  { rule: 'Tool call 也是對話', bad: '一直讓 agent 讀檔、grep、跑測試，以為工具輸出不算在對話裡', good: '每輪只讀必要檔案；長 log 存成 artifact，摘要後再繼續' },
   { rule: '不要省錯 token', bad: '只丟一句「自己看 repo 做好」，讓 agent 多輪亂找', good: '一次給足目標、限制、相關檔、範例與驗收條件，讓 agent 少走冤枉工具呼叫' },
   { rule: '先產 artifact，再重置 session', bad: '同一個長 session 先到處探索、再直接實作、再 review，讓歷史越來越髒', good: '探索 session 只負責找資料並寫 docs/context/*.md；人 review 後 /clear，下一輪讀 artifact 實作' },
   { rule: '日常用 200K，不把 1M 當預設', bad: '開 1M 後同一個 session 一直塞資料、不 compact', good: '一般 task 用 200K；真的要讀大型材料才短時間使用 1M，完成後 /compact 或 /clear' },

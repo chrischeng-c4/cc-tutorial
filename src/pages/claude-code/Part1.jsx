@@ -14,7 +14,9 @@ export default function Part1() {
         </p>
         <p className="text-slate-400 text-base leading-relaxed">
           它們不是單純補全工具，也不是只回答問題的聊天介面。比較準確的說法是：它們能執行多步驟任務，
-          但人仍要控 scope、看 diff、確認結果。
+          但人仍要控 scope、看 diff、確認結果。這堂課的操作主線固定在 terminal：
+          Claude Code 用 <code className="text-sky-300 bg-sky-500/10 px-1.5 py-0.5 rounded text-sm">claude</code>，
+          Codex 用 <code className="text-sky-300 bg-sky-500/10 px-1.5 py-0.5 rounded text-sm">codex</code>。
         </p>
       </div>
 
@@ -53,9 +55,9 @@ export default function Part1() {
       <h3 className="text-white font-semibold mb-4 text-base">兩套工具在這堂課是對等的</h3>
       <div className="rounded-xl border border-white/10 bg-white/[0.02] overflow-hidden mb-10">
         {[
-          { k: 'Claude Code', v: '本機 terminal / IDE cowork。常見設定是 CLAUDE.md、slash commands、permission、hooks、MCP。' },
-          { k: 'Codex', v: 'CLI / IDE / Codex cloud 背景任務。常見設定是 AGENTS.md、approval modes、本機 pairing 與背景委派。' },
-          { k: '共通能力', v: '讀 repo、改檔、跑指令、整理文件、產可 review diff。差別主要在介面、權限模型與委派方式。' },
+          { k: 'Claude Code', v: '主線：claude CLI，在本機 repo 內 cowork。補充：Claude Code Desktop 整合在 Claude Desktop，另有 VS Code / JetBrains extensions。常見設定是 CLAUDE.md、slash commands、permission、hooks、MCP。' },
+          { k: 'Codex', v: '主線：codex CLI，本機 pairing、codex exec、codex review。Desktop / cloud 等其他入口只帶過；課堂 demo 不以它們為主。常見設定是 AGENTS.md 與 approval modes。' },
+          { k: '共通能力', v: '讀 repo、改檔、跑指令、整理文件、產可 review diff。這堂課的 prompt 與 demo 都以 CLI path 設計，其他平台只用來理解產品全貌。' },
         ].map(({ k, v }) => (
           <div key={k} className="grid grid-cols-1 md:grid-cols-[10rem_1fr] gap-2 px-5 py-3 border-b border-white/5 last:border-0">
             <div className="text-sky-300 text-sm font-semibold">{k}</div>
@@ -69,7 +71,7 @@ export default function Part1() {
       <div className="rounded-xl border border-white/10 bg-white/[0.02] p-5 mb-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-sm">
           {[
-            { wrong: '一個 VS Code 外掛',         right: '它是 CLI，跑在 terminal 裡' },
+            { wrong: '只能當 VS Code 外掛或桌面聊天工具', right: '課堂用 CLI 當主線：在 terminal 跑 claude / codex' },
             { wrong: '只會回答問題的 chatbot',     right: '它會主動執行：讀檔、改檔、跑指令' },
             { wrong: '需要把 code 貼給它的工具',   right: '它自己會去讀你的 repo' },
             { wrong: '會自動 push 到 production',  right: '改動仍需你 review、commit、push' },

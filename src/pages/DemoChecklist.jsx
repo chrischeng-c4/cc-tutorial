@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { PARTS } from '../data/claudeCodeParts'
-import { demoScenarios, integrationChecklist } from '../data/demoScenarios'
+import { demoModeLabels, demoScenarios, integrationChecklist } from '../data/demoScenarios'
 
 const tabs = [
   { id: 'all', label: '全部情境' },
@@ -28,12 +28,45 @@ const layerStyles = {
   },
 }
 
+const demoModeStyles = {
+  live: 'border-emerald-500/25 bg-emerald-500/10 text-emerald-300',
+  'dry-run': 'border-cyan-500/25 bg-cyan-500/10 text-cyan-300',
+  optional: 'border-amber-500/25 bg-amber-500/10 text-amber-300',
+  self: 'border-slate-500/25 bg-slate-500/10 text-slate-400',
+}
+
+const qaItems = [
+  {
+    q: '可以透過 MCP 跟 Shopee Confluence 串在一起嗎？',
+    short: '可以。',
+    answer: '進階做法是 Skill 搭配 CLI & MCP：Skill 寫清楚可讀範圍、摘要格式、引用格式與 HITL checkpoint；CLI 先做匯出、fixture、dry-run summary；MCP 穩定後負責 live read Confluence page。課堂 demo 不把成功條件綁在 Confluence MCP 權限上。',
+  },
+  {
+    q: '可以透過 MCP 跟 Shopee JIRA 串在一起嗎？',
+    short: '可以。',
+    answer: '進階做法同樣是 Skill 搭配 CLI & MCP：Skill 定義 issue 分拆規則、欄位對應、寫入前人工確認；CLI 做 would-create preview、schema validation、assignee / project / issue type 檢查；MCP 只在確認後建 issue 或更新欄位。',
+  },
+  {
+    q: '不同實作需求會調整 model effort 嗎？怎麼比較省？',
+    short: '會，但高 effort 不保證比較準。',
+    answer: 'Reasoning / effort 本質上是 thinking budget 上限，但每家 provider、每個 model 的實際 budget、計費方式與用不用滿都不同，不能跨模型硬比。模型覺得已經夠時，不一定會用滿，也可能帶著錯誤假設提早收斂。整理 meeting notes、固定格式草稿、已知路徑小修改用 low / medium；跨檔實作、未知 codebase 探索、架構取捨或高風險 review 才升 high / max。省錢優先靠縮 scope、給明確檔案、先產 artifact，不是盲目調高 effort。',
+  },
+]
+
 const partsBySlug = new Map(PARTS.map(part => [part.slug, part]))
 
 function LayerBadge({ scenario }) {
   return (
     <span className={`rounded-full border px-2.5 py-1 text-xs whitespace-nowrap ${layerStyles[scenario.layer].badge}`}>
       {scenario.layerLabel}
+    </span>
+  )
+}
+
+function DemoModeBadge({ mode }) {
+  return (
+    <span className={`rounded-full border px-2.5 py-1 text-xs whitespace-nowrap ${demoModeStyles[mode]}`}>
+      {demoModeLabels[mode]}
     </span>
   )
 }
@@ -99,6 +132,7 @@ function ScenarioCard({ scenario, compact = false }) {
         <div className="flex flex-wrap items-start gap-3">
           <span className="pt-1 font-mono text-xs text-slate-600">{scenario.id}</span>
           <h3 className="min-w-0 flex-1 text-base font-semibold leading-relaxed text-white">{scenario.title}</h3>
+          <DemoModeBadge mode={scenario.demoMode} />
           <LayerBadge scenario={scenario} />
         </div>
         <RelatedParts slugs={scenario.relatedParts} />
@@ -124,6 +158,18 @@ function ScenarioCard({ scenario, compact = false }) {
           <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">Demo 資料準備</div>
           <TodoList items={scenario.pmTodos} />
         </div>
+
+        <div className="lg:col-span-2">
+          <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">課前最低準備</div>
+          <TodoList items={scenario.prepItems} />
+        </div>
+
+        {scenario.fallback && (
+          <div className="lg:col-span-2 rounded-lg border border-cyan-500/20 bg-cyan-500/5 px-4 py-3 text-sm leading-relaxed text-cyan-100">
+            <strong className="mb-1 block text-cyan-200">Fallback</strong>
+            {scenario.fallback}
+          </div>
+        )}
       </div>
 
       {scenario.caution && (
@@ -149,15 +195,28 @@ function StatCard({ value, label }) {
   )
 }
 
+function CliCommand({ children }) {
+  return (
+    <code className="rounded-md border border-white/10 bg-black/30 px-2 py-1 font-mono text-xs text-emerald-200">
+      {children}
+    </code>
+  )
+}
+
 export default function DemoChecklist() {
   const [activeTab, setActiveTab] = useState('all')
 
-  const scriptScenarios = useMemo(() => demoScenarios.filter(scenario => scenario.layer === 2), [])
-  const dataItemCount = useMemo(
-    () => demoScenarios.reduce((total, scenario) => total + scenario.pmTodos.length, 0),
+  const orderedScenarios = useMemo(
+    () => [...demoScenarios].sort((a, b) => a.demoOrder - b.demoOrder),
     [],
   )
-  const layerOneCount = useMemo(() => demoScenarios.filter(scenario => scenario.layer === 1).length, [])
+  const scriptScenarios = useMemo(() => orderedScenarios.filter(scenario => scenario.layer === 2), [orderedScenarios])
+  const liveCount = useMemo(() => orderedScenarios.filter(scenario => scenario.demoMode === 'live').length, [orderedScenarios])
+  const assistedCount = useMemo(
+    () => orderedScenarios.filter(scenario => ['dry-run', 'optional'].includes(scenario.demoMode)).length,
+    [orderedScenarios],
+  )
+  const selfPracticeCount = useMemo(() => orderedScenarios.filter(scenario => scenario.demoMode === 'self').length, [orderedScenarios])
 
   return (
     <main className="min-h-screen pt-16">
@@ -173,7 +232,8 @@ export default function DemoChecklist() {
               </h1>
               <p className="max-w-3xl text-base leading-relaxed text-slate-400">
                 學員主路徑已經把 13 個情境拆成下半部 demo part。這頁保留給講師做 backstage 準備：
-                確認每個 case 的資料輸入、CLI / script 邊界、MCP 是否 optional，以及 HITL 檢查點。
+                前面只放課堂可控 demo；需要多系統權限、資料量或 script 的案例，改成 dry-run、加演或課後自練。
+                重點是先確認資料輸入、CLI / script 邊界、MCP 是否 optional，以及 HITL 檢查點。
               </p>
             </div>
             <Link
@@ -188,18 +248,48 @@ export default function DemoChecklist() {
 
       <section className="mx-auto max-w-6xl px-6 py-10">
         <div className="mb-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <StatCard value={demoScenarios.length} label="總情境數" />
-          <StatCard value={scriptScenarios.length} label="需先建 Script" />
-          <StatCard value={dataItemCount} label="資料準備項目" />
+          <StatCard value={liveCount} label="課堂 Live Demo" />
+          <StatCard value={assistedCount} label="Dry-run / 加演" />
+          <StatCard value={selfPracticeCount} label="課後自練" />
         </div>
+
+        <div className="mb-7 rounded-xl border border-emerald-500/20 bg-emerald-500/5 px-5 py-4">
+          <div className="mb-2 text-sm font-semibold text-white">課堂預設走 CLI fixture；MCP 只當 optional adapter。</div>
+          <div className="flex flex-wrap gap-2">
+            <CliCommand>npm run demo:list</CliCommand>
+            <CliCommand>npm run demo:case -- prd-draft</CliCommand>
+            <CliCommand>npm run demo:case -- technical-questions</CliCommand>
+            <CliCommand>npm run demo:case -- meeting-actions</CliCommand>
+            <CliCommand>npm run demo:case -- jira-subtasks</CliCommand>
+          </div>
+        </div>
+
+        <section className="mb-7 rounded-xl border border-violet-500/20 bg-violet-500/5 px-5 py-4">
+          <div className="mb-3 text-sm font-semibold text-white">預收集 Q&A：MCP、Skill、CLI</div>
+          <div className="grid gap-3">
+            {qaItems.map((item) => (
+              <article key={item.q} className="rounded-lg border border-white/10 bg-black/20 px-4 py-3">
+                <h3 className="text-sm font-semibold leading-relaxed text-violet-100">{item.q}</h3>
+                <p className="mt-1 text-sm font-semibold text-emerald-300">{item.short}</p>
+                <p className="mt-1 text-sm leading-relaxed text-slate-300">{item.answer}</p>
+              </article>
+            ))}
+          </div>
+          <Link to="/coding-agent/skills-workflows" className="mt-3 inline-flex text-xs text-violet-200 no-underline hover:text-white">
+            進階範例看 skills-workflows：Skill 搭配 CLI & MCP →
+          </Link>
+        </section>
 
         <div className="mb-7 flex flex-col gap-4 border-b border-white/10 pb-5 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-wrap gap-2">
             <span className="rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-xs text-emerald-300">
-              Layer 1 · Cowork · {layerOneCount}
+              課堂 Live · {liveCount}
             </span>
-            <span className="rounded-full border border-amber-500/25 bg-amber-500/10 px-3 py-1 text-xs text-amber-300">
-              Layer 2 · Script · {scriptScenarios.length}
+            <span className="rounded-full border border-cyan-500/25 bg-cyan-500/10 px-3 py-1 text-xs text-cyan-300">
+              Dry-run / 加演 · {assistedCount}
+            </span>
+            <span className="rounded-full border border-slate-500/25 bg-slate-500/10 px-3 py-1 text-xs text-slate-400">
+              課後自練 · {selfPracticeCount}
             </span>
             <span className="rounded-full border border-violet-500/25 bg-violet-500/10 px-3 py-1 text-xs text-violet-300">
               CLI / MCP · {integrationChecklist.length}
@@ -226,12 +316,13 @@ export default function DemoChecklist() {
 
         {activeTab === 'all' && (
           <section className="grid gap-4">
-            <div className="grid gap-2 text-sm text-slate-500 sm:grid-cols-3">
-              <div><span className="text-emerald-300">Layer 1</span>：cowork 操作，不需事先建 script</div>
-              <div><span className="text-amber-300">Layer 2</span>：需先建 script，demo 展示結果</div>
-              <div><span className="text-violet-300">Layer 3</span>：未來 agent 方向，這次只 demo 可控片段</div>
+            <div className="grid gap-2 text-sm text-slate-500 lg:grid-cols-4">
+              <div><span className="text-emerald-300">課堂 Live</span>：只放資料與權限可控的案例</div>
+              <div><span className="text-cyan-300">Dry-run</span>：展示 would-create / 草稿，不寫 production</div>
+              <div><span className="text-amber-300">加演</span>：外部 MCP 已驗證才現場跑</div>
+              <div><span className="text-slate-400">課後自練</span>：提供準備清單，讓學員回去自己接</div>
             </div>
-            {demoScenarios.map((scenario) => <ScenarioCard key={scenario.id} scenario={scenario} />)}
+            {orderedScenarios.map((scenario) => <ScenarioCard key={scenario.id} scenario={scenario} />)}
           </section>
         )}
 
@@ -250,14 +341,19 @@ export default function DemoChecklist() {
             <div className="rounded-xl border border-cyan-500/20 bg-cyan-500/5 px-5 py-4 text-sm leading-relaxed text-slate-300">
               以下項目是 demo 前要準備好的輸入。資料越明確，agent 越容易產出可 review 的草稿或檢查清單。
             </div>
-            {demoScenarios.map((scenario) => (
+            {orderedScenarios.map((scenario) => (
               <article key={scenario.id} className="rounded-xl border border-white/10 bg-white/[0.02] px-5 py-4">
                 <div className="mb-3 flex flex-wrap items-center gap-2">
                   <span className="font-mono text-xs text-slate-600">{scenario.id}</span>
                   <h3 className="text-sm font-semibold text-white">{scenario.title}</h3>
+                  <DemoModeBadge mode={scenario.demoMode} />
                   <LayerBadge scenario={scenario} />
                 </div>
                 <TodoList items={scenario.pmTodos} />
+                <div className="mt-4 border-t border-white/10 pt-4">
+                  <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">課前最低準備</div>
+                  <TodoList items={scenario.prepItems} />
+                </div>
                 {scenario.id === '13' && (
                   <div className="mt-4 rounded-lg border border-rose-500/25 bg-rose-500/10 px-4 py-3 text-sm leading-relaxed text-rose-100">
                     <strong className="mb-1 block text-rose-200">HITL 提醒</strong>
@@ -273,7 +369,8 @@ export default function DemoChecklist() {
         {activeTab === 'integrations' && (
           <section>
             <div className="mb-4 rounded-xl border border-violet-500/20 bg-violet-500/5 px-5 py-4 text-sm leading-relaxed text-slate-300">
-              Demo 準備採 CLI first：先確認 export、API script、CSV / Markdown 檔案能不能跑通；MCP 有時間再接成進階版本。
+              Demo 準備採 CLI first：先確認 fixture、export、API script、CSV / Markdown 檔案能不能跑通。
+              若任一外部權限不穩，改用本機 CLI fixture 與 dry-run output；MCP 有時間再接成進階版本。
             </div>
             <div className="overflow-x-auto rounded-xl border border-white/10 bg-white/[0.02]">
               <table className="w-full min-w-[760px] border-collapse text-sm">

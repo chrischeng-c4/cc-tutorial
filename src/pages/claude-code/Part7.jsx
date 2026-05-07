@@ -4,7 +4,7 @@ const commonToolRows = [
   {
     task: '讀檔 / 探索 repo',
     claude: 'Read、Glob、Grep、LSP',
-    codex: 'shell 裡跑 rg / ls / sed / cat，或透過 app / IDE 讀 workspace',
+    codex: 'CLI shell 裡跑 rg / ls / sed / cat，或讓 Codex 在 sandbox 內讀 workspace',
   },
   {
     task: '修改檔案',
@@ -19,7 +19,7 @@ const commonToolRows = [
   {
     task: '背景監看 / 排程',
     claude: 'Monitor、CronCreate / CronList / CronDelete',
-    codex: '長命令 session / output polling、Codex cloud 任務狀態；排程可接 shell / CI / 外部 scheduler',
+    codex: '長命令 session / output polling；排程通常接 shell / CI / 外部 scheduler',
   },
   {
     task: '需求釐清',
@@ -39,12 +39,12 @@ const commonToolRows = [
   {
     task: '任務追蹤 / 委派',
     claude: 'Agent、TaskCreate / TaskList / TaskUpdate、TodoWrite',
-    codex: '內部 plan / todo、codex exec、codex review、Codex cloud 背景任務',
+    codex: '內部 plan / todo、codex exec、codex review；cloud task 只作補充入口',
   },
   {
     task: '技能 / 協作',
     claude: 'Skill、TeamCreate / TeamDelete、SendMessage',
-    codex: 'AGENTS.md、plugin、Codex cloud 背景任務；技能類規則仍是 instruction layer',
+    codex: 'AGENTS.md、plugin；技能類規則仍是 instruction layer',
   },
 ]
 
@@ -104,13 +104,13 @@ const codexToolGroups = [
   },
   {
     cat: '互動確認 / 提問',
-    tools: ['structured clarification', 'approval prompt', 'plan review'],
-    desc: 'Codex 也可以先問人、請批准、或在 plan review 階段收斂方向；實際 UI / tool 名稱會依 CLI、IDE、cloud 或 agent runtime 不同。',
+    tools: ['request_user_input', 'approval prompt', 'plan review'],
+    desc: 'Codex 也可以先問人、請批准、或在 plan review 階段收斂方向；課堂以 CLI 互動模式示範。',
   },
   {
     cat: '長任務 / 監看',
-    tools: ['exec session', 'output polling', 'Codex cloud status/list'],
-    desc: 'Codex 可讓 shell command 維持執行並持續讀 output，也可查 Codex cloud 背景任務狀態。若要固定時間排程，通常接 CI、GitHub Actions、cron 或外部 scheduler。',
+    tools: ['exec session', 'output polling', 'CI / cron handoff'],
+    desc: 'Codex 可讓 shell command 維持執行並持續讀 output。若要固定時間排程，通常接 CI、GitHub Actions、cron 或外部 scheduler；課堂示範以 CLI path 為主。',
   },
   {
     cat: '外部工具',
@@ -118,9 +118,9 @@ const codexToolGroups = [
     desc: 'MCP 與 plugin 提供可重用工具；探索期也可以先用 repo 裡的 CLI script。',
   },
   {
-    cat: '雲端 / 多模態 / 搜尋',
-    tools: ['codex cloud', '--image', '--search'],
-    desc: '背景委派、圖片輸入，以及開啟 web_search。是否可用取決於版本、帳號與環境設定。',
+    cat: '補充入口 / 多模態 / 搜尋',
+    tools: ['desktop / cloud', '--image', '--search'],
+    desc: 'Desktop、cloud task、圖片輸入與 web_search 都屬補充入口或進階能力；是否可用取決於版本、帳號與環境設定。',
   },
 ]
 
@@ -133,7 +133,8 @@ export default function Part7() {
         前面已經講完 agent loop 與 token/context。接著進到產品操作，先把基本三件事學會：
         <span className="text-white">怎麼裝怎麼啟動</span>、
         <span className="text-white">規則檔怎麼寫</span>、
-        <span className="text-white">內建有哪些工具</span>。
+        <span className="text-white">內建有哪些工具</span>。這堂課只用 claude / codex CLI 示範；
+        desktop、IDE extension、cloud 只作補充入口。後面 Part 8 再進到 token 與 context 的經濟學。
       </p>
 
       <H3>1. 安裝與啟動</H3>
@@ -197,7 +198,7 @@ $ codex
         { cmd: '/compact', desc: '壓縮對話成摘要，保留脈絡但節省 token。長任務中途用' },
         { cmd: '/usage',   desc: '顯示目前 token 使用量與成本資訊；部分舊版本會看到 /cost' },
         { cmd: '/config',  desc: '開啟設定，調整 permission、預設行為' },
-        { cmd: '/init',    desc: '根據當前專案產生 CLAUDE.md 草稿' },
+        { cmd: '/init',    desc: '根據目前專案產生 CLAUDE.md 草稿' },
         { cmd: '/doctor',  desc: '診斷環境問題（Node 版本、API 連線等）' },
       ]} />
 
@@ -250,7 +251,7 @@ $ codex
       <p className="text-slate-400 text-sm leading-relaxed mb-4">
         <span className="font-mono text-slate-300">agentic-loop</span> 講過「規劃 → 行動」，這裡就是行動的底牌。
         兩套工具的能力很像，但呈現方式不同：Claude Code 會明確暴露一組 tool names；
-        Codex 比較常看到的是 shell、patch、sandbox、approval、MCP、review / Codex cloud 背景任務這些操作介面。
+        Codex 比較常看到的是 shell、patch、sandbox、approval、MCP、exec / review 這些 CLI 操作介面。
         Claude Code 的 tool names 會直接用在 permission rules、subagent tool lists 與 hook matchers；
         不要把 Claude 的 tool name 直接套到 Codex，教學時先講能力，再講各自介面。
       </p>
@@ -340,19 +341,15 @@ codex exec "review current diff and list high-risk issues"
 codex --search "查官方文件，整理這個 migration API 的 breaking changes"`}
       </CodeBlock>
 
-      <CodeBlock title="Codex：提問 / 監看 / 排程的對等寫法">
+      <CodeBlock title="Codex CLI：提問 / 監看 / 排程的對等寫法">
 {`# 需求釐清：讓 Codex 先問，不要猜
 > 需求有 A/B/C 三種可能。請先列選項問我，等我確認後再改檔。
 
 # 長任務監看：保持 command session，持續觀察 output
 > 啟動 dev server，持續看 output；如果出現 ERROR、build failed 或 port conflict，先回報不要自行重試。
 
-# Codex cloud 背景任務狀態
-codex cloud list
-codex cloud status <task-id>
-
 # 固定時間排程：通常交給外部 scheduler，再讓 Codex 處理明確任務
-# 例如 GitHub Actions / cron 觸發 codex exec 或建立 Codex cloud 背景任務。`}
+# 例如 GitHub Actions / cron 觸發 codex exec。`}
       </CodeBlock>
 
       <Callout type="tip">

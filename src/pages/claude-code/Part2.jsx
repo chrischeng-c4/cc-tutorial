@@ -35,6 +35,30 @@ export default function Part2() {
         只是任務的描述語言是自然語言。
       </p>
 
+      <h3 className="text-white font-semibold mb-4 text-base">Tool call 也是一次對話</h3>
+      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+        看到畫面上出現 Read / Grep / Bash，不代表模型跳到對話外面做事。
+        技術上比較像這樣：assistant 先說「我要呼叫哪個工具、帶什麼參數」，
+        工具執行完再把結果回成一則 tool result，下一輪模型呼叫會把這些內容一起讀進 context。
+      </p>
+      <div className="rounded-xl border border-white/10 bg-black/30 overflow-hidden mb-10">
+        {[
+          { role: 'user', text: '幫我找登入 bug', tone: 'text-emerald-300' },
+          { role: 'assistant', text: 'tool_call: Read({ file: "src/auth.ts" })', tone: 'text-violet-300' },
+          { role: 'tool', text: 'tool_result: auth.ts 的內容...', tone: 'text-cyan-300' },
+          { role: 'assistant', text: '我看到 token 過期時沒有 refresh 流程，下一步建議...', tone: 'text-slate-300' },
+        ].map(({ role, text, tone }, i) => (
+          <div key={i} className="grid grid-cols-[5.5rem_1fr] gap-3 px-5 py-2.5 border-b border-white/5 last:border-0 text-sm">
+            <span className="text-slate-500 font-mono text-xs">{role}</span>
+            <span className={`font-mono text-xs leading-relaxed ${tone}`}>{text}</span>
+          </div>
+        ))}
+      </div>
+      <Callout type="warn">
+        所以工具不是「免費附加動作」。每次讀檔、搜尋、跑測試，都會把 tool call 與 tool result 留進對話歷史；
+        後續模型要參考它們時，這些內容就會變成 input context。這也是 Part 8 會談 token 與 context 成本的原因。
+      </Callout>
+
       {/* Concrete example walking through the loop */}
       <h3 className="text-white font-semibold mb-4 text-base">舉例：你說「修一個登入 bug」實際發生什麼</h3>
       <div className="rounded-xl border border-white/10 bg-black/30 overflow-hidden mb-10">
@@ -66,7 +90,7 @@ export default function Part2() {
         {[
           { step: '01', title: '先問 repo 結構', detail: '> 簡介這個 repo 的主要模組，以及訂單相關程式在哪裡' },
           { step: '02', title: '讓它規劃，不要直接改', detail: '> 我想新增訂單匯出 CSV，先列出你會讀哪些檔案與風險' },
-          { step: '03', title: '觀察工具呼叫', detail: '畫面上要出現 Read / Grep / Bash 這類工具動作，對應感知、行動、觀察。' },
+          { step: '03', title: '觀察工具呼叫', detail: '畫面上要出現 Read / Grep / Bash 這類工具動作；提醒大家 tool call 也是對話歷史的一部分。' },
           { step: '04', title: '用結果收斂', detail: '> 根據剛剛讀到的 code，列出技術事實、推測與需要 HITL 確認的問題' },
         ].map(({ step, title, detail }) => (
           <div key={step} className="grid grid-cols-[2.5rem_1fr] gap-3 px-5 py-3 border-b border-white/5 last:border-0">
