@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import { MiniVisualAid } from '../../components/cc/shared'
 import { ACCENT, AUDIENCE_STYLES, COURSE_PARTS, COURSE_SECTIONS, PARTS, USAGE_STYLES } from '../../data/claudeCodeParts'
 import { questionIndex, teachingTracks } from '../../data/learningGuides'
 
@@ -22,7 +21,7 @@ export default function ClaudeCodeIndex() {
             Claude Code + Codex<br />
             <span className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">概念與操作章節</span>
           </h1>
-          <p className="text-lg text-slate-400 leading-relaxed max-w-2xl">
+          <p className="text-lg text-slate-300 leading-relaxed max-w-2xl">
             整份教材分成上下兩半：上半部先教 coding agent 的觀念、產品用法與進階技巧；
             下半部每一個 part 都是一個 demo，把方法套到真實工作情境。
           </p>
@@ -30,51 +29,16 @@ export default function ClaudeCodeIndex() {
 
         <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 mb-4">
           <div className="text-white font-semibold mb-2">這份補充教材怎麼用</div>
-          <p className="text-slate-400 text-sm leading-relaxed">
+          <p className="text-slate-300 text-sm leading-relaxed">
             每個章節都可以單獨回看。先看上半部建立共通語言與風險邊界；
             再進下半部，逐個 demo 練輸入資料、CLI first、HITL 與可 review 產出。
             非 dev 可以從「什麼時候用、怎麼安全用」切入；dev 可以從「怎麼把流程工程化」切入。
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 mb-8 md:grid-cols-2">
-          {COURSE_SECTIONS.map((section) => (
-            <div key={section.title} className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
-              <div className="text-white text-base font-bold mb-2">{section.title}</div>
-              <p className="text-slate-500 text-sm leading-relaxed mb-4">{section.desc}</p>
-              <div className="grid gap-3">
-                {section.groups.map(group => (
-                  <div key={group.title}>
-                    <div className="mb-1.5 text-xs font-semibold text-slate-400">{group.title}</div>
-                    <div className="flex flex-wrap gap-1.5">
-                      {group.parts.slice(0, 8).map(slug => {
-                        const part = partsBySlug.get(slug)
-                        return (
-                          <Link
-                            key={slug}
-                            to={part.path}
-                            className="rounded-md border border-white/10 px-2 py-1 text-xs text-slate-400 no-underline transition-colors hover:border-white/20 hover:text-white font-mono"
-                          >
-                            {part.slug}
-                          </Link>
-                        )
-                      })}
-                      {group.parts.length > 8 && (
-                        <span className="rounded-md border border-white/10 px-2 py-1 text-xs text-slate-600">
-                          +{group.parts.length - 8}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
         <section className="mb-8 rounded-2xl border border-cyan-500/20 bg-cyan-500/[0.04] p-5">
           <div className="mb-4">
-            <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-cyan-300">Multi-session path</div>
+            <div className="mb-2 text-sm font-semibold text-cyan-300">教學路徑</div>
             <h2 className="text-white text-lg font-bold">可以拆成多場教學，不必一次講完</h2>
           </div>
           <div className="grid grid-cols-1 gap-3">
@@ -84,7 +48,7 @@ export default function ClaudeCodeIndex() {
                   <div className="text-white text-sm font-semibold">{track.title}</div>
                   <span className="rounded-md border border-cyan-500/20 bg-cyan-500/10 px-2 py-0.5 text-xs text-cyan-300">{track.audience}</span>
                 </div>
-                <p className="mb-3 text-sm leading-relaxed text-slate-400">{track.goal}</p>
+                <p className="mb-3 text-sm leading-relaxed text-slate-300">{track.goal}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {track.parts.map((slug) => {
                     const part = partsBySlug.get(slug)
@@ -106,14 +70,14 @@ export default function ClaudeCodeIndex() {
 
         <section className="mb-8 rounded-2xl border border-amber-500/20 bg-amber-500/[0.04] p-5">
           <div className="mb-4">
-            <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-amber-300">Review index</div>
+            <div className="mb-2 text-sm font-semibold text-amber-300">問題索引</div>
             <h2 className="text-white text-lg font-bold">用問題回查教材</h2>
           </div>
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
             {questionIndex.map((item) => (
               <div key={item.question} className="rounded-xl border border-white/10 bg-black/15 p-4">
                 <div className="text-white text-sm font-semibold mb-2">{item.question}</div>
-                <p className="text-slate-400 text-sm leading-relaxed mb-3">{item.answer}</p>
+                <p className="text-slate-300 text-sm leading-relaxed mb-3">{item.answer}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {item.parts.map((slug) => {
                     const part = partsBySlug.get(slug)
@@ -121,7 +85,7 @@ export default function ClaudeCodeIndex() {
                       <Link
                         key={slug}
                         to={part.path}
-                        className="rounded-md border border-white/10 px-2 py-1 font-mono text-xs text-slate-500 no-underline transition-colors hover:border-white/20 hover:text-white"
+                        className="rounded-md border border-white/10 px-2 py-1 font-mono text-xs text-slate-400 no-underline transition-colors hover:border-white/20 hover:text-white"
                       >
                         {slug}
                       </Link>
@@ -139,9 +103,9 @@ export default function ClaudeCodeIndex() {
         >
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
-              <div className="text-cyan-300 text-xs font-semibold uppercase tracking-wide mb-2">Course Order</div>
+              <div className="text-cyan-300 text-sm font-semibold mb-2">課程順序</div>
               <h2 className="text-white font-bold text-lg mb-2">先看多場教學安排</h2>
-              <p className="text-slate-400 text-sm leading-relaxed max-w-2xl">
+              <p className="text-slate-300 text-sm leading-relaxed max-w-2xl">
                 第一輪只挑主線，後續場次再深入工具、自動化、agentic coding 與 demo lab。
               </p>
             </div>
@@ -157,9 +121,9 @@ export default function ClaudeCodeIndex() {
         >
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
-              <div className="text-violet-300 text-xs font-semibold uppercase tracking-wide mb-2">Demo Cases</div>
+              <div className="text-violet-300 text-sm font-semibold mb-2">Demo 清單</div>
               <h2 className="text-white font-bold text-lg mb-2">講師 Demo 準備清單</h2>
-              <p className="text-slate-400 text-sm leading-relaxed max-w-2xl">
+              <p className="text-slate-300 text-sm leading-relaxed max-w-2xl">
                 學員主路徑已經在下半部 demo part。這頁保留給講師檢查資料準備、CLI / export 優先路徑、
                 MCP optional 項與 HITL 確認。
               </p>
@@ -176,13 +140,13 @@ export default function ClaudeCodeIndex() {
             <section key={section.title} className="space-y-8">
               <div className="border-b border-white/10 pb-3">
                 <h2 className="text-white text-2xl font-black">{section.title}</h2>
-                <p className="text-slate-500 text-sm leading-relaxed mt-1">{section.desc}</p>
+                <p className="text-slate-300 text-sm leading-relaxed mt-1">{section.desc}</p>
               </div>
               {section.groups.map((group) => (
                 <div key={group.title}>
                   <div className="mb-3">
                     <h3 className="text-white text-lg font-bold">{group.title}</h3>
-                    <p className="text-slate-500 text-sm leading-relaxed mt-1">{group.desc}</p>
+                    <p className="text-slate-300 text-sm leading-relaxed mt-1">{group.desc}</p>
                   </div>
                   <div className="space-y-3">
                     {group.parts.map((slug) => {
@@ -192,12 +156,12 @@ export default function ClaudeCodeIndex() {
                         <Link
                           key={p.path}
                           to={p.path}
-                          className={`group flex flex-col gap-4 rounded-2xl border ${c.border} ${c.bg} p-5 no-underline transition-all hover:scale-[1.01] hover:shadow-xl md:flex-row md:items-center`}
+                          className={`group flex gap-4 rounded-2xl border ${c.border} ${c.bg} p-5 no-underline transition-colors hover:border-white/30`}
                         >
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-1">
                               <span className={`text-xs font-semibold font-mono ${c.badge.split(' ')[1]}`}>{p.slug}</span>
-                              <span className="text-slate-600 text-xs">{p.time}</span>
+                              <span className="text-slate-400 text-xs">{p.time}</span>
                               <div className="flex gap-1 ml-1 flex-wrap">
                                 <PartBadge className={USAGE_STYLES[p.usage]}>{p.usage}</PartBadge>
                                 <PartBadge className={AUDIENCE_STYLES[p.audience]}>{p.audience}</PartBadge>
@@ -205,20 +169,19 @@ export default function ClaudeCodeIndex() {
                                   <PartBadge className="border-amber-500/25 bg-amber-500/10 text-amber-300">實驗性</PartBadge>
                                 )}
                                 {p.tags.map(a => (
-                                  <span key={a} className="px-1.5 py-0.5 rounded text-xs border border-white/10 text-slate-500">{a}</span>
+                                  <span key={a} className="px-1.5 py-0.5 rounded text-xs border border-white/10 text-slate-400">{a}</span>
                                 ))}
                               </div>
                             </div>
                             <div className="text-white font-semibold">{p.title}</div>
                             {p.demoCases?.length > 0 && (
-                              <div className="mt-2 text-xs text-slate-600">對應下半部 Demo → {p.demoCases.join(' · ')}</div>
+                              <div className="mt-2 text-sm text-slate-300">對應下半部 Demo → {p.demoCases.join(' · ')}</div>
                             )}
                             {p.relatedConcepts?.length > 0 && (
-                              <div className="mt-2 text-xs text-slate-600">對應觀念 → {p.relatedConcepts.join(' · ')}</div>
+                              <div className="mt-2 text-sm text-slate-300">對應觀念 → {p.relatedConcepts.join(' · ')}</div>
                             )}
                           </div>
-                          <MiniVisualAid visual={p.visual} accent={p.accent} className="w-full md:w-56 md:flex-shrink-0" />
-                          <span className="text-slate-600 group-hover:text-slate-300 transition-colors text-lg flex-shrink-0">→</span>
+                          <span className="text-slate-500 group-hover:text-white transition-colors text-lg flex-shrink-0">→</span>
                         </Link>
                       )
                     })}

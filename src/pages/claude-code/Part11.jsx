@@ -155,8 +155,8 @@ When the task requires broad repo exploration or unknown domain discovery:
         ].map(({ name, model, tools, desc }) => (
           <div key={name} className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-3 items-start px-4 py-3 border-b border-white/5 last:border-0 text-sm">
             <code className="md:col-span-3 text-cyan-300 bg-cyan-500/10 px-2 py-0.5 rounded font-mono text-xs break-words">{name}</code>
-            <span className="md:col-span-2 text-slate-500 text-xs">{model}</span>
-            <span className="md:col-span-2 text-slate-500 text-xs">{tools}</span>
+            <span className="md:col-span-2 text-slate-300 text-sm">{model}</span>
+            <span className="md:col-span-2 text-slate-300 text-sm">{tools}</span>
             <span className="md:col-span-5 text-slate-400 leading-relaxed">{desc}</span>
           </div>
         ))}
@@ -217,7 +217,7 @@ Do not paste full diff or full logs into the main thread.`}
         ].map(({ field, req, desc }) => (
           <div key={field} className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-3 items-start px-4 py-3 border-b border-white/5 last:border-0 text-sm">
             <code className="md:col-span-3 text-cyan-300 bg-cyan-500/10 px-2 py-0.5 rounded font-mono text-xs break-words">{field}</code>
-            <span className={`md:col-span-1 text-xs ${req ? 'text-rose-300' : 'text-slate-600'}`}>{req ? '必填' : '選填'}</span>
+            <span className={`md:col-span-1 text-xs ${req ? 'text-rose-300' : 'text-slate-400'}`}>{req ? '必填' : '選填'}</span>
             <span className="md:col-span-8 text-slate-400 leading-relaxed">{desc}</span>
           </div>
         ))}
@@ -236,10 +236,10 @@ Do not paste full diff or full logs into the main thread.`}
           { p: '5', loc: 'Plugin agents/',             scope: 'plugin 啟用範圍',    note: '透過 plugin 散布' },
         ].map(({ p, loc, scope, note }) => (
           <div key={loc} className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-3 items-start px-4 py-3 border-b border-white/5 last:border-0 text-sm">
-            <span className="md:col-span-1 text-slate-600 font-mono text-xs">{p}</span>
+            <span className="md:col-span-1 text-slate-400 font-mono text-xs">{p}</span>
             <code className="md:col-span-4 text-cyan-300 font-mono text-xs break-words">{loc}</code>
             <span className="md:col-span-3 text-slate-400 text-xs">{scope}</span>
-            <span className="md:col-span-4 text-slate-500 text-xs leading-relaxed">{note}</span>
+            <span className="md:col-span-4 text-slate-300 text-xs leading-relaxed">{note}</span>
           </div>
         ))}
       </div>

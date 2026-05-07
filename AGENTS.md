@@ -22,6 +22,13 @@ There is no single public standard that fully defines "good readability." Use th
 - If something is just a sequence of steps, use a real ordered list instead of a visual "step" widget.
 - Keep each section focused on one teaching job.
 
+### Purposeful Charts
+
+- Charts are encouraged when they make the content easier to understand. Humans read relationships, patterns, and proportions well when the chart type matches the idea.
+- Choose the chart type manually from the content, not from chapter metadata. Use a flow or cycle diagram for repeated loops, a sequence diagram for tool calls or system handoffs, a table or matrix for comparison, a timeline for ordered change, and a bar or scale chart for relative cost or volume.
+- Do not auto-generate the same "visual map" for every chapter. If the same template can be attached to any page, it is probably decoration.
+- A chart should expose a relationship that plain text hides. If the chart needs extra explanation before it helps, replace it with text or a simpler chart.
+
 ### Cognitive Load
 
 - Follow Cognitive Load Theory and Mayer-style multimedia principles: remove decorative material that does not support the learning goal.

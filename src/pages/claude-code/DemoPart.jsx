@@ -50,18 +50,18 @@ export default function DemoPart({ slug }) {
 
       <div className="grid grid-cols-1 gap-4 mb-8 lg:grid-cols-[1fr_1fr]">
         <section className="rounded-xl border border-white/10 bg-white/[0.02] p-5">
-          <div className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Demo Scope</div>
+          <div className="mb-3 text-sm font-semibold text-slate-300">Demo 範圍</div>
           <div className="flex flex-wrap gap-1.5 mb-4">
             <Chip tone="amber">{scenario.layerLabel}</Chip>
             <Chip>{scenario.devOutput}</Chip>
           </div>
-          <p className="text-sm leading-relaxed text-slate-400">
+          <p className="text-sm leading-relaxed text-slate-300">
             {scenario.scriptResult ?? '這個 demo 以現場 cowork 操作流程為主，產出可 review 的草稿或檢查清單。'}
           </p>
         </section>
 
         <section className="rounded-xl border border-white/10 bg-white/[0.02] p-5">
-          <div className="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-500">工具路徑</div>
+          <div className="mb-3 text-sm font-semibold text-slate-300">工具路徑</div>
           <div className="flex flex-wrap gap-1.5">
             {scenario.tools.map(tool => <Chip key={tool}>{tool}</Chip>)}
           </div>
@@ -69,29 +69,26 @@ export default function DemoPart({ slug }) {
       </div>
 
       <H3>Demo 前準備</H3>
-      <div className="grid gap-2 mb-8">
+      <ul className="mb-8 list-disc space-y-2 pl-6 text-sm leading-relaxed text-slate-300 marker:text-amber-300">
         {scenario.pmTodos.map((todo) => (
-          <div key={todo} className="flex gap-2 rounded-lg border border-white/10 bg-white/[0.02] px-4 py-3 text-sm leading-relaxed text-slate-300">
-            <span className="text-amber-300">□</span>
-            <span>{todo}</span>
-          </div>
+          <li key={todo} className="pl-1">{todo}</li>
         ))}
-      </div>
+      </ul>
 
       <H3>操作流程</H3>
-      <div className="grid gap-3 mb-8">
+      <ol className="mb-8 list-decimal space-y-3 pl-6 text-sm leading-relaxed text-slate-300 marker:font-bold marker:text-cyan-300">
         {[
           { title: '輸入資料', body: '先把 demo 所需檔案、template、CSV、repo 範圍或外部連結準備好。不要讓 agent 在現場猜資料位置。' },
           { title: 'CLI first / export first', body: '能用 export 檔、CSV、Markdown、fixture JSON、API dry-run script 跑通就先這樣做。MCP 是 optional 進階版。' },
           { title: '產出 reviewable artifact', body: '讓 agent 產出草稿、JSON preview、Markdown report、問題清單或 diff summary，不直接寫入外部系統。' },
           { title: 'HITL checkpoint', body: '任何產品取捨、資料缺口、外部寫入、codebase 推論都要停下來問人，不要讓 agent 自行補假設。' },
         ].map((step) => (
-          <div key={step.title} className="rounded-xl border border-white/10 bg-white/[0.02] p-4">
-            <div className="text-white text-sm font-semibold mb-1.5">{step.title}</div>
-            <p className="text-slate-400 text-sm leading-relaxed">{step.body}</p>
-          </div>
+          <li key={step.title} className="pl-1">
+            <div className="font-semibold text-white">{step.title}</div>
+            <p className="mt-1 text-slate-300">{step.body}</p>
+          </li>
         ))}
-      </div>
+      </ol>
 
       <CodeBlock title="Demo prompt skeleton">
 {`goal: ${scenario.title}

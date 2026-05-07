@@ -60,7 +60,7 @@ export function PageLayout({ partIndex, partSlug, children }) {
 
       <div className="max-w-[110rem] mx-auto px-10 py-14">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs text-slate-500 mb-10">
+        <div className="flex items-center gap-2 text-sm text-slate-400 mb-10">
           <Link to="/" className="hover:text-slate-300 no-underline transition-colors">首頁</Link>
           <span>/</span>
           <Link to="/coding-agent" className="hover:text-slate-300 no-underline transition-colors">Coding Agent</Link>
@@ -76,8 +76,8 @@ export function PageLayout({ partIndex, partSlug, children }) {
             <Link to={prev.path} className="group flex items-center gap-3 no-underline min-w-0">
               <span className="text-slate-500 group-hover:text-white transition-colors text-lg">←</span>
               <div className="min-w-0">
-                <div className="text-xs text-slate-600 group-hover:text-slate-400 transition-colors font-mono">{prev.slug}</div>
-                <div className="text-sm text-slate-400 group-hover:text-white transition-colors truncate">{prev.title}</div>
+                <div className="text-sm text-slate-500 group-hover:text-slate-300 transition-colors font-mono">{prev.slug}</div>
+                <div className="text-sm text-slate-300 group-hover:text-white transition-colors truncate">{prev.title}</div>
               </div>
             </Link>
           ) : (
@@ -103,8 +103,8 @@ export function PageLayout({ partIndex, partSlug, children }) {
           {next ? (
             <Link to={next.path} className="group flex items-center gap-3 no-underline text-right min-w-0">
               <div className="min-w-0">
-                <div className="text-xs text-slate-600 group-hover:text-slate-400 transition-colors font-mono">{next.slug}</div>
-                <div className="text-sm text-slate-400 group-hover:text-white transition-colors truncate">{next.title}</div>
+                <div className="text-sm text-slate-500 group-hover:text-slate-300 transition-colors font-mono">{next.slug}</div>
+                <div className="text-sm text-slate-300 group-hover:text-white transition-colors truncate">{next.title}</div>
               </div>
               <span className="text-slate-500 group-hover:text-white transition-colors text-lg">→</span>
             </Link>
@@ -139,14 +139,14 @@ export function SectionHeader({ partIndex, partSlug }) {
           <span className={`w-1.5 h-12 rounded-full bg-gradient-to-b ${c.bar} inline-block flex-shrink-0`} />
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold font-mono ${c.badge}`}>{p.slug}</span>
-              <span className="text-slate-500 text-xs">{p.time}</span>
+              <span className={`px-2.5 py-0.5 rounded-full text-sm font-bold font-mono ${c.badge}`}>{p.slug}</span>
+              <span className="text-slate-400 text-sm">{p.time}</span>
             </div>
             <h1 className="text-3xl font-black text-white leading-tight">{p.title}</h1>
             {p.demoCases?.length > 0 && (
               <Link
                 to="/demo-checklist"
-                className="mt-2 inline-flex text-xs text-slate-500 no-underline transition-colors hover:text-slate-300"
+                className="mt-2 inline-flex text-sm text-slate-300 no-underline transition-colors hover:text-white"
               >
                 對應 Demo Case → {p.demoCases.join(' · ')}
               </Link>
@@ -155,16 +155,10 @@ export function SectionHeader({ partIndex, partSlug }) {
         </div>
         <div className="flex gap-1.5 flex-wrap">
           {badges.map(({ label, className }) => (
-            <span key={label} className={`px-3 py-1 rounded-full text-xs border ${className}`}>{label}</span>
+            <span key={label} className={`px-3 py-1 rounded-full text-sm border ${className}`}>{label}</span>
           ))}
         </div>
       </div>
-      {p.visual && (
-        <VisualAid visual={p.visual} accent={p.accent} embedded compact className="mt-5" />
-      )}
-      {p.guide && (
-        <ChapterGuide guide={p.guide} accent={p.accent} className="mt-5" />
-      )}
     </div>
   )
 }
@@ -185,9 +179,9 @@ export function CodeBlock({ title, children }) {
             <span className="w-3 h-3 rounded-full bg-red-500/70" />
             <span className="w-3 h-3 rounded-full bg-yellow-500/70" />
             <span className="w-3 h-3 rounded-full bg-green-500/70" />
-            <span className="text-slate-400 text-xs ml-2">{title}</span>
+            <span className="text-slate-300 text-sm ml-2">{title}</span>
           </div>
-          <button onClick={copy} className="text-xs text-slate-600 hover:text-slate-300 transition-colors opacity-0 group-hover:opacity-100">
+          <button onClick={copy} className="text-sm text-slate-400 hover:text-white transition-colors">
             {copied ? '已複製 ✓' : '複製'}
           </button>
         </div>
@@ -223,7 +217,7 @@ export function CmdTable({ rows }) {
       {rows.map(({ cmd, desc }, i) => (
         <div key={i} className="flex items-start gap-4 px-5 py-3 border-b border-white/5 last:border-0">
           <code className="text-violet-300 text-sm font-mono whitespace-nowrap flex-shrink-0 bg-violet-500/10 px-2 py-1 rounded">{cmd}</code>
-          <span className="text-slate-400 text-sm leading-relaxed pt-0.5">{desc}</span>
+          <span className="text-slate-300 text-sm leading-relaxed pt-0.5">{desc}</span>
         </div>
       ))}
     </div>
@@ -244,137 +238,6 @@ export function PermBadge({ level }) {
 /* ── H3 ── */
 export function H3({ children }) {
   return <h3 className="text-white font-semibold mb-3 mt-8 text-base first:mt-0">{children}</h3>
-}
-
-export function ChapterGuide({ guide, accent = 'violet', className = '' }) {
-  if (!guide) return null
-  const tone = visualTone(accent)
-  const cards = [
-    { label: '一句話', text: guide.oneLine },
-    { label: '非 dev 帶走', text: guide.nonDev },
-    { label: 'dev 善用', text: guide.dev },
-    { label: '回頭看時機', text: guide.revisitWhen },
-  ].filter(item => item.text)
-
-  return (
-    <section className={`border-t border-white/10 pt-5 ${className}`} aria-label="chapter guide">
-      <div className={`mb-3 text-xs font-semibold uppercase tracking-wide ${tone.text}`}>Chapter guide</div>
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
-        {cards.map((item) => (
-          <div key={item.label} className={`rounded-lg border p-3 ${tone.node}`}>
-            <div className={`mb-1.5 text-xs font-semibold ${tone.text}`}>{item.label}</div>
-            <p className="text-sm leading-relaxed text-slate-300">{item.text}</p>
-          </div>
-        ))}
-      </div>
-    </section>
-  )
-}
-
-const VISUAL_TONES = {
-  sky:     { text: 'text-sky-300',     dot: 'bg-sky-300',     line: 'bg-sky-400/40',     node: 'border-sky-500/25 bg-sky-500/10',         soft: 'from-sky-500/15 to-blue-500/5' },
-  indigo:  { text: 'text-indigo-300',  dot: 'bg-indigo-300',  line: 'bg-indigo-400/40',  node: 'border-indigo-500/25 bg-indigo-500/10',   soft: 'from-indigo-500/15 to-blue-500/5' },
-  rose:    { text: 'text-rose-300',    dot: 'bg-rose-300',    line: 'bg-rose-400/40',    node: 'border-rose-500/25 bg-rose-500/10',       soft: 'from-rose-500/15 to-pink-500/5' },
-  pink:    { text: 'text-pink-300',    dot: 'bg-pink-300',    line: 'bg-pink-400/40',    node: 'border-pink-500/25 bg-pink-500/10',       soft: 'from-pink-500/15 to-rose-500/5' },
-  fuchsia: { text: 'text-fuchsia-300', dot: 'bg-fuchsia-300', line: 'bg-fuchsia-400/40', node: 'border-fuchsia-500/25 bg-fuchsia-500/10', soft: 'from-fuchsia-500/15 to-pink-500/5' },
-  purple:  { text: 'text-purple-300',  dot: 'bg-purple-300',  line: 'bg-purple-400/40',  node: 'border-purple-500/25 bg-purple-500/10',   soft: 'from-purple-500/15 to-fuchsia-500/5' },
-  amber:   { text: 'text-amber-300',   dot: 'bg-amber-300',   line: 'bg-amber-400/40',   node: 'border-amber-500/25 bg-amber-500/10',     soft: 'from-amber-500/15 to-orange-500/5' },
-  orange:  { text: 'text-orange-300',  dot: 'bg-orange-300',  line: 'bg-orange-400/40',  node: 'border-orange-500/25 bg-orange-500/10',   soft: 'from-orange-500/15 to-amber-500/5' },
-  emerald: { text: 'text-emerald-300', dot: 'bg-emerald-300', line: 'bg-emerald-400/40', node: 'border-emerald-500/25 bg-emerald-500/10', soft: 'from-emerald-500/15 to-teal-500/5' },
-  cyan:    { text: 'text-cyan-300',    dot: 'bg-cyan-300',    line: 'bg-cyan-400/40',    node: 'border-cyan-500/25 bg-cyan-500/10',       soft: 'from-cyan-500/15 to-sky-500/5' },
-  violet:  { text: 'text-violet-300',  dot: 'bg-violet-300',  line: 'bg-violet-400/40',  node: 'border-violet-500/25 bg-violet-500/10',   soft: 'from-violet-500/15 to-purple-500/5' },
-}
-
-function visualTone(accent) {
-  return VISUAL_TONES[accent] ?? VISUAL_TONES.violet
-}
-
-function visualNodes(visual) {
-  return Array.isArray(visual?.nodes) ? visual.nodes.filter(Boolean) : []
-}
-
-export function MiniVisualAid({ visual, accent = 'violet', className = '' }) {
-  const nodes = visualNodes(visual).slice(0, 5)
-  if (!nodes.length) return null
-
-  const tone = visualTone(accent)
-
-  return (
-    <div className={`min-w-0 ${className}`} aria-label={`${visual.title} mini diagram`}>
-      <div className="mb-2 flex items-center gap-1.5">
-        {nodes.map((node, i) => (
-          <div key={`${node}-${i}`} className="flex min-w-0 flex-1 items-center gap-1.5">
-            <span className={`h-2.5 w-2.5 flex-shrink-0 rounded-full ${tone.dot}`} />
-            {i < nodes.length - 1 && <span className={`h-px min-w-3 flex-1 ${tone.line}`} />}
-          </div>
-        ))}
-      </div>
-      <div className="grid grid-cols-2 gap-1.5">
-        {nodes.slice(0, 4).map((node) => (
-          <span key={node} className={`truncate rounded-md border px-2 py-1 text-[0.68rem] leading-none ${tone.node} ${tone.text}`}>
-            {node}
-          </span>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-export function VisualAid({ visual, accent = 'violet', embedded = false, compact = false, className = '' }) {
-  const nodes = visualNodes(visual)
-  if (!nodes.length) return null
-
-  const tone = visualTone(accent)
-  const shell = embedded
-    ? `border-t border-white/10 pt-5 ${className}`
-    : `rounded-xl border border-white/10 bg-white/[0.02] p-5 mb-6 ${className}`
-  const nodeClass = compact ? 'px-3 py-2' : 'px-4 py-3'
-
-  return (
-    <aside className={shell} aria-label={`${visual.title} diagram`}>
-      <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <div className={`mb-1 text-xs font-semibold uppercase tracking-wide ${tone.text}`}>Visual map</div>
-          <div className="text-sm font-bold text-white">{visual.title}</div>
-        </div>
-        {visual.kind && (
-          <span className="rounded-md border border-white/10 px-2 py-1 text-xs text-slate-500">{visual.kind}</span>
-        )}
-      </div>
-
-      <div className={`rounded-xl bg-gradient-to-br ${tone.soft} p-3`}>
-        <div className="grid gap-2 md:grid-cols-5">
-          {nodes.map((node, i) => (
-            <div key={`${node}-${i}`} className="relative min-w-0">
-              <div className={`h-full rounded-lg border ${tone.node} ${nodeClass}`}>
-                <div className="mb-2 flex items-center gap-2">
-                  <span className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full ${tone.dot} text-[0.65rem] font-black text-slate-950`}>
-                    {i + 1}
-                  </span>
-                  <span className="truncate text-sm font-semibold text-white">{node}</span>
-                </div>
-                <div className="h-1 rounded-full bg-white/10">
-                  <div className={`h-full rounded-full ${tone.line}`} style={{ width: `${((i + 1) / nodes.length) * 100}%` }} />
-                </div>
-              </div>
-              {i < nodes.length - 1 && (
-                <div className="hidden md:block absolute -right-1.5 top-1/2 z-10 -translate-y-1/2 text-slate-500">→</div>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="mt-3 grid gap-2 md:grid-cols-[1fr_auto] md:items-center">
-        <p className="text-sm leading-relaxed text-slate-400">{visual.caption}</p>
-        {visual.takeaway && (
-          <div className={`rounded-md border px-3 py-2 text-xs leading-relaxed ${tone.node} ${tone.text}`}>
-            {visual.takeaway}
-          </div>
-        )}
-      </div>
-    </aside>
-  )
 }
 
 /* ── FullBleed: break out of main column up to 6xl ── */
@@ -538,13 +401,12 @@ export function Diff({ before, after, beforeLabel = '迭代前', afterLabel = '�
 /* ── Step list: numbered milestones with description ── */
 export function Steps({ items }) {
   return (
-    <ol className="space-y-3 mb-6">
+    <ol className="mb-6 list-decimal space-y-3 pl-6 text-sm leading-relaxed text-slate-300 marker:font-bold marker:text-violet-300">
       {items.map(({ title, desc }, i) => (
-        <li key={i} className="flex gap-4 rounded-xl border border-white/10 bg-white/[0.02] p-4">
-          <span className="flex-shrink-0 w-7 h-7 rounded-full bg-gradient-to-br from-violet-400 to-purple-500 text-white text-xs font-bold flex items-center justify-center">{i + 1}</span>
-          <div className="flex-1 min-w-0">
-            <div className="text-white font-semibold text-sm mb-1">{title}</div>
-            <div className="text-slate-400 text-sm leading-relaxed">{desc}</div>
+        <li key={i} className="pl-1">
+          <div className="font-semibold text-white">{title}</div>
+          <div className="mt-1 text-slate-300">
+            {desc}
           </div>
         </li>
       ))}

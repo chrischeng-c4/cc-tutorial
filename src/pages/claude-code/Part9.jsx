@@ -91,11 +91,11 @@ export default function Part9() {
           <div key={item.mode} className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-3 items-start px-4 py-3 border-b border-white/5 last:border-0 text-sm">
             <div className="md:col-span-3">
               <div className="text-white font-medium">{item.label}</div>
-              <div className="text-xs text-slate-600 mt-0.5">{item.shorthand}</div>
+              <div className="text-xs text-slate-400 mt-0.5">{item.shorthand}</div>
             </div>
             <code className="md:col-span-2 text-emerald-300 bg-emerald-500/10 px-2 py-0.5 rounded font-mono text-xs break-words">{item.mode}</code>
             <span className="md:col-span-4 text-slate-400 leading-relaxed">{item.canDo}</span>
-            <span className="md:col-span-3 text-slate-500 leading-relaxed">{item.useWhen}</span>
+            <span className="md:col-span-3 text-slate-300 leading-relaxed">{item.useWhen}</span>
           </div>
         ))}
       </div>

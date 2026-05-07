@@ -147,7 +147,7 @@ export default function Part8() {
         <div className="flex items-center justify-between gap-4 mb-4">
           <div>
             <div className="text-white font-semibold text-sm">多輪對話的單輪 input 成本</div>
-            <p className="text-slate-500 text-xs mt-1">示意圖：不是固定報價，重點是每輪都帶著前面歷史一起算。</p>
+            <p className="text-slate-300 text-sm mt-1">示意圖：不是固定報價，重點是每輪都帶著前面歷史一起算。</p>
           </div>
           <span className="text-xs text-amber-300 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-md">
             每輪變貴
@@ -164,13 +164,13 @@ export default function Part8() {
                     style={{ width: row.width }}
                   />
                 </div>
-                <div className="text-[11px] text-slate-500 mt-1 truncate">{row.note}</div>
+                <div className="text-xs text-slate-400 mt-1 truncate">{row.note}</div>
               </div>
               <span className="text-right text-xs font-mono text-amber-300">{row.input}</span>
             </div>
           ))}
         </div>
-        <p className="text-slate-500 text-xs leading-relaxed mt-4">
+        <p className="text-slate-300 text-sm leading-relaxed mt-4">
           如果每輪都讀新檔、貼 log、看 diff，input 不是只加「這一輪問題」，而是「前面全部歷史 + 這一輪問題」。
           所以長 session 不 compact，累積成本會越來越明顯。
         </p>
@@ -186,7 +186,7 @@ export default function Part8() {
       <div className="overflow-x-auto rounded-xl border border-white/10 bg-white/[0.02] mb-4">
         <table className="w-full min-w-[880px] border-collapse text-sm">
           <thead>
-            <tr className="border-b border-white/10 bg-white/[0.03] text-xs text-slate-500">
+            <tr className="border-b border-white/10 bg-white/[0.03] text-sm text-slate-300">
               <th className="px-4 py-3 text-left font-semibold">位置</th>
               <th className="px-4 py-3 text-left font-semibold">適合放</th>
               <th className="px-4 py-3 text-left font-semibold">不適合放</th>
@@ -198,7 +198,7 @@ export default function Part8() {
               <tr key={row.place} className="border-b border-white/5 last:border-0">
                 <td className="px-4 py-3 align-top text-orange-300 font-semibold">{row.place}</td>
                 <td className="px-4 py-3 align-top text-slate-300 leading-relaxed">{row.bestFor}</td>
-                <td className="px-4 py-3 align-top text-slate-500 leading-relaxed">{row.notFor}</td>
+                <td className="px-4 py-3 align-top text-slate-300 leading-relaxed">{row.notFor}</td>
                 <td className="px-4 py-3 align-top text-slate-400 leading-relaxed">{row.rule}</td>
               </tr>
             ))}
@@ -283,7 +283,7 @@ Implement according to the acceptance criteria.`}
         Codex / OpenAI 也會區分 input、cached input、output、reasoning 等成本，但實際名稱與費率以當下官方 pricing 為準：
       </p>
       <div className="rounded-xl border border-white/10 overflow-hidden mb-4">
-        <div className="grid grid-cols-3 text-xs text-slate-500 px-4 py-2 border-b border-white/5 bg-white/[0.02]">
+        <div className="grid grid-cols-3 text-sm text-slate-300 px-4 py-2 border-b border-white/5 bg-white/[0.02]">
           <span>類型</span><span>內容</span><span className="text-right">相對費率</span>
         </div>
         {[
@@ -294,19 +294,19 @@ Implement according to the acceptance criteria.`}
           <div key={type} className="flex items-start gap-3 px-4 py-3 border-b border-white/5 last:border-0">
             <span className={`w-2 h-2 rounded-full ${dot} mt-1.5 flex-shrink-0`} />
             <div className="flex-1 min-w-0">
-              <span className={`font-mono text-xs font-semibold ${color}`}>{type}</span>
-              <p className="text-slate-400 text-xs leading-relaxed mt-0.5">{content}</p>
+              <span className={`font-mono text-sm font-semibold ${color}`}>{type}</span>
+              <p className="text-slate-300 text-sm leading-relaxed mt-0.5">{content}</p>
             </div>
             <span className={`text-sm font-bold flex-shrink-0 ${rateColor}`}>{rate}</span>
           </div>
         ))}
       </div>
       <div className="rounded-xl bg-black/40 border border-white/10 p-4 text-xs font-mono mb-10">
-        <div className="text-slate-500 mb-2">{'// 一次典型「修 bug」任務的 token 分佈'}</div>
+        <div className="text-slate-400 mb-2">{'// 一次典型「修 bug」任務的 token 分佈'}</div>
         <div className="flex gap-6 flex-wrap">
-          <div><span className="text-sky-300">input:</span><span className="text-slate-300 ml-2">~8,000 tokens</span><span className="text-slate-600 ml-2">(歷史 + 相關程式碼)</span></div>
+          <div><span className="text-sky-300">input:</span><span className="text-slate-300 ml-2">~8,000 tokens</span><span className="text-slate-400 ml-2">(歷史 + 相關程式碼)</span></div>
           <div><span className="text-violet-300">output:</span><span className="text-slate-300 ml-2">~500 tokens</span></div>
-          <div><span className="text-rose-300">thinking:</span><span className="text-slate-300 ml-2">~2,000 tokens</span><span className="text-slate-600 ml-2">(若開啟)</span></div>
+          <div><span className="text-rose-300">thinking:</span><span className="text-slate-300 ml-2">~2,000 tokens</span><span className="text-slate-400 ml-2">(若開啟)</span></div>
         </div>
       </div>
 
@@ -324,7 +324,7 @@ Implement according to the acceptance criteria.`}
       <div className="overflow-x-auto rounded-xl border border-white/10 bg-white/[0.02] mb-4">
         <table className="w-full min-w-[780px] border-collapse text-sm">
           <thead>
-            <tr className="border-b border-white/10 bg-white/[0.03] text-xs text-slate-500">
+            <tr className="border-b border-white/10 bg-white/[0.03] text-sm text-slate-300">
               <th className="px-4 py-3 text-left font-semibold">Effort</th>
               <th className="px-4 py-3 text-left font-semibold">適合</th>
               <th className="px-4 py-3 text-left font-semibold">避免</th>
@@ -335,7 +335,7 @@ Implement according to the acceptance criteria.`}
               <tr key={row.effort} className="border-b border-white/5 last:border-0">
                 <td className="px-4 py-3 align-top font-mono text-rose-300">{row.effort}</td>
                 <td className="px-4 py-3 align-top text-slate-300 leading-relaxed">{row.use}</td>
-                <td className="px-4 py-3 align-top text-slate-500 leading-relaxed">{row.avoid}</td>
+                <td className="px-4 py-3 align-top text-slate-300 leading-relaxed">{row.avoid}</td>
               </tr>
             ))}
           </tbody>
@@ -355,9 +355,9 @@ Implement according to the acceptance criteria.`}
       </p>
       <div className="rounded-xl bg-black/40 border border-white/10 p-4 font-mono text-xs leading-relaxed mb-4">
         <div className="flex gap-6 flex-wrap">
-          <div><span className="text-slate-500">cache write:</span><span className="text-amber-300 ml-2">1.25×</span></div>
-          <div><span className="text-slate-500">cache read:</span><span className="text-emerald-300 ml-2">0.1×</span><span className="text-slate-600 ml-2">← 命中後較便宜</span></div>
-          <div><span className="text-slate-500">TTL:</span><span className="text-slate-300 ml-2">5 min</span><span className="text-slate-600 ml-2">(每次命中會續期)</span></div>
+          <div><span className="text-slate-400">cache write:</span><span className="text-amber-300 ml-2">1.25×</span></div>
+          <div><span className="text-slate-400">cache read:</span><span className="text-emerald-300 ml-2">0.1×</span><span className="text-slate-400 ml-2">← 命中後較便宜</span></div>
+          <div><span className="text-slate-400">TTL:</span><span className="text-slate-300 ml-2">5 min</span><span className="text-slate-400 ml-2">(每次命中會續期)</span></div>
         </div>
       </div>
       <Callout type="warn">
@@ -429,9 +429,9 @@ num <= 10 => risk = normal`}
             頭尾記得清楚，中間的重要資訊容易被忽略。
           </p>
           <div className="overflow-x-auto rounded-lg border border-white/10 bg-black/30 mb-3">
-            <table className="w-full min-w-[760px] border-collapse text-xs">
+            <table className="w-full min-w-[760px] border-collapse text-sm">
               <thead>
-                <tr className="border-b border-white/10 text-slate-500">
+                <tr className="border-b border-white/10 text-slate-300">
                   <th className="px-3 py-2 text-left font-semibold">來源</th>
                   <th className="px-3 py-2 text-left font-semibold">數字</th>
                   <th className="px-3 py-2 text-left font-semibold">解讀</th>
@@ -442,22 +442,22 @@ num <= 10 => risk = normal`}
                   <tr key={row.source} className="border-b border-white/5 last:border-0">
                     <td className="px-3 py-2 align-top font-semibold text-rose-200">{row.source}</td>
                     <td className="px-3 py-2 align-top leading-relaxed text-slate-300">{row.evidence}</td>
-                    <td className="px-3 py-2 align-top leading-relaxed text-slate-500">{row.note}</td>
+                    <td className="px-3 py-2 align-top leading-relaxed text-slate-300">{row.note}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <p className="text-slate-500 text-xs leading-relaxed mb-3">
+          <p className="text-slate-300 text-sm leading-relaxed mb-3">
             補充：GPT-5.5 / Opus 4.7 這列是長 context retrieval benchmark，不是原始 lost-middle 位置偏差實驗；
             兩者共同提醒：context window 大，不代表中間資訊會被穩定使用。
           </p>
           <div className="rounded-lg bg-black/40 border border-white/5 p-3 font-mono text-xs">
-            <div className="text-slate-500 mb-1">{'// Attention 計算複雜度'}</div>
+            <div className="text-slate-400 mb-1">{'// Attention 計算複雜度'}</div>
             <div><span className="text-rose-300">O(n²)</span><span className="text-slate-400 ml-2">← context 長度 n 的平方</span></div>
-            <div className="text-slate-600 mt-1">{'// 1K tokens → 1M 次計算'}</div>
-            <div className="text-slate-600">{'// 10K tokens → 100M 次計算'}</div>
-            <div className="text-slate-600">{'// 100K tokens → 10B 次計算  ← 費用與延遲爆炸'}</div>
+            <div className="text-slate-400 mt-1">{'// 1K tokens → 1M 次計算'}</div>
+            <div className="text-slate-400">{'// 10K tokens → 100M 次計算'}</div>
+            <div className="text-slate-400">{'// 100K tokens → 10B 次計算  ← 費用與延遲爆炸'}</div>
           </div>
         </div>
       </div>

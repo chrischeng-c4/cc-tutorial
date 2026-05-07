@@ -1,6 +1,4 @@
 import { demoScenarios } from './demoScenarios'
-import { buildDemoGuide, chapterGuides } from './learningGuides'
-import { buildDemoVisual, conceptVisuals } from './partVisuals'
 
 const RAW_PARTS = [
   { slug: 'what-is-coding-agent',       path: '/coding-agent/what-is-coding-agent',       title: 'Claude Code + Codex 是什麼',              time: '5 min',  accent: 'sky',     usage: '核心同步', audience: '共通',             tags: ['基礎'] },
@@ -24,11 +22,7 @@ const RAW_PARTS = [
   { slug: 'programmatic-review',        path: '/coding-agent/programmatic-review',        title: 'Programmatic 串接與 Review',              time: '10 min', accent: 'violet',  usage: '進階參考', audience: '偏 Engineering',   tags: ['Automation', 'Review'], demoCases: ['02', '05', '06', '10', '13'] },
 ]
 
-export const PARTS = RAW_PARTS.map(part => ({
-  ...part,
-  visual: conceptVisuals[part.slug],
-  guide: chapterGuides[part.slug],
-}))
+export const PARTS = RAW_PARTS
 
 const demoSlugById = {
   '01': 'demo-slides-progress-review',
@@ -65,8 +59,6 @@ export const DEMO_PARTS = demoScenarios.map((scenario) => {
     tags: ['Demo', scenario.layerLabel.replace('Layer ', '')],
     demoId: scenario.id,
     relatedConcepts: scenario.relatedParts,
-    visual: buildDemoVisual(scenario),
-    guide: buildDemoGuide(scenario),
   }
 })
 
